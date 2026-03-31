@@ -202,6 +202,20 @@ p {
     margin-bottom: 4px;
 }
 
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.audio-player audio {
+    height: 32px;
+}
+
+.audio-player audio::-webkit-media-controls-panel {
+    background-color: var(--border-color);
+}
+
 footer {
     padding: var(--spacing) 0;
     border-top: 1px solid var(--border-color);
