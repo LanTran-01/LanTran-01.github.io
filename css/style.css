@@ -1,0 +1,226 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --text-secondary: #aaaaaa;
+    --link-color: #ffffff;
+    --link-hover: #888888;
+    --border-color: #333333;
+    --font-stack: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    --max-width: 800px;
+    --spacing: 24px;
+    --spacing-sm: 12px;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-stack);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+a:hover {
+    border-bottom-color: var(--link-hover);
+}
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing);
+}
+
+header {
+    padding: var(--spacing) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing);
+}
+
+nav a {
+    font-size: 0.9rem;
+    text-transform: lowercase;
+}
+
+nav a.active {
+    border-bottom-color: var(--text-color);
+}
+
+main {
+    flex: 1;
+    padding: calc(var(--spacing) * 2) 0;
+}
+
+section {
+    margin-bottom: calc(var(--spacing) * 2);
+}
+
+section:last-child {
+    margin-bottom: 0;
+}
+
+h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+    margin-bottom: var(--spacing-sm);
+}
+
+h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+    text-transform: lowercase;
+}
+
+h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.entry {
+    margin-bottom: calc(var(--spacing) + var(--spacing-sm));
+}
+
+.entry.collapsed .entry-details {
+    display: none;
+}
+
+.entry-header.clickable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.entry-header.clickable:hover .entry-title {
+    text-decoration: underline;
+}
+
+.entry-header.clickable:hover {
+    cursor: pointer;
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+    position: relative;
+    padding-right: 24px;
+}
+
+.entry.collapsed .entry-header::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.entry-title {
+    font-weight: 500;
+}
+
+.entry-period {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.entry-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.entry-list li {
+    position: relative;
+    padding-left: var(--spacing);
+    margin-bottom: 8px;
+}
+
+.entry-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--text-secondary);
+}
+
+.contact-list {
+    list-style: none;
+}
+
+.contact-list li {
+    margin-bottom: 4px;
+}
+
+footer {
+    padding: var(--spacing) 0;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul {
+        gap: var(--spacing-sm);
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}
