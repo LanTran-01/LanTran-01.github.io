@@ -1,7 +1,7 @@
 /* ============================================================
    Dylan Tran — interactions
    No dependencies: 2D canvas signal field, IntersectionObserver
-   reveals, JS line splitting, count-up stats.
+   reveals and JS line splitting.
    ============================================================ */
 
 (function () {
@@ -200,14 +200,13 @@
     // IntersectionObserver clips a target against ancestor overflow, so the
     // line would report 0% visible and never be revealed.
     var targets = document.querySelectorAll(
-      ".anim-fade, .anim-line-wrap, .hero__title-line, [data-split], .tile, .board, .stats__value"
+      ".anim-fade, .anim-line-wrap, .hero__title-line, [data-split], .tile, .board"
     );
 
     if (!("IntersectionObserver" in window)) {
       Array.prototype.forEach.call(targets, function (el) {
         el.classList.add("is-visible");
       });
-      countAll();
       return;
     }
 
@@ -217,7 +216,6 @@
           if (!entry.isIntersecting) return;
           var el = entry.target;
           el.classList.add("is-visible");
-          if (el.classList.contains("stats__value")) countUp(el);
           io.unobserve(el);
         });
       },
@@ -230,35 +228,22 @@
   }
 
   /* ----------------------------------------------------------
-     Stat counters
+     The hero is above the fold by definition, so it plays on load
+     rather than waiting for a scroll. Without this the tagline and
+     scroll cue sit inside the observer's bottom rootMargin dead-zone
+     and stay hidden until the first scroll.
      ---------------------------------------------------------- */
-  function countUp(wrapper) {
-    var node = wrapper.querySelector("[data-counter]");
-    if (!node || node.dataset.done) return;
-    node.dataset.done = "1";
-
-    var target = parseInt(node.dataset.counter, 10) || 0;
-    if (reduced) {
-      node.textContent = String(target);
-      return;
-    }
-
-    var duration = 1300;
-    var began = null;
-
-    function step(now) {
-      if (began === null) began = now;
-      var p = Math.min((now - began) / duration, 1);
-      // ease-out cubic
-      var eased = 1 - Math.pow(1 - p, 3);
-      node.textContent = String(Math.round(target * eased));
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function countAll() {
-    Array.prototype.forEach.call(document.querySelectorAll(".stats__value"), countUp);
+  function initHeroReveal() {
+    var els = document.querySelectorAll(".hero__title-line, .hero .anim-fade");
+    // two frames, so the initial hidden styles are committed and the
+    // transition actually runs instead of being skipped
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        Array.prototype.forEach.call(els, function (el) {
+          el.classList.add("is-visible");
+        });
+      });
+    });
   }
 
   /* ----------------------------------------------------------
@@ -284,6 +269,7 @@
   function boot() {
     initSplits();
     initReveals();
+    initHeroReveal();
     initNav();
     initHero();
   }
