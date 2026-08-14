@@ -219,6 +219,7 @@ img { display: block; max-width: 100%; }
 .hero__title {
   position: relative;
   font-size: 17vw;
+  font-size: min(17vw, 34svh); /* also bound by height, for short viewports */
   line-height: 0.92;
   font-weight: 600;
   letter-spacing: -0.04em;
@@ -228,19 +229,19 @@ img { display: block; max-width: 100%; }
 
 .hero__title-line { display: block; overflow: hidden; }
 .hero__title-line--indent > .anim-line { transition-delay: 0.12s; }
-.hero__title-line--indent { padding-left: 8vw; }
+.hero__title-line--indent { padding-left: 0.47em; }
 
 .hero__title-inner {
   display: inline-flex;
   align-items: center;
-  gap: 2.2vw;
+  gap: 0.13em;
   will-change: transform;
 }
 
 .hero__square {
   display: inline-block;
-  width: 9.5vw;
-  height: 9.5vw;
+  width: 0.56em;
+  height: 0.56em;
   flex: none;
 }
 
@@ -282,10 +283,25 @@ img { display: block; max-width: 100%; }
 }
 
 @media (min-width: 1024px) {
-  .hero { padding: 12rem var(--pad) 4rem; }
-  .hero__title { font-size: 20vw; }
-  .hero__square { width: 8.6vw; height: 8.6vw; }
+  .hero { padding: 9rem var(--pad) 4rem; }
+  .hero__meta { padding-top: 2.5rem; }
+
+  .hero__title {
+    font-size: 20vw;
+    font-size: min(20vw, 28svh);
+    margin: 2.5rem 0 3.5rem;
+  }
+
+  .hero__title-line--indent { padding-left: 0.4em; }
+  .hero__title-inner { gap: 0.11em; }
+  .hero__square { width: 0.43em; height: 0.43em; }
   .hero__meta-item { font-size: 1.35rem; }
+}
+
+/* short desktop viewports (1366x625-class laptops) need the chrome tighter still */
+@media (min-width: 1024px) and (max-height: 700px) {
+  .hero { padding-top: 7rem; padding-bottom: 2.5rem; }
+  .hero__title { margin: 1.5rem 0 2.5rem; }
 }
 
 /* ============ Shared section rhythm ============ */
@@ -475,46 +491,6 @@ img { display: block; max-width: 100%; }
 .tile--cosmos { background: var(--grad-cosmos); }
 .tile--ember { background: var(--grad-ember); }
 .tile--aurora { background: var(--grad-aurora); }
-
-/* ============ Stats ============ */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: 1px solid var(--rule);
-}
-
-.stats__item {
-  padding: 4.5rem var(--pad);
-  border-bottom: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-}
-
-.stats__item:nth-child(odd) { border-right: 1px solid var(--rule); }
-
-.stats__value {
-  font-size: clamp(4.6rem, 8vw, 9rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.stats__label {
-  font-family: var(--mono);
-  font-size: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  line-height: 1.6;
-  color: var(--muted);
-}
-
-@media (min-width: 1024px) {
-  .stats { grid-template-columns: repeat(4, 1fr); }
-  .stats__item { border-right: 1px solid var(--rule); padding: 6rem var(--pad); }
-  .stats__item:last-child { border-right: none; }
-}
 
 /* ============ Hardware ============ */
 
