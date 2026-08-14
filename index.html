@@ -1,71 +1,550 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lan Tran - About</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dylan Tran — Embedded Software Engineer</title>
+  <meta name="description" content="Dylan Tran — embedded software engineer in Ha Noi, Vietnam. Bootloaders, BSP and kernel drivers, bare-metal firmware and FPGA programmable logic, from the reset vector to userspace." />
+  <meta name="theme-color" content="#f2f2f2" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Dylan Tran — Embedded Software Engineer" />
+  <meta property="og:description" content="Bootloaders, BSP and kernel drivers, bare-metal firmware and FPGA programmable logic — from the reset vector to userspace." />
+
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <a href="index.html" class="logo">LAN TRAN</a>
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">about</a></li>
-                    <li><a href="education.html">education</a></li>
-                    <li><a href="work.html">work</a></li>
-                    <li><a href="projects.html">projects</a></li>
-                </ul>
-            </nav>
+
+  <a class="skip-link" href="#intro">Skip to content</a>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="header">
+    <a class="header__logo" href="#top" data-nav>
+      <span class="header__logo-mark"></span>
+      DYLAN&#8212;TRAN
+    </a>
+    <nav class="header__nav" aria-label="Primary">
+      <a href="#focus" data-nav>What I<br/>&nbsp;Do</a>
+      <a href="#hardware" data-nav>The<br/>&nbsp;Hardware</a>
+      <a href="#experience" data-nav>Where I've<br/>&nbsp;Worked</a>
+    </nav>
+    <a class="header__cta btn-pill" href="#contact" data-nav>
+      <span class="btn-pill__label">Get in touch</span>
+      <span class="btn-pill__label btn-pill__label--hover" aria-hidden="true">Get in touch</span>
+    </a>
+  </header>
+
+  <!-- ===================== SIDE RAIL ===================== -->
+  <aside class="side-rail" aria-hidden="true">
+    <span class="side-rail__text">Firmware &#183; BSP &#183; FPGA&nbsp;&nbsp;&#169;2026</span>
+    <span class="side-rail__square"></span>
+  </aside>
+
+  <main class="content-wrapper" id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+      <div class="hero__meta">
+        <p class="hero__meta-item anim-fade">Embedded software<br/>engineer</p>
+        <p class="hero__meta-item anim-fade">Ha Noi, Vietnam<br/>Open to relocation</p>
+        <p class="hero__meta-item anim-fade">Canadian PGWP holder<br/>UBC Electrical Eng.</p>
+      </div>
+
+      <h1 class="hero__title">
+        <span class="hero__title-line">
+          <span class="hero__title-inner anim-line">DYLAN<span class="hero__square hero__square--sunset"></span></span>
+        </span>
+        <span class="hero__title-line hero__title-line--indent">
+          <span class="hero__title-inner anim-line"><span class="hero__square hero__square--cosmos"></span>TRAN<span class="hero__square hero__square--ink"></span></span>
+        </span>
+      </h1>
+
+      <div class="hero__bottom">
+        <p class="hero__tagline anim-fade">Bootloaders, kernel drivers &amp; FPGA logic<br/>&#8212; from the reset vector to userspace.</p>
+        <a class="hero__scroll anim-fade" href="#intro" data-nav>
+          Scroll to explore
+          <span class="hero__scroll-arrow">&#8595;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== INTRO ===================== -->
+    <section class="intro" id="intro">
+      <p class="kicker anim-fade">( Profile )</p>
+      <h2 class="intro__title" data-split>
+        I work in the layer where the datasheet is the documentation.
+      </h2>
+      <div class="intro__body">
+        <div>
+          <p class="anim-fade">Most of what I build runs before an operating system exists: reset vectors, DDR training sequences, flash partition tables, and bootloaders that have to survive a failed update and come back anyway. Office printers, automotive silicon bring-up, aerospace flight hardware &#8212; different industries, same question every time. Why won't this board boot?</p>
+          <p class="anim-fade">I studied Electrical Engineering at UBC, then joined three teams in a row whose job was to make new silicon come up reliably &#8212; and to write down how, so the next engineer doesn't start from zero.</p>
         </div>
-    </header>
-
-    <main class="container">
-        <section>
-            <h1>Hi, I'm Lan Tran</h1>
-            <p class="text-secondary">Embedded Engineer</p>
-        </section>
-
-        <section>
-            <h2>about</h2>
-            <p>
-                Welcome to my portfolio. I'm an embedded engineer passionate about building
-                reliable and efficient systems. I work with microcontrollers, firmware development,
-                RTOS and embedded Linux programming.
-            </p>
-            <p>
-                Feel free to explore my background, education, work experience, and projects.
-            </p>
-        </section>
-
-        <section>
-            <h2>skills</h2>
-            <p class="text-secondary">Languages</p>
-            <ul class="entry-list">
-                <li>C, C++, Python, Verilog, VHDL, Assembly, English, Vietnamese</li>
-            </ul>
-            <p class="text-secondary">Tools</p>
-            <ul class="entry-list">
-                <li>Git, Jenkins, Jira, OpenCode, Buildroot, Yocto, Shell Script, CMake, Makefile, Linux, Uboot, FreeRTOS, KiCAD</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>contact</h2>
-            <ul class="contact-list">
-                <li>Email: <a href="mailto:thanhlan01v@gmail.com">thanhlan01v@gmail.com</a></li>
-                <li>Phone: <a href="tel:+84708998600">(+84) 708 998 600</a> 🇻🇳</li>
-                <li>LinkedIn: <a href="https://www.linkedin.com/in/lantran01/" target="_blank" rel="noopener">lantran01</a></li>
-                <li>GitHub: <a href="https://github.com/LanTran-01" target="_blank" rel="noopener">LanTran-01</a></li>
-            </ul>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Lan Tran</p>
+        <div class="intro__words">
+          <span class="intro__word anim-line-wrap"><span class="anim-line">Boot.</span></span>
+          <span class="intro__word anim-line-wrap"><span class="anim-line">Bring-up.</span></span>
+          <span class="intro__word anim-line-wrap"><span class="anim-line">Ship.</span></span>
         </div>
+      </div>
+    </section>
+
+    <!-- ===================== STATEMENT ===================== -->
+    <section class="statement">
+      <h2 class="statement__title" data-split>From reset vector to userspace</h2>
+    </section>
+
+    <!-- ===================== FOCUS ===================== -->
+    <section class="focus" id="focus">
+      <header class="section-head">
+        <p class="kicker anim-fade">( What I do )</p>
+        <h2 class="section-title" data-split>Four things I am usually doing to a board.</h2>
+      </header>
+
+      <div class="focus__list">
+
+        <article class="entry">
+          <div class="entry__media tile tile--sunset">
+            <span class="entry__index">01</span>
+            <span class="entry__glyph" aria-hidden="true">
+              <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square">
+                <rect x="14" y="4" width="52" height="14"/>
+                <rect x="14" y="33" width="52" height="14"/>
+                <rect x="14" y="62" width="52" height="14"/>
+                <path d="M40 18v15M40 47v15"/>
+                <path d="M66 40h10v29H52"/>
+              </svg>
+            </span>
+          </div>
+          <div class="entry__content">
+            <h3 class="entry__name anim-fade">Boot &amp; recovery</h3>
+            <p class="entry__desc anim-fade">The chain from power-on to a running image: TF-A, U-Boot, FSBL and image selectors. I design flash layouts with backup and recovery images, fallback registers that catch a bad update, and secure boot flows that check integrity and authenticity before anything gets executed.</p>
+            <p class="entry__tags anim-fade">TF-A &#183; U-Boot &#183; FSBL &#183; DDR training &#183; A/B images &#183; eFuse secure boot</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry__media tile tile--cosmos">
+            <span class="entry__index">02</span>
+            <span class="entry__glyph" aria-hidden="true">
+              <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square">
+                <rect x="4" y="6" width="72" height="13"/>
+                <rect x="12" y="27" width="56" height="13"/>
+                <rect x="20" y="48" width="40" height="13"/>
+                <path d="M40 19v8M40 40v8M40 61v14"/>
+                <path d="M26 75h28"/>
+              </svg>
+            </span>
+          </div>
+          <div class="entry__content">
+            <h3 class="entry__name anim-fade">BSP &amp; kernel drivers</h3>
+            <p class="entry__desc anim-fade">Board support below the application: memory maps and repartitioning, QSPI and NOR flash drivers, hibernation snapshots to SD and SSD, device tree, and Yocto or Buildroot images that reproduce byte-for-byte on the next machine.</p>
+            <p class="entry__tags anim-fade">Linux kernel &#183; Device tree &#183; Yocto &#183; Buildroot &#183; QSPI &#183; CMEM &#183; Hibernation</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry__media tile tile--ember">
+            <span class="entry__index">03</span>
+            <span class="entry__glyph" aria-hidden="true">
+              <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square">
+                <rect x="4" y="12" width="13" height="13"/>
+                <rect x="21" y="12" width="13" height="13" fill="currentColor"/>
+                <rect x="38" y="12" width="13" height="13"/>
+                <rect x="55" y="12" width="13" height="13" fill="currentColor"/>
+                <path d="M4 62V44h12v18h12V44h12v18h12V44h12v18h12"/>
+              </svg>
+            </span>
+          </div>
+          <div class="entry__content">
+            <h3 class="entry__name anim-fade">Bare-metal &amp; RTOS</h3>
+            <p class="entry__desc anim-fade">No operating system between me and the register map. Cortex-R and Cortex-M firmware on FreeRTOS or none at all, SPI/I2C/UART/CAN peripheral drivers, SCP power and clock domains over SCMI, and MATLAB control algorithms ported down into embedded C.</p>
+            <p class="entry__tags anim-fade">FreeRTOS &#183; Cortex-R5F / R4 / M &#183; SCP &#183; SCMI &#183; SPI &#183; I2C &#183; CAN</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry__media tile tile--aurora">
+            <span class="entry__index">04</span>
+            <span class="entry__glyph" aria-hidden="true">
+              <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square">
+                <rect x="6" y="6" width="16" height="16"/>
+                <rect x="32" y="6" width="16" height="16"/>
+                <rect x="58" y="6" width="16" height="16"/>
+                <rect x="6" y="32" width="16" height="16"/>
+                <rect x="32" y="32" width="16" height="16" fill="currentColor"/>
+                <rect x="58" y="32" width="16" height="16"/>
+                <rect x="6" y="58" width="16" height="16"/>
+                <rect x="32" y="58" width="16" height="16"/>
+                <rect x="58" y="58" width="16" height="16"/>
+                <path d="M22 14h10M48 14h10M40 22v10M40 48v10M22 66h10"/>
+              </svg>
+            </span>
+          </div>
+          <div class="entry__content">
+            <h3 class="entry__name anim-fade">FPGA &amp; programmable logic</h3>
+            <p class="entry__desc anim-fade">Custom logic in the PL and the software that talks to it. AXI blocks that parse UART GNSS and IMU streams and hand encoded messages to the processing system through a queue, plus memory controllers and SPI, I2C and CAN cores written in Verilog and VHDL.</p>
+            <p class="entry__tags anim-fade">Verilog &#183; VHDL &#183; AXI &#183; Vivado &#183; Vitis &#183; Quartus &#183; PS&#8211;PL integration</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===================== STATS ===================== -->
+    <section class="stats">
+      <div class="stats__item">
+        <span class="stats__value"><span data-counter="11">0</span></span>
+        <span class="stats__label anim-fade">Printer models covered by<br/>one-click build scripts</span>
+      </div>
+      <div class="stats__item">
+        <span class="stats__value"><span data-counter="6">0</span></span>
+        <span class="stats__label anim-fade">Models enabled for<br/>RAM upgrade</span>
+      </div>
+      <div class="stats__item">
+        <span class="stats__value"><span data-counter="4">0</span></span>
+        <span class="stats__label anim-fade">Firmware images: main, backup,<br/>loader, recovery</span>
+      </div>
+      <div class="stats__item">
+        <span class="stats__value"><span data-counter="9">0</span></span>
+        <span class="stats__label anim-fade">Boards and SoCs<br/>in daily reach</span>
+      </div>
+    </section>
+
+    <!-- ===================== HARDWARE ===================== -->
+    <section class="hardware" id="hardware">
+      <header class="section-head">
+        <p class="kicker anim-fade">( Hardware )</p>
+        <h2 class="section-title" data-split>Nine boards, four ways of thinking about them.</h2>
+        <p class="lead anim-fade">Every family below asks for a different mental model &#8212; a scheduler and a page table on one end, a hand-counted interrupt latency on the other. These are the ones I keep going back to.</p>
+      </header>
+
+      <!-- A — Embedded Linux SBCs -->
+      <div class="family" style="--acc: var(--acc-sbc)">
+        <div class="family__head">
+          <p class="family__id anim-fade">A / Embedded Linux</p>
+          <h3 class="family__name anim-fade">Single-board computers</h3>
+          <p class="family__desc anim-fade">Full Linux on an application processor. Mainline kernels, device tree, U-Boot on removable media, and reproducible root filesystems built with Yocto or Buildroot.</p>
+        </div>
+        <div class="family__cards">
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/raspberry-pi.svg" alt="Raspberry Pi board illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">Raspberry Pi</h4>
+            <p class="board__chip">BCM2711 &#183; Cortex-A72</p>
+            <p class="board__role">The fastest path from an idea to a booting Linux system. Kernel modules, device tree overlays and GPIO work before the real target exists.</p>
+          </article>
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/beaglebone.svg" alt="BeagleBone board illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">BeagleBone</h4>
+            <p class="board__chip">AM335x &#183; Cortex-A8</p>
+            <p class="board__role">A TI application processor with expansion headers on both edges &#8212; U-Boot, eMMC versus microSD boot paths, and PRU-adjacent I/O.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- B — Bare-metal & RTOS -->
+      <div class="family" style="--acc: var(--acc-metal)">
+        <div class="family__head">
+          <p class="family__id anim-fade">B / Bare-metal</p>
+          <h3 class="family__name anim-fade">Microcontrollers &amp; automotive silicon</h3>
+          <p class="family__desc anim-fade">No kernel, no allocator, no safety net. Startup code, interrupt vectors, peripheral drivers written straight against the register map &#8212; and FreeRTOS when the timing demands it.</p>
+        </div>
+        <div class="family__cards">
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/rcar.svg" alt="Renesas R-Car SoC illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">Renesas R-Car</h4>
+            <p class="board__chip">X5H / X5L &#183; SCP</p>
+            <p class="board__role">Automotive SoC bring-up: C code for power and clock domains on the System Control Processor, with SCMI transactions traced through SCP and kernel logs.</p>
+          </article>
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/stm32.svg" alt="STM32 board illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">STM32</h4>
+            <p class="board__chip">Cortex-M &#183; HAL / register</p>
+            <p class="board__role">The workhorse 32-bit MCU. Clock trees, DMA, timers and comms peripherals &#8212; debugged over SWD with a logic analyser on the bench.</p>
+          </article>
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/esp32.svg" alt="ESP32 module illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">ESP32</h4>
+            <p class="board__chip">Xtensa LX6 &#183; Wi-Fi / BLE</p>
+            <p class="board__role">Dual-core MCU with a radio attached. ESP-IDF and FreeRTOS tasks for connected sensor nodes and quick wireless prototypes.</p>
+          </article>
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/atmega328p.svg" alt="ATmega328P DIP package illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">ATmega328P</h4>
+            <p class="board__chip">8-bit AVR &#183; 32 KB flash</p>
+            <p class="board__role">Where the constraints teach you the most. 2 KB of SRAM makes every buffer, every interrupt and every byte of the vector table a deliberate decision.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- C — SoC + FPGA -->
+      <div class="family" style="--acc: var(--acc-fpga)">
+        <div class="family__head">
+          <p class="family__id anim-fade">C / SoC + FPGA</p>
+          <h3 class="family__name anim-fade">Programmable logic with a CPU attached</h3>
+          <p class="family__desc anim-fade">Hard processor system on one side, fabric on the other, and a bus between them. Linux or bare-metal on the PS, custom AXI logic in the PL, and a boot flow that has to bring up both.</p>
+        </div>
+        <div class="family__cards">
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/kria-k26.svg" alt="Xilinx Kria K26 system-on-module illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">Xilinx Kria K26 SOM</h4>
+            <p class="board__chip">Zynq UltraScale+ MPSoC</p>
+            <p class="board__role">My current target. Cortex-A53 APU and Cortex-R5F RPU firmware, a four-image MT25Q flash layout with sector locking, and AXI logic parsing GNSS and IMU streams.</p>
+          </article>
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/de1-soc.svg" alt="Terasic DE1-SoC board illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">Terasic DE1-SoC</h4>
+            <p class="board__chip">Cyclone V &#183; FPGA + HPS</p>
+            <p class="board__role">Where the fabric first made sense. Memory controllers and SPI, I2C and CAN cores built in Quartus around a Motorola 68000 soft system.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- D — Edge AI -->
+      <div class="family" style="--acc: var(--acc-ai)">
+        <div class="family__head">
+          <p class="family__id anim-fade">D / Edge AI</p>
+          <h3 class="family__name anim-fade">Inference at the sensor</h3>
+          <p class="family__desc anim-fade">When the model has to run where the data is born &#8212; no round trip to a datacentre, a fixed power budget, and a GPU sharing memory with the CPU.</p>
+        </div>
+        <div class="family__cards">
+          <article class="board">
+            <div class="board__media tile"><img src="assets/boards/jetson-nano.svg" alt="NVIDIA Jetson Nano board illustration" loading="lazy" width="320" height="240" /></div>
+            <h4 class="board__name">NVIDIA Jetson Nano</h4>
+            <p class="board__chip">Tegra X1 &#183; 128-core Maxwell</p>
+            <p class="board__role">A CUDA-capable Linux board on the L4T stack. Camera and sensor pipelines feeding on-device inference, with the same BSP discipline as any other embedded target.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MARQUEE ===================== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="marquee__text">U-Boot&nbsp;&#8212;&nbsp;TF-A&nbsp;&#8212;&nbsp;FSBL&nbsp;&#8212;&nbsp;Yocto&nbsp;&#8212;&nbsp;FreeRTOS&nbsp;&#8212;&nbsp;Device tree&nbsp;&#8212;&nbsp;AXI&nbsp;&#8212;&nbsp;SCMI&nbsp;&#8212;&nbsp;QSPI&nbsp;&#8212;&nbsp;</span>
+        <span class="marquee__text">U-Boot&nbsp;&#8212;&nbsp;TF-A&nbsp;&#8212;&nbsp;FSBL&nbsp;&#8212;&nbsp;Yocto&nbsp;&#8212;&nbsp;FreeRTOS&nbsp;&#8212;&nbsp;Device tree&nbsp;&#8212;&nbsp;AXI&nbsp;&#8212;&nbsp;SCMI&nbsp;&#8212;&nbsp;QSPI&nbsp;&#8212;&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- ===================== EXPERIENCE ===================== -->
+    <section class="experience" id="experience">
+      <header class="section-head">
+        <p class="kicker anim-fade">( Experience )</p>
+        <h2 class="section-title" data-split>Three teams, one job description: make it boot.</h2>
+      </header>
+
+      <article class="job">
+        <div class="job__aside">
+          <span class="job__logo anim-fade"><img src="assets/logos/viettel-aerospace.png" alt="Viettel Aerospace Institute" loading="lazy" width="702" height="283" /></span>
+          <span class="job__period anim-fade">May 2026 &#8212; Present</span>
+          <span class="job__place anim-fade">Hanoi, Vietnam</span>
+        </div>
+        <div class="job__content">
+          <h3 class="job__role anim-fade">Embedded Software Engineer &#183; FPGA</h3>
+          <p class="job__org anim-fade">Viettel Aerospace Institute</p>
+          <ul class="job__points">
+            <li class="anim-fade">Firmware for the Cortex-A53 and Cortex-R5F processing system on a Xilinx Zynq UltraScale+ MPSoC (Kria K26 SOM), integrated with custom FPGA programmable logic.</li>
+            <li class="anim-fade">Designed a generic SPI flash driver for MT25Q NOR flash &#8212; read, write, erase and program, plus password-protected sector locking to secure individual partitions.</li>
+            <li class="anim-fade">Implemented a four-image flash partitioning scheme: main, backup, an application loader that updates main over USB, and a recovery image that restores the loader over Ethernet.</li>
+            <li class="anim-fade">Redesigned the image selector to boot the correct image from a boot-status register, and the FSBL to update a fallback register on a failed update so the board recovers to a known-good image on its own.</li>
+            <li class="anim-fade">Built a secure boot flow verifying firmware integrity and authenticity with SHA hashing and CSA keys programmed into eFuse.</li>
+            <li class="anim-fade">Wrote AXI programmable logic that parses UART GNSS and IMU streams and forwards encoded messages to processing-system modules through a queue-based architecture; ported and tested sensor fusion and control algorithms from MATLAB into embedded C.</li>
+          </ul>
+          <div class="tag-row anim-fade">
+            <span class="tag">Zynq UltraScale+</span><span class="tag">Kria K26</span><span class="tag">Vitis</span>
+            <span class="tag">Vivado</span><span class="tag">AXI</span><span class="tag">MT25Q</span><span class="tag">Secure boot</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="job__aside">
+          <span class="job__logo anim-fade"><img src="assets/logos/banvien.svg" alt="Ban Vien Corporation" loading="lazy" width="111" height="44" /></span>
+          <span class="job__period anim-fade">Jan 2026 &#8212; Apr 2026</span>
+          <span class="job__place anim-fade">Ho Chi Minh City, Vietnam</span>
+        </div>
+        <div class="job__content">
+          <h3 class="job__role anim-fade">Embedded Software Engineer &#183; Bare-metal C</h3>
+          <p class="job__org anim-fade">Ban Vien Corporation &#8212; Renesas Design Vietnam</p>
+          <ul class="job__points">
+            <li class="anim-fade">Wrote C bring-up code for SCP power and clock domains on Renesas R-Car X5H and X5L, debugging SCMI transactions through SCP and kernel logs, and built binary scripts for new chipset integration.</li>
+            <li class="anim-fade">Built a Gentable-based automation tool that manipulates register names and values in Excel to the hardware team's specification.</li>
+            <li class="anim-fade">Set up TFTP and NFS boot environments for Linux bring-up, and wrote Tera Term macros automating SCP firmware boot and device testing.</li>
+            <li class="anim-fade">Developed structured onboarding material for embedded Linux: U-Boot, TF-A, kernel drivers, RootFS, Yocto, Bash and Docker.</li>
+          </ul>
+          <div class="tag-row anim-fade">
+            <span class="tag">R-Car</span><span class="tag">SCP</span><span class="tag">SCMI</span>
+            <span class="tag">Bare-metal C</span><span class="tag">TFTP / NFS</span><span class="tag">Yocto</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="job__aside">
+          <span class="job__logo anim-fade"><img src="assets/logos/fpt-software.svg" alt="FPT Software" loading="lazy" width="315" height="128" style="--logo-scale: 1.4" /></span>
+          <span class="job__period anim-fade">Feb 2025 &#8212; Jan 2026</span>
+          <span class="job__place anim-fade">Hanoi, Vietnam</span>
+        </div>
+        <div class="job__content">
+          <h3 class="job__role anim-fade">Embedded Software Engineer &#183; BSP</h3>
+          <p class="job__org anim-fade">FPT Software &#8212; Konica Minolta Solution Lab Vietnam</p>
+          <ul class="job__points">
+            <li class="anim-fade">Developed and optimised firmware for next-generation multifunction printers on Cortex-A72 (Linux) and Cortex-R4 (FreeRTOS): ATF, U-Boot, kernel drivers, and memory hardware including QSPI flash, RAM and SD/SSD.</li>
+            <li class="anim-fade">Enabled RAM upgrades across 6 printer models by modifying U-Boot limits and hardware-check mechanisms, repartitioning memory in the kernel CMEM driver, and updating application startup initialisation.</li>
+            <li class="anim-fade">Improved LPDDR4 boot reliability by reimplementing the DDR training sequence in TF-A with retry mechanisms and persistent storage of training results for U-Boot to retrieve.</li>
+            <li class="anim-fade">Fixed RAM-to-SD/SSD hibernation snapshot write failures by introducing a new compression mode and multi-core retry mechanisms.</li>
+            <li class="anim-fade">Contributed a U-Boot command for erasing QSPI user-data regions, and Secure Boot work validating U-Boot firmware integrity before rewriting verified firmware into the Golden zone.</li>
+            <li class="anim-fade">Automated one-click configuration and build of U-Boot, kernel, RootFS and TF-A across 11 printer models in Bash, with optional Secure Boot hashing, and documented DRAM initialisation, hibernation and SecureChip integration for the team.</li>
+          </ul>
+          <div class="tag-row anim-fade">
+            <span class="tag">TF-A</span><span class="tag">U-Boot</span><span class="tag">Linux kernel</span>
+            <span class="tag">FreeRTOS</span><span class="tag">LPDDR4</span><span class="tag">QSPI</span><span class="tag">Secure boot</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== EDUCATION ===================== -->
+    <section class="education" id="education">
+      <header class="section-head">
+        <p class="kicker anim-fade">( Education )</p>
+        <h2 class="section-title" data-split>Where the fundamentals came from.</h2>
+      </header>
+
+      <div class="education__card">
+        <div class="job__aside">
+          <span class="job__logo anim-fade"><img src="assets/logos/ubc.svg" alt="University of British Columbia" loading="lazy" width="858" height="400" /></span>
+          <span class="job__period anim-fade">Aug 2020 &#8212; Nov 2025</span>
+          <span class="job__place anim-fade">Vancouver, BC, Canada</span>
+        </div>
+        <div>
+          <h3 class="education__degree anim-fade">BASc, Electrical Engineering</h3>
+          <p class="education__school anim-fade">University of British Columbia</p>
+          <p class="education__course-label anim-fade">Relevant coursework</p>
+          <div class="tag-row anim-fade">
+            <span class="tag">Circuit Analysis I &amp; II</span><span class="tag">Data Structures &amp; Algorithms</span>
+            <span class="tag">Computer Architecture</span><span class="tag">Digital Design</span>
+            <span class="tag">Microcomputer System Design</span><span class="tag">Introduction to VLSI</span>
+            <span class="tag">CMOS Integrated Circuits</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECTS ===================== -->
+    <section class="projects" id="projects">
+      <header class="section-head">
+        <p class="kicker anim-fade">( Projects )</p>
+        <h2 class="section-title" data-split>Things built end to end.</h2>
+      </header>
+
+      <div class="projects__grid">
+        <article class="project">
+          <div class="project__media tile tile--cosmos">
+            <p class="project__meta">UBC &#183; Aug 2023 &#8212; Apr 2024</p>
+            <h3 class="project__title-in">Forest LiDAR Scanner</h3>
+          </div>
+          <ul class="project__points">
+            <li class="anim-fade">Collaborated on the design and build of a LiDAR scanner that maps trees and generates 3D point-cloud models of forest plots.</li>
+            <li class="anim-fade">Integrated vendor IMU C libraries through Python bindings and implemented GNSS processing with Kalman filtering, reaching roughly 4-metre positioning accuracy.</li>
+            <li class="anim-fade">Wrote the Python control software for device management, sensor data handling, and a PyQt touchscreen interface.</li>
+            <li class="anim-fade">Managed budget, procurement and component selection, delivering at about 80% of the cost of comparable commercial systems.</li>
+          </ul>
+          <div class="tag-row anim-fade">
+            <span class="tag">Python</span><span class="tag">PyQt</span><span class="tag">Kalman filter</span>
+            <span class="tag">GNSS / IMU</span><span class="tag">Point cloud</span>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="project__media tile tile--ember">
+            <p class="project__meta">UBC &#183; Jan 2024 &#8212; Apr 2024</p>
+            <h3 class="project__title-in">Microcomputer System Design</h3>
+          </div>
+          <ul class="project__points">
+            <li class="anim-fade">Designed ROM and DRAM subsystems using Quartus IP, including memory controllers and interfaces for the Motorola 68000 CPU.</li>
+            <li class="anim-fade">Implemented SPI, I2C and CAN controller cores to connect the FPGA platform to external peripherals.</li>
+            <li class="anim-fade">Verified hardware and software integration by writing and running embedded C applications on the platform.</li>
+          </ul>
+          <div class="tag-row anim-fade">
+            <span class="tag">Verilog</span><span class="tag">Quartus</span><span class="tag">68000</span>
+            <span class="tag">SPI / I2C / CAN</span><span class="tag">Memory controllers</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== TOOLBOX ===================== -->
+    <section class="toolbox" id="toolbox">
+      <header class="section-head">
+        <p class="kicker anim-fade">( Toolbox )</p>
+        <h2 class="section-title" data-split>The everyday set.</h2>
+      </header>
+
+      <div class="toolbox__grid">
+        <div class="toolbox__col">
+          <p class="toolbox__label anim-fade">Languages</p>
+          <ul class="toolbox__list anim-fade">
+            <li>C</li><li>C++</li><li>Python</li><li>Verilog</li><li>VHDL</li><li>Assembly</li><li>Bash</li>
+          </ul>
+        </div>
+        <div class="toolbox__col">
+          <p class="toolbox__label anim-fade">Firmware &amp; OS</p>
+          <ul class="toolbox__list anim-fade">
+            <li>U-Boot</li><li>TF-A / ATF</li><li>FSBL</li><li>Linux kernel</li><li>FreeRTOS</li><li>Yocto</li><li>Buildroot</li>
+          </ul>
+        </div>
+        <div class="toolbox__col">
+          <p class="toolbox__label anim-fade">Tools</p>
+          <ul class="toolbox__list anim-fade">
+            <li>Vivado</li><li>Vitis</li><li>Quartus</li><li>Git</li><li>Jenkins</li><li>Jira</li><li>CMake / Make</li>
+          </ul>
+        </div>
+        <div class="toolbox__col">
+          <p class="toolbox__label anim-fade">Spoken</p>
+          <ul class="toolbox__list anim-fade">
+            <li>English <span>&#8212; professional</span></li>
+            <li>Vietnamese <span>&#8212; native</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer" id="contact">
+      <div class="footer__top">
+        <p class="kicker anim-fade">( Open to opportunities &#8212; Canadian PGWP holder )</p>
+        <h2 class="footer__title" data-split>Let's make it boot</h2>
+        <a class="footer__email anim-fade" href="mailto:thanhlan01v@gmail.com">thanhlan01v@gmail.com</a>
+        <div class="footer__contacts anim-fade">
+          <span><a href="tel:+84708998600">+84 708 998 600</a></span>
+          <span><a href="https://www.linkedin.com/in/lantran01/" target="_blank" rel="noopener">linkedin.com/in/lantran01</a></span>
+          <span><a href="https://github.com/LanTran-01" target="_blank" rel="noopener">github.com/LanTran-01</a></span>
+          <span>Ha Noi, Vietnam</span>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="#focus" data-nav>What I do</a>
+          <a href="#hardware" data-nav>Hardware</a>
+          <a href="#experience" data-nav>Experience</a>
+          <a href="#projects" data-nav>Projects</a>
+        </nav>
+        <nav class="footer__socials" aria-label="Social media">
+          <a href="https://www.linkedin.com/in/lantran01/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/LanTran-01" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:thanhlan01v@gmail.com">Email</a>
+        </nav>
+        <p class="footer__legal">&#169;2026 Dylan Tran &#183; hand-built, no frameworks</p>
+      </div>
     </footer>
+
+  </main>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" fill="none" role="img" aria-label="ESP32 development module schematic illustration">
+  <style>
+    .bd{fill:rgba(255,255,255,.045);stroke:#f2f2f2;stroke-width:1.7}
+    .cp{fill:rgba(255,255,255,.10);stroke:#f2f2f2;stroke-width:1.1}
+    .cn{fill:rgba(255,255,255,.06);stroke:#f2f2f2;stroke-width:1.3}
+    .pd{fill:rgba(255,255,255,.55)}
+    .ln{fill:none;stroke:#f2f2f2;stroke-width:1;opacity:.5}
+    .hl{fill:rgba(255,61,110,.16);stroke:#ff3d6e;stroke-width:1.8}
+    .hs{fill:none;stroke:#ff3d6e;stroke-width:1.4}
+    .hp{fill:#ff3d6e}
+    .tx{fill:#f2f2f2;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+        font-size:8.5px;letter-spacing:.06em;opacity:.72}
+    .ta{fill:#ff3d6e;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+        font-size:8.5px;letter-spacing:.06em}
+    .hole{fill:none;stroke:#f2f2f2;stroke-width:1.2;opacity:.6}
+  </style>
+<rect class="bd" x="104" y="22" width="112" height="200" rx="6"/>
+<path class="hs" d="M126 34h14v-8h14v8h14v-8h14v8h14v-8h14v8" stroke-linejoin="round"/>
+<text class="tx" x="160" y="20" text-anchor="middle">PCB ANT</text>
+<rect class="hl" x="118" y="46" width="84" height="76" rx="3"/>
+<text class="ta" x="160" y="78" text-anchor="middle">ESP32</text>
+<text class="tx" x="160" y="92" text-anchor="middle">WROOM-32</text>
+<path class="hs" d="M127 46 v76 M193 46 v76" opacity=".3"/>
+<rect class="pd" x="96.0" y="130.0" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="139.4" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="148.8" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="158.2" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="167.6" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="177.0" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="186.4" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="195.8" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="96.0" y="205.2" width="6.2" height="6.2" rx=".7"/>
+<rect class="pd" x="208.0" y="130.0" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="139.4" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="148.8" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="158.2" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="167.6" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="177.0" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="186.4" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="195.8" width="6.2" height="6.2" rx=".7"/><rect class="pd" x="208.0" y="205.2" width="6.2" height="6.2" rx=".7"/>
+<text class="tx" x="72" y="176" text-anchor="middle">GPIO</text>
+<text class="tx" x="240" y="176" text-anchor="middle">GPIO</text>
+<rect class="cp" x="126" y="132" width="22" height="14" rx="2"/>
+<text class="tx" x="137" y="143" text-anchor="middle">LDO</text>
+<rect class="cn" x="124" y="176" width="22" height="14" rx="2"/><rect class="cn" x="174" y="176" width="22" height="14" rx="2"/>
+<text class="tx" x="135" y="200" text-anchor="middle">EN</text>
+<text class="tx" x="185" y="200" text-anchor="middle">BOOT</text>
+<rect class="cn" x="142" y="212" width="36" height="20" rx="2"/>
+<text class="tx" x="160" y="226" text-anchor="middle">USB</text>
+</svg>

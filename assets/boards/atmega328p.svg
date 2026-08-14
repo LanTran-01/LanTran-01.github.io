@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" fill="none" role="img" aria-label="ATmega328P DIP-28 schematic illustration">
+  <style>
+    .bd{fill:rgba(255,255,255,.045);stroke:#f2f2f2;stroke-width:1.7}
+    .cp{fill:rgba(255,255,255,.10);stroke:#f2f2f2;stroke-width:1.1}
+    .cn{fill:rgba(255,255,255,.06);stroke:#f2f2f2;stroke-width:1.3}
+    .pd{fill:rgba(255,255,255,.55)}
+    .ln{fill:none;stroke:#f2f2f2;stroke-width:1;opacity:.5}
+    .hl{fill:rgba(255,61,110,.16);stroke:#ff3d6e;stroke-width:1.8}
+    .hs{fill:none;stroke:#ff3d6e;stroke-width:1.4}
+    .hp{fill:#ff3d6e}
+    .tx{fill:#f2f2f2;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+        font-size:8.5px;letter-spacing:.06em;opacity:.72}
+    .ta{fill:#ff3d6e;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+        font-size:8.5px;letter-spacing:.06em}
+    .hole{fill:none;stroke:#f2f2f2;stroke-width:1.2;opacity:.6}
+  </style>
+<path class="hl" d="M116 44h34a10 10 0 0 0 20 0h34v152h-88z" stroke-linejoin="round"/>
+<circle class="hp" cx="128" cy="60" r="3.4"/>
+<path class="hs" d="M116 60.0 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 60.0 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 69.6 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 69.6 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 79.2 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 79.2 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 88.8 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 88.8 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 98.4 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 98.4 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 108.0 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 108.0 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 117.6 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 117.6 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 127.2 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 127.2 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 136.8 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 136.8 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 146.4 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 146.4 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 156.0 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 156.0 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 165.6 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 165.6 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 175.2 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 175.2 h16 v5" stroke-linecap="square"/><path class="hs" d="M116 184.8 h-16 v5" stroke-linecap="square"/><path class="hs" d="M204 184.8 h16 v5" stroke-linecap="square"/>
+<text class="ta" x="160" y="108" text-anchor="middle">ATMEGA</text>
+<text class="tx" x="160" y="122" text-anchor="middle">328P-PU</text>
+<text class="tx" x="160" y="140" text-anchor="middle">8-BIT AVR</text>
+<text class="tx" x="103" y="40" text-anchor="middle">1</text>
+<text class="tx" x="217" y="40" text-anchor="middle">28</text>
+<text class="tx" x="160" y="216" text-anchor="middle">32 KB FLASH · 2 KB SRAM</text>
+</svg>
