@@ -64,15 +64,16 @@ export function SubassemblyCalloutTracker({ model }: { model: ViewerModelIndex }
       v: new Vector3(),
       corner: new Vector3(),
       slots: [] as Slot[],
-      widths: new Map<string, number>(),
+      widths: new Map<string, { w: number; h: number }>(),
       sideMeshes: [] as Mesh[],
     }),
     [],
   );
 
+  // Label sizes change with the item set and the responsive breakpoint.
   useEffect(() => {
     scratch.widths.clear();
-  }, [items, scratch]);
+  }, [items, scratch, size.width]);
 
   useFrame(() => {
     const dom = viewerRuntime.callouts;
@@ -147,12 +148,12 @@ export function SubassemblyCalloutTracker({ model }: { model: ViewerModelIndex }
       const path = dom.paths.get(s.id);
       const dot = dom.dots.get(s.id);
       if (!el || !path || !dot) continue;
-      let w = widths.get(s.id);
-      if (w === undefined || w === 0) {
-        w = el.offsetWidth;
-        widths.set(s.id, w);
+      let size = widths.get(s.id);
+      if (!size || size.w === 0) {
+        size = { w: el.offsetWidth, h: el.offsetHeight };
+        widths.set(s.id, size);
       }
-      const h = 22;
+      const { w, h } = size;
       let lx: number; // label box left
       let edgeX: number; // where the leader meets the label
       if (s.left) {

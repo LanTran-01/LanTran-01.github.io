@@ -1,0 +1,93 @@
+/* Page-level panel placement for the overview and detail routes. */
+
+.left {
+  position: absolute;
+  top: var(--gutter);
+  left: var(--gutter);
+  width: var(--panel-w-left);
+  max-height: calc(100% - 2 * var(--gutter));
+  display: flex;
+  flex-direction: column;
+}
+
+.left > nav {
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid var(--line);
+}
+
+.rail {
+  position: absolute;
+  top: var(--gutter);
+  left: var(--gutter);
+  width: var(--panel-w-rail);
+  max-height: calc(100% - 2 * var(--gutter));
+  display: flex;
+  flex-direction: column;
+}
+
+.rail > nav {
+  flex: 1;
+  min-height: 0;
+}
+
+.railBack {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-dim);
+  transition: color var(--dur-fast);
+}
+
+.railBack:hover {
+  color: var(--text);
+}
+
+.railBack:hover svg {
+  color: var(--accent);
+}
+
+.controls {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  display: flex;
+  gap: var(--s-2);
+  pointer-events: none;
+  animation: fade-in var(--dur-mid) var(--ease-mech) both;
+}
+
+.controls > * {
+  pointer-events: auto;
+}
+
+@media (min-width: 821px) and (max-width: 1099px) {
+  .rail {
+    width: auto;
+  }
+
+  .railBackText {
+    display: none;
+  }
+
+  .railBack {
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+.sheetSection {
+  padding-bottom: var(--s-2);
+}
+
+.sheetReset {
+  padding: 0 var(--s-5) var(--s-5);
+}

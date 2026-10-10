@@ -4,6 +4,7 @@ import { FLOW_KINDS, LANES, systemNodesForComponent } from "@/data/subsystems";
 import type { ComponentFlow, ComponentSpec } from "@/data/types";
 import { ArrowUpRightIcon } from "@/components/layout/Icons";
 import { BasisTag } from "./BasisTag";
+import { BasisLegend } from "./IdentificationSection";
 import { SectionHead } from "./SectionHead";
 import { FLOW_ORDER, pad2 } from "./labels";
 import s from "./inspection.module.css";
@@ -27,13 +28,19 @@ function FlowArrow({ direction }: { direction: ComponentFlow["direction"] }) {
 }
 
 /** D — technical data, relationships and related subsystems. */
-export function TechDataSection({ spec }: { spec: ComponentSpec }) {
+export function TechDataSection({ spec, withDescription = false }: { spec: ComponentSpec; withDescription?: boolean }) {
   const flows = [...spec.flows].sort((a, b) => FLOW_ORDER.indexOf(a.kind) - FLOW_ORDER.indexOf(b.kind));
   const related = systemNodesForComponent(spec.id);
 
   return (
     <section className={s.section} aria-labelledby="insp-d">
       <SectionHead index="D" title="Technical data" id="insp-d" />
+      {withDescription && (
+        <div className={d.description}>
+          <p className={s.body}>{spec.description}</p>
+          <BasisLegend />
+        </div>
+      )}
       <dl className={s.rows}>
         <div className={s.row}>
           <dt>Assembly ID</dt>
@@ -100,7 +107,7 @@ export function TechDataSection({ spec }: { spec: ComponentSpec }) {
         ))}
       </ul>
       <p className={d.flowKey} aria-hidden="true">
-        ← in &nbsp;·&nbsp; → out &nbsp;·&nbsp; ↔ both — relative to {spec.shortName.toLowerCase()} · all flows conceptual
+        Arrows read from this assembly · all flows conceptual
       </p>
 
       <h3 className={s.subhead}>Inspection notes</h3>

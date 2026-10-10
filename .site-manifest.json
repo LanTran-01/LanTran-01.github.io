@@ -1,0 +1,9 @@
+{
+  "note": "Written by explorer/scripts/publish.mjs",
+  "entries": [
+    "favicon.svg",
+    "index.html",
+    "static",
+    "404.html"
+  ]
+}

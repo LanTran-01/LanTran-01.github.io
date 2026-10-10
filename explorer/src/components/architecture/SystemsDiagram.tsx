@@ -4,7 +4,7 @@ import type { SystemLane } from "@/data/types";
 import type { Adjacency, Highlight, ResolvedEdge } from "@/features/hardware-architecture/graph";
 import { computeEdgeGeometry, type PlacedBox } from "@/features/hardware-architecture/edgeGeometry";
 import { COLUMNS, MAX_COL, METRICS, columnX } from "@/features/hardware-architecture/layout";
-import { LANE_TONE } from "@/features/hardware-architecture/presentation";
+import { LANE_TONE, placeEdgeTags } from "@/features/hardware-architecture/presentation";
 import type { DisplayNode } from "@/features/hardware-architecture/useTweenedLayout";
 import { DiagramEdge, EdgeTag, type EdgeEmphasis } from "./DiagramEdge";
 import { DiagramNode, type NodeEmphasis } from "./DiagramNode";
@@ -66,7 +66,7 @@ export function SystemsDiagram({
     highlight ? (highlight.edges.has(key) ? "highlight" : "dim") : "normal";
   const nodeEmphasis = (id: string): NodeEmphasis => {
     if (highlight) return highlight.nodes.has(id) ? (id === selectedId ? "selected" : "neighbour") : "dim";
-    if (filterActive) return softIds.has(id) ? "normal" : "dim";
+    if (filterActive) return softIds.has(id) ? "normal" : "muted";
     return "normal";
   };
 
@@ -76,6 +76,7 @@ export function SystemsDiagram({
     return [...geoms].sort((a, b) => Number(highlight.edges.has(a.edge.key)) - Number(highlight.edges.has(b.edge.key)));
   }, [geoms, highlight]);
 
+  const tags = useMemo(() => placeEdgeTags(geoms, highlight?.edges ?? null), [geoms, highlight]);
   const lanes = useMemo(() => laneSpans(display), [display]);
   const rails = useMemo(() => childRails(display), [display]);
   const maxBottom = useMemo(() => display.reduce((m, n) => Math.max(m, n.y + n.h), 0), [display]);
@@ -100,9 +101,9 @@ export function SystemsDiagram({
         <ColumnHeaders height={maxBottom} />
 
         {lanes.map((l) => (
-          <g key={l.key} className={styles.lane} transform={`translate(${columnX(l.col) - 14} 0)`}>
-            <path d={`M3 ${l.y0}H0V${l.y1}H3`} style={{ stroke: LANE_TONE[l.lane] }} />
-            <text transform={`translate(-5 ${l.y0}) rotate(-90)`} textAnchor="end">
+          <g key={l.key} className={styles.lane} transform={`translate(${columnX(l.col) - 10} 0)`}>
+            <path d={`M3 ${l.y0 + 0.5}H0.5V${l.y1 - 0.5}H3`} style={{ stroke: LANE_TONE[l.lane] }} />
+            <text transform={`translate(-3 ${l.y0 + 2}) rotate(-90)`} textAnchor="end">
               {LANES[l.lane].short}
             </text>
           </g>
@@ -138,8 +139,8 @@ export function SystemsDiagram({
         </g>
 
         <g className={styles.edgeTags}>
-          {orderedGeoms.map((g) => (
-            <EdgeTag key={g.edge.key} geom={g} emphasis={edgeEmphasis(g.edge.key)} />
+          {tags.map((t) => (
+            <EdgeTag key={t.key} tag={t} />
           ))}
         </g>
       </g>

@@ -70,10 +70,11 @@ export function visualInputsKey(v: VisualInputs): string {
 
 const MUTE_OTHERS = 0.78;
 const MUTE_OVERVIEW = 0.5;
-const GLOW_SELECTED = 0.045;
-const GLOW_LINKED = 0.42;
-const GLOW_HOVER = 0.12;
-const GLOW_FOCUS = 0.55;
+const MUTE_HOVER_OTHERS = 0.14;
+const GLOW_SELECTED = 0.03;
+const GLOW_LINKED = 0.13;
+const GLOW_HOVER = 0.07;
+const GLOW_FOCUS = 0.3;
 const GHOST: Record<InspectionMode, number> = { exterior: 1, cutaway: 0.13, exploded: 1, architecture: 0.07 };
 const FRAME_OPACITY: Record<InspectionMode, number> = { exterior: 1, cutaway: 1, exploded: 1, architecture: 0.6 };
 
@@ -94,6 +95,9 @@ export function computeTarget(tag: PartTag, v: VisualInputs, out: VisualTarget):
     if (v.highlighted.size > 0) {
       if (v.highlighted.has(c)) out.glow = GLOW_LINKED;
       else out.mute = MUTE_OVERVIEW;
+    } else if (v.hovered && v.hovered !== c) {
+      // A light dim of everything else lets the hovered assembly read at a glance.
+      out.mute = MUTE_HOVER_OTHERS;
     }
     if (v.hovered === c) {
       out.glow += GLOW_HOVER;
@@ -139,17 +143,32 @@ export function computeTarget(tag: PartTag, v: VisualInputs, out: VisualTarget):
   return out;
 }
 
-/** Edge-line opacity for the selected assembly: thin accent outlines. */
-export function edgeOpacity(v: VisualInputs, componentId: ComponentId): number {
-  if (v.selected !== componentId) return 0;
+/** Edge layers drawn per assembly: outer shells and structural frame. */
+export type EdgeLayer = "armor" | "frame";
+
+/**
+ * Frame edges relative to shell edges. Once the shells are ghosted the frame
+ * is solid and readable on its own, so its outlines are thinned out to keep
+ * the cutaway from turning into a wireframe tangle.
+ */
+const FRAME_EDGE_SCALE: Record<InspectionMode, number> = { exterior: 1, cutaway: 0.3, exploded: 1, architecture: 0.45 };
+
+/** Edge-line opacity per assembly: thin accent outlines on the selected (and hovered) one. */
+export function edgeOpacity(v: VisualInputs, componentId: ComponentId, layer: EdgeLayer = "armor"): number {
+  if (v.selected !== componentId) {
+    if (!v.selected && v.highlighted.has(componentId)) return 0.4;
+    // Hover (from the 3D pointer or the UI lists) gets a faint outline.
+    return v.hovered === componentId ? 0.22 : 0;
+  }
+  const scale = layer === "frame" ? FRAME_EDGE_SCALE[v.mode] : 1;
   switch (v.mode) {
     case "exterior":
-      return 0.32;
+      return 0.32 * scale;
     case "exploded":
-      return 0.38;
+      return 0.32 * scale;
     case "cutaway":
-      return 0.55;
+      return 0.34 * scale;
     case "architecture":
-      return 0.42;
+      return 0.28 * scale;
   }
 }

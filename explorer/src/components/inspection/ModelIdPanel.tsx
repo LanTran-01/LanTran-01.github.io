@@ -37,27 +37,29 @@ export function ModelIdPanel() {
           <dd>{modelLabel}</dd>
           {prototype ? <ProtoTag /> : <span />}
         </div>
-        <div className={styles.row}>
+      </dl>
+
+      <dl className={styles.stats}>
+        <div>
           <dt>Assemblies</dt>
-          <dd className={styles.num}>{String(COMPONENTS.length).padStart(2, "0")}</dd>
-          <span />
+          <dd>{String(COMPONENTS.length).padStart(2, "0")}</dd>
         </div>
-        <div className={styles.row}>
+        <div>
           <dt>Subassemblies</dt>
-          <dd className={styles.num}>{TOTAL_SUBASSEMBLIES}</dd>
-          <span />
+          <dd>{TOTAL_SUBASSEMBLIES}</dd>
         </div>
-        <div className={styles.row}>
+        <div>
           <dt>Internals</dt>
-          <dd>Conceptual</dd>
-          <BasisTag basis="conceptual" />
+          <dd className={styles.statWord}>
+            Conceptual <span className="visually-hidden">(not canon)</span>
+          </dd>
         </div>
       </dl>
 
       {prototype && (
         <p className={styles.disclosure}>
-          Prototype silhouette study built from primitives — not an accurate or licensed model. Internal hardware is a
-          conceptual visualization, not canon.
+          Silhouette study built from primitives — not an accurate or licensed model. Internal hardware is a conceptual
+          visualization, not canon.
         </p>
       )}
     </section>

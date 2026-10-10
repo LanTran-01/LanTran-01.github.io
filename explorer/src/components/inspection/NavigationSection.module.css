@@ -1,0 +1,40 @@
+.back {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 40px;
+  padding: 0 var(--s-2) 0 var(--s-3);
+  border: 1px solid var(--line-mid);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text);
+  transition:
+    border-color var(--dur-fast),
+    color var(--dur-fast);
+}
+
+.back:hover {
+  border-color: var(--accent-line);
+}
+
+.back:hover svg {
+  color: var(--accent);
+}
+
+.back kbd {
+  margin-left: auto;
+}
+
+.pager {
+  margin-top: var(--s-2);
+}
+
+@media (pointer: coarse) {
+  .back kbd {
+    display: none;
+  }
+}

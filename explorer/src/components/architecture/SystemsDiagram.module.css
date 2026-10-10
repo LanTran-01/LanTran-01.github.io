@@ -86,9 +86,14 @@
 
 .lane text {
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 7.5px;
   letter-spacing: 0.18em;
-  fill: var(--text-faint);
+  fill: var(--text-dim);
+  /* halo so crossing edges pass cleanly behind the label */
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 
 .rail {
@@ -318,6 +323,10 @@
   opacity: 0.3;
 }
 
+.muted {
+  opacity: 0.45;
+}
+
 .neighbour .body {
   stroke: var(--text-dim);
 }
@@ -325,7 +334,7 @@
 .selected .body,
 .selected:hover .body {
   stroke: var(--accent);
-  fill: #0d1820;
+  fill: color-mix(in srgb, var(--accent) 8%, var(--panel-solid));
 }
 
 .selected .code {

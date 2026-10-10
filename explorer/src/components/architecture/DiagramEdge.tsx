@@ -1,6 +1,6 @@
 import { memo } from "react";
 import type { EdgeGeometry } from "@/features/hardware-architecture/edgeGeometry";
-import { FLOW_DASH, FLOW_STROKE } from "@/features/hardware-architecture/presentation";
+import { FLOW_DASH, FLOW_STROKE, type PlacedTag } from "@/features/hardware-architecture/presentation";
 import styles from "./SystemsDiagram.module.css";
 
 export type EdgeEmphasis = "highlight" | "dim" | "normal";
@@ -25,27 +25,17 @@ export const DiagramEdge = memo(function DiagramEdge({ geom, emphasis, flowing }
   );
 });
 
-/**
- * Mid-edge tag, drawn in a layer above the nodes: the merge count for deduped
- * edges, or the flow label when the edge is highlighted.
- */
-export const EdgeTag = memo(function EdgeTag({ geom, emphasis }: { geom: EdgeGeometry; emphasis: EdgeEmphasis }) {
-  const { edge, mid } = geom;
-  const count = edge.sources.length;
-  const single = count === 1 ? edge.sources[0].label : undefined;
-  const text =
-    emphasis === "highlight" ? (count > 1 ? `${count} FLOWS` : single?.toUpperCase()) : count > 1 ? `\u00d7${count}` : undefined;
-  if (!text) return null;
-  const textW = text.length * 5.9 + 10;
+/** Mid-edge tag, drawn in a layer above the nodes. */
+export const EdgeTag = memo(function EdgeTag({ tag }: { tag: PlacedTag }) {
   return (
     <g
-      className={`${styles.edgeTag} ${styles[`edgeTag_${emphasis}`]}`}
-      transform={`translate(${mid.x.toFixed(1)} ${mid.y.toFixed(1)})`}
+      className={`${styles.edgeTag} ${tag.highlight ? styles.edgeTag_highlight : tag.dim ? styles.edgeTag_dim : ""}`}
+      transform={`translate(${tag.x.toFixed(1)} ${tag.y.toFixed(1)})`}
       aria-hidden="true"
     >
-      <rect x={-textW / 2} y={-7} width={textW} height={14} rx={1} />
+      <rect x={-tag.w / 2} y={-7} width={tag.w} height={14} rx={1} />
       <text y={3.3} textAnchor="middle">
-        {text}
+        {tag.text}
       </text>
     </g>
   );

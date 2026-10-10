@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Model harness — procedural Ξ</title>
+    <style>
+      html, body, #root { margin: 0; height: 100%; background: #07080a; overflow: hidden; }
+      #stats {
+        position: fixed; left: 12px; top: 10px; z-index: 2; pointer-events: none;
+        font: 11px/1.45 ui-monospace, "IBM Plex Mono", monospace; color: #8b949e; white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="stats"></div>
+    <script type="module" src="./model.tsx"></script>
+  </body>
+</html>

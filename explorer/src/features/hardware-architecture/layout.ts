@@ -10,14 +10,14 @@ import type { VisibleNode } from "./graph";
  */
 
 export const METRICS = {
-  nodeW: 196,
+  nodeW: 180,
   nodeH: 50,
-  childIndent: 18,
+  childIndent: 16,
   childH: 40,
   childGap: 6,
   rowPitch: 66,
   rowGap: 16,
-  colGap: 112,
+  colGap: 96,
   /** Space above row 0 reserved for column headers. */
   headerH: 70,
 } as const;
@@ -99,6 +99,6 @@ export function computeLayout(visible: VisibleNode[]): Layout {
   return {
     nodes,
     byId: new Map(nodes.map((n) => [n.id, n])),
-    bounds: { x: -28, y: -M.headerH, w: width + 56, h: maxY + M.headerH + 28 },
+    bounds: { x: -30, y: -M.headerH, w: width + 30 + 56, h: maxY + M.headerH + 24 },
   };
 }

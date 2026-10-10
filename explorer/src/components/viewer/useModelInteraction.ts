@@ -150,6 +150,8 @@ export function useModelInteraction(controller: MaterialController | null) {
       const tag = pick(e.clientX, e.clientY);
       if (!tag) return; // empty space: no-op
       const s = useExplorerStore.getState();
+      // The camera is about to move under the pointer; drop the stale label.
+      hideLabel();
       const id = tag.componentId;
       if (s.view === "systems") {
         s.setSystemsComponent(id);
@@ -161,7 +163,7 @@ export function useModelInteraction(controller: MaterialController | null) {
         }
         return;
       }
-      if (e.pointerType === "touch") clearHover();
+      clearHover();
       selectRef.current(id);
     };
 

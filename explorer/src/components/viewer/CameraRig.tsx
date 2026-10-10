@@ -146,21 +146,40 @@ export function CameraRig({ model }: { model: ViewerModelIndex | null }) {
     frame(true);
   }, [layoutKey, frame]);
 
-  // Telemetry at ≤ 10 Hz.
-  const tel = useRef({ acc: 0, frames: 0, fps: 0 });
+  // Telemetry at ≤ 10 Hz. With an on-demand frame loop a move can end between
+  // samples, so a trailing frame is requested until the latest pose is published.
+  const tel = useRef({ acc: 0, frames: 0, fps: 0, az: NaN, pol: NaN, dist: NaN, tx: NaN, ty: NaN, tz: NaN });
   const tmpTarget = useRef(new Vector3());
   useFrame((_, dt) => {
     const c = controls.current;
     if (!c) return;
     const t = tel.current;
-    t.acc += dt;
-    t.frames++;
-    if (t.acc < TELEMETRY_INTERVAL) return;
+    if (dt > 0.25) {
+      // Coming back from idle: the gap says nothing about render speed.
+      t.acc = 0;
+      t.frames = 0;
+    } else {
+      t.acc += dt;
+      t.frames++;
+    }
+    const target = c.getTarget(tmpTarget.current, true);
+    const changed =
+      c.azimuthAngle !== t.az || c.polarAngle !== t.pol || c.distance !== t.dist ||
+      target.x !== t.tx || target.y !== t.ty || target.z !== t.tz;
+    if (t.acc < TELEMETRY_INTERVAL) {
+      if (changed) invalidate();
+      return;
+    }
     const inst = t.frames / t.acc;
     t.fps = t.fps === 0 ? inst : t.fps * 0.7 + inst * 0.3;
     t.acc = 0;
     t.frames = 0;
-    const target = c.getTarget(tmpTarget.current, true);
+    t.az = c.azimuthAngle;
+    t.pol = c.polarAngle;
+    t.dist = c.distance;
+    t.tx = target.x;
+    t.ty = target.y;
+    t.tz = target.z;
     cameraTelemetry.publish({
       azimuth: normaliseDeg(MathUtils.radToDeg(c.azimuthAngle)),
       elevation: 90 - MathUtils.radToDeg(c.polarAngle),

@@ -260,3 +260,21 @@
     top: 22px;
   }
 }
+
+.unavailable {
+  list-style: none;
+  margin: var(--s-3) 0 0;
+  padding: 0 0 0 var(--s-3);
+  border-left: 1px solid var(--caution-line);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.unavailable li + li {
+  margin-top: var(--s-1);
+}
+
+.unavailableMode {
+  color: var(--caution);
+}

@@ -1,0 +1,151 @@
+.sentinel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--sheet-peek-h);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.sheet {
+  --sheet-h: min(66dvh - var(--topbar-h), 600px);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--sheet-h);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  background: rgba(10, 12, 15, 0.88);
+  -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.1);
+  backdrop-filter: blur(var(--panel-blur)) saturate(1.1);
+  border-top: 1px solid var(--line-mid);
+  transform: translateY(calc(var(--sheet-h) - var(--sheet-peek-h)));
+  transition: transform var(--dur-mid) var(--ease-mech);
+  animation: sheet-in var(--dur-mid) var(--ease-mech) both;
+}
+
+@keyframes sheet-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sheet[data-open] {
+  transform: none;
+}
+
+/* corner ticks on the top edge */
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: 7px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--tick), var(--tick)) top left / 7px 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) top left / 1px 7px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) top right / 7px 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) top right / 1px 7px no-repeat;
+}
+
+.peek {
+  position: relative;
+  flex: none;
+  height: var(--sheet-peek-h);
+  display: flex;
+  align-items: stretch;
+  padding-top: 8px;
+  touch-action: none;
+}
+
+.grip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+}
+
+.grip span {
+  width: 28px;
+  height: 2px;
+  background: var(--line-strong);
+}
+
+.grip:hover span {
+  background: var(--text-dim);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.tabs {
+  flex: none;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  position: relative;
+  min-height: 44px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.tab:first-child {
+  border-left: 0;
+}
+
+.tab[aria-selected="true"] {
+  color: var(--text);
+}
+
+.tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-mid) var(--ease-mech);
+}
+
+.tab[aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+.tab:focus-visible {
+  outline-offset: -4px;
+}
+
+.panel {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: env(safe-area-inset-bottom);
+  animation: fade-in var(--dur-mid) var(--ease-mech) both;
+}

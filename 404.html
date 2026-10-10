@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Redirecting…</title>
+<script>
+  var p = location.pathname + location.search + location.hash;
+  location.replace("/?redirect=" + encodeURIComponent(p));
+</script>
+</head>
+<body><a href="/">Continue to the explorer</a></body>
+</html>

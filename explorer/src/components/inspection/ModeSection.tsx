@@ -61,11 +61,15 @@ export function ModeSection({ spec }: { spec: ComponentSpec }) {
       <p className={m.modeHint} aria-live="polite">
         <span className={m.modeHintKey}>{current.label}</span> {current.hint}.
       </p>
-      {unsupported.map((md) => (
-        <p key={md.id} className={s.note} data-tone="caution">
-          {md.label} unavailable — {unsupportedReason(md.id).replace(/^No/, "no")}
-        </p>
-      ))}
+      {unsupported.length > 0 && (
+        <ul className={m.unavailable}>
+          {unsupported.map((md) => (
+            <li key={md.id}>
+              <span className={m.unavailableMode}>{md.label} unavailable.</span> {unsupportedReason(md.id)}
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className={m.slider} data-active={mode === "exploded" || undefined} data-disabled={!explodeSupported || undefined}>
         <div className={m.sliderHead}>

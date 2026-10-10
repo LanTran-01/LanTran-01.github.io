@@ -1,5 +1,5 @@
 .id {
-  padding: var(--s-5) var(--s-5) var(--s-4);
+  padding: var(--s-4) var(--s-5);
 }
 
 .designation {
@@ -12,7 +12,7 @@
 
 .name {
   margin: 2px 0 0;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 300;
   letter-spacing: 0.06em;
   line-height: 1.15;
@@ -38,17 +38,18 @@
 
 .row {
   display: grid;
-  grid-template-columns: 96px 1fr auto;
+  grid-template-columns: 84px 1fr auto;
   align-items: center;
   gap: var(--s-2);
   min-height: 28px;
+  padding: 4px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .row dt {
   font-family: var(--font-mono);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.1em;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-dim);
 }
@@ -58,15 +59,48 @@
   font-size: var(--fs-sm);
   color: var(--text);
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
-.row dd.num {
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1.2fr;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.stats > div {
+  padding: var(--s-2) 0 var(--s-2) var(--s-3);
+  border-left: 1px solid var(--line);
+}
+
+.stats > div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.stats dt {
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.stats dd {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--text);
   font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.stats dd.statWord {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  line-height: 22px;
+  color: var(--text-mid);
 }
 
 .disclosure {

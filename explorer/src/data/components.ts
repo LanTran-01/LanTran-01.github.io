@@ -68,7 +68,7 @@ export const COMPONENTS: ComponentSpec[] = [
       "Cutaway removes the helmet shell to show the sensor stack behind the visor.",
       "Exploded view separates the shell, sensor modules and neck frame along the vertical axis.",
     ],
-    camera: { direction: [0.55, 0.2, 1], distanceFactor: 3.2 },
+    camera: { direction: [0.55, 0.18, 1], distanceFactor: 2.3 },
   },
   {
     id: "chest",
@@ -180,7 +180,7 @@ export const COMPONENTS: ComponentSpec[] = [
       "Selecting the shoulders highlights both sides; the assembly is mirrored.",
       "Exploded view lifts the pauldron plates outward to expose the joint actuator.",
     ],
-    camera: { direction: [1, 0.45, 0.8], distanceFactor: 2.2 },
+    camera: { direction: [0.75, 0.5, 1], distanceFactor: 2.1 },
   },
   {
     id: "arms",
@@ -248,7 +248,7 @@ export const COMPONENTS: ComponentSpec[] = [
       "Cutaway hides the armor sleeves to show the frame, elbow actuator and harness.",
       "Exploded view separates the arm along its own axis so the joint chain stays readable.",
     ],
-    camera: { direction: [1, 0.15, 0.7], distanceFactor: 2.3 },
+    camera: { direction: [0.5, 0.12, 1], distanceFactor: 2.2 },
   },
   {
     id: "waist",
@@ -367,7 +367,7 @@ export const COMPONENTS: ComponentSpec[] = [
       "Cutaway reveals the knee actuator, propellant tank and harness inside each leg.",
       "Leg vernier nozzles belong to the Thruster Array and are highlighted separately.",
     ],
-    camera: { direction: [0.9, 0.05, 1], distanceFactor: 2.2 },
+    camera: { direction: [0.85, 0.08, 1], distanceFactor: 2.45 },
   },
   {
     id: "feet",
@@ -503,9 +503,9 @@ export const COMPONENTS: ComponentSpec[] = [
     ],
     inspectionNotes: [
       "This is a distributed subsystem: its parts sit inside three other assemblies.",
-      "The camera frames the backpack nozzles; leg and skirt nozzles stay highlighted.",
+      "The camera frames the whole nozzle array; backpack, leg and skirt nozzles highlight together.",
     ],
-    camera: { direction: [0.8, 0.2, -1], distanceFactor: 1.6 },
+    camera: { direction: [0.75, 0.2, -1], distanceFactor: 2.1 },
   },
   {
     id: "weapons",
@@ -544,7 +544,7 @@ export const COMPONENTS: ComponentSpec[] = [
       { label: "Interface", value: "Right palm connector", basis: CONCEPT },
     ],
     inspectionNotes: ["Exploded view separates the barrel, sight, energy pack and grip along the rifle axis."],
-    camera: { direction: [-1, 0.3, 0.9], distanceFactor: 2.4 },
+    camera: { direction: [-1, 0.25, 0.9], distanceFactor: 2.0 },
   },
 ];
 

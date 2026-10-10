@@ -6,7 +6,7 @@
  * Only paths listed in the previous manifest (plus the new build) are touched;
  * CNAME, README.md, .git and explorer/ itself are never removed.
  */
-import { cpSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync, copyFileSync } from "node:fs";
+import { cpSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,8 +41,25 @@ for (const entry of entries) {
   cpSync(join(dist, entry), join(root, entry), { recursive: true });
 }
 
-// 3. SPA fallback: GitHub Pages serves 404.html for unknown paths such as /explore/head
-copyFileSync(join(dist, "index.html"), join(root, "404.html"));
+// 3. SPA fallback: GitHub Pages serves 404.html (with HTTP 404) for paths such as
+//    /explore/head. Bounce to the index with the path in ?redirect= so the page the
+//    visitor lands on is a clean 200; index.html restores the URL before React boots.
+writeFileSync(
+  join(root, "404.html"),
+  `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Redirecting…</title>
+<script>
+  var p = location.pathname + location.search + location.hash;
+  location.replace("/?redirect=" + encodeURIComponent(p));
+</script>
+</head>
+<body><a href="/">Continue to the explorer</a></body>
+</html>
+`,
+);
 writeFileSync(join(root, ".nojekyll"), "");
 
 const written = [...entries.filter((e) => !PROTECTED.has(e)), "404.html"];

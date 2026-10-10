@@ -5,7 +5,20 @@ import { SectionHead } from "./SectionHead";
 import { pad2 } from "./labels";
 import s from "./inspection.module.css";
 
-/** A — identification. */
+export function BasisLegend() {
+  return (
+    <div className={s.legend} aria-label="Data basis legend">
+      <span>
+        <BasisTag basis="reference" /> broadly published
+      </span>
+      <span>
+        <BasisTag basis="conceptual" /> invented for this study
+      </span>
+    </div>
+  );
+}
+
+/** A — identification. `compact` drops the description and legend (mobile Inspect tab). */
 export function IdentificationSection({ spec, compact = false }: { spec: ComponentSpec; compact?: boolean }) {
   const index = COMPONENTS.findIndex((c) => c.id === spec.id) + 1;
   return (
@@ -23,15 +36,12 @@ export function IdentificationSection({ spec, compact = false }: { spec: Compone
       <p className={s.designation}>{spec.designation}</p>
       <h1 className={s.name}>{spec.name}</h1>
       <p className={s.classification}>{spec.classification}</p>
-      {!compact && <p className={s.body}>{spec.description}</p>}
-      <div className={s.legend} aria-label="Data basis legend">
-        <span>
-          <BasisTag basis="reference" /> broadly published
-        </span>
-        <span>
-          <BasisTag basis="conceptual" /> invented for this study
-        </span>
-      </div>
+      {!compact && (
+        <>
+          <p className={s.body}>{spec.description}</p>
+          <BasisLegend />
+        </>
+      )}
     </section>
   );
 }

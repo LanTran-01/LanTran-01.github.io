@@ -100,18 +100,26 @@ export interface Highlight {
   edges: Set<string>;
 }
 
-/** The selected node, its direct neighbours and every edge touching it. */
-export function highlightFor(id: string | null, adj: Adjacency): Highlight | null {
+/**
+ * The selected node, its direct neighbours and every edge touching it. When an
+ * expanded parent is selected, its visible children count as part of it, so
+ * the highlight matches the inputs / outputs listed in the detail panel.
+ */
+export function highlightFor(id: string | null, adj: Adjacency, expanded: ReadonlySet<string>): Highlight | null {
   if (!id) return null;
-  const nodes = new Set<string>([id]);
+  const node = getSystemNode(id);
+  const group = [id, ...(node?.children && expanded.has(id) ? node.children.map((c) => c.id) : [])];
+  const nodes = new Set<string>(group);
   const edges = new Set<string>();
-  for (const e of adj.incoming.get(id) ?? []) {
-    edges.add(e.key);
-    nodes.add(e.from);
-  }
-  for (const e of adj.outgoing.get(id) ?? []) {
-    edges.add(e.key);
-    nodes.add(e.to);
+  for (const g of group) {
+    for (const e of adj.incoming.get(g) ?? []) {
+      edges.add(e.key);
+      nodes.add(e.from);
+    }
+    for (const e of adj.outgoing.get(g) ?? []) {
+      edges.add(e.key);
+      nodes.add(e.to);
+    }
   }
   return { nodes, edges };
 }

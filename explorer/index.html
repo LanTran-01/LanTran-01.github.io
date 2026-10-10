@@ -7,6 +7,14 @@
     <meta name="description" content="An interactive engineering-style explorer for a procedural prototype of the RX-105 Ξ Gundam: select assemblies, cut away armor, explode subassemblies and trace a conceptual systems architecture." />
     <meta name="theme-color" content="#07080a" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // GitHub Pages deep links arrive via 404.html as /?redirect=<path>. Restore
+      // the real URL before the router starts (see scripts/publish.mjs).
+      (function () {
+        var r = new URLSearchParams(location.search).get("redirect");
+        if (r && r.charAt(0) === "/" && r.charAt(1) !== "/") history.replaceState(null, "", r);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

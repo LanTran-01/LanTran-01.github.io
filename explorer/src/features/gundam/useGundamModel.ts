@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Group, type Object3D } from "three";
 import { modelConfig } from "@/data/modelConfig";
 import { useExplorerStore } from "@/state/explorerStore";
-import { buildProceduralXi } from "./procedural/buildProceduralXi";
+import { buildProceduralXi, disposeProceduralXi } from "./procedural/buildProceduralXi";
 import { buildModelIndex, disposeObject, type ViewerModelIndex } from "./annotateModel";
 import { applyMeshRules, enableShadows, loadGltf, normaliseModel } from "./loadModel";
 
@@ -24,16 +24,16 @@ interface Entry {
 
 let entry: Entry | null = null;
 
+/** Builds the procedural prototype; a build with no meshes is reported as an error. */
 async function buildProcedural(): Promise<Object3D> {
   const root = buildProceduralXi();
   let meshes = 0;
   root.traverse((o) => {
     if ((o as { isMesh?: boolean }).isMesh) meshes++;
   });
-  if (meshes === 0 && import.meta.env.DEV) {
-    // The procedural build is still a placeholder: use the dev-only fixture.
-    const { buildViewerFixture } = await import("../../../harness/viewer-fixture");
-    return buildViewerFixture();
+  if (meshes === 0) {
+    disposeProceduralXi(root);
+    throw new Error("the procedural build produced no meshes");
   }
   return root;
 }
@@ -108,7 +108,14 @@ function release(e: Entry): void {
   e.disposeTimer = setTimeout(() => {
     if (e.refs > 0) return;
     if (entry === e) entry = null;
-    e.promise.then((m) => disposeObject(m.root), () => undefined);
+    e.promise.then(
+      (m) => {
+        // Procedural roots also own palette materials that may sit on no mesh.
+        if (m.root.name === "xi-procedural") disposeProceduralXi(m.root);
+        else disposeObject(m.root);
+      },
+      () => undefined,
+    );
   }, 0);
 }
 
