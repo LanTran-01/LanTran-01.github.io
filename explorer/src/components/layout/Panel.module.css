@@ -1,0 +1,39 @@
+.panel {
+  position: relative;
+  pointer-events: auto;
+  background: var(--panel);
+  -webkit-backdrop-filter: blur(var(--panel-blur)) saturate(1.1);
+  backdrop-filter: blur(var(--panel-blur)) saturate(1.1);
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+
+/* Corner ticks: eight 1px strokes drawn as background gradients on one pseudo element. */
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  --t: 7px;
+  background:
+    linear-gradient(var(--tick), var(--tick)) top left / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) top left / 1px var(--t) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) top right / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) top right / 1px var(--t) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) bottom left / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) bottom left / 1px var(--t) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) bottom right / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) bottom right / 1px var(--t) no-repeat;
+}
+
+.left {
+  animation: panel-in-left var(--dur-mid) var(--ease-mech) both;
+}
+
+.right {
+  animation: panel-in-right var(--dur-mid) var(--ease-mech) both;
+}
+
+.none {
+  animation: fade-in var(--dur-mid) var(--ease-mech) both;
+}

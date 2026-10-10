@@ -1,0 +1,116 @@
+.overlay {
+  position: fixed;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 1;
+  transition:
+    opacity var(--dur-slow) var(--ease-mech),
+    visibility 0s linear 0s;
+}
+
+.overlay[data-hidden] {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-slow) var(--ease-mech),
+    visibility 0s linear var(--dur-slow);
+}
+
+.loader {
+  width: 220px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-dim);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0 0 var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-mid);
+}
+
+.track {
+  position: relative;
+  height: 1px;
+  background: var(--line-mid);
+}
+
+/* quarter ticks */
+.track::before {
+  content: "";
+  position: absolute;
+  inset: -2px 0 auto 0;
+  height: 5px;
+  background: repeating-linear-gradient(to right, var(--line-strong) 0 1px, transparent 1px 25%);
+  width: calc(100% + 1px);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  transition: transform var(--dur-mid) var(--ease-mech);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--s-3);
+  color: var(--text-faint);
+}
+
+.pct {
+  color: var(--text);
+}
+
+.card {
+  width: min(380px, calc(100vw - 48px));
+  padding: var(--s-5);
+  background: var(--panel);
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  backdrop-filter: blur(var(--panel-blur));
+  border: 1px solid var(--line-mid);
+  pointer-events: auto;
+}
+
+.caution {
+  width: 6px;
+  height: 6px;
+  background: var(--caution);
+}
+
+.text {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+.retry {
+  margin-top: var(--s-4);
+  min-height: 36px;
+  padding: 0 var(--s-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.retry:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}

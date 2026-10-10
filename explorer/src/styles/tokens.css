@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Design tokens — Ξ Hardware Explorer
+   Near-black graphite, white/grey type, a single cool-cyan accent.
+   Square corners (≤ 2px), hairline rules, small uppercase technical labels.
+   ========================================================================== */
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #07080a;
+  --bg-raised: #0c0e11;
+  --bg-sunken: #050607;
+  --panel: rgba(10, 12, 15, 0.78);
+  --panel-solid: #0b0d10;
+  --panel-blur: 14px;
+
+  /* lines */
+  --line: rgba(255, 255, 255, 0.07);
+  --line-mid: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.22);
+
+  /* text */
+  --text: #e9ebee;
+  --text-mid: #b4b9c1;
+  --text-dim: #7d838d;
+  --text-faint: #4f545c;
+
+  /* accent — the only hue in the interface */
+  --accent: #63c7ff;
+  --accent-strong: #9adcff;
+  --accent-dim: rgba(99, 199, 255, 0.16);
+  --accent-line: rgba(99, 199, 255, 0.45);
+
+  /* flow kinds in the systems map: one hue family, varied by lightness and dash */
+  --flow-power: #63c7ff;
+  --flow-data: #c9d3dd;
+  --flow-control: #8fa6ba;
+  --flow-propellant: #5d7385;
+
+  /* status */
+  --caution: #e6b45c;
+  --caution-line: rgba(230, 180, 92, 0.5);
+
+  /* type */
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --fs-micro: 10px;   /* uppercase labels, letter-spaced */
+  --fs-xs: 11px;
+  --fs-sm: 12.5px;
+  --fs-md: 14px;
+  --fs-lg: 17px;
+  --fs-xl: 24px;
+  --fs-xxl: 34px;
+  --tracking-label: 0.14em;
+  --tracking-tight: -0.01em;
+
+  /* space (4px base) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+
+  /* geometry */
+  --radius: 2px;
+  --topbar-h: 52px;
+  --statusbar-h: 30px;
+  --panel-w-left: 288px;
+  --panel-w-right: 368px;
+  --panel-w-rail: 212px;
+  --gutter: 16px;
+  --sheet-peek-h: 60px;
+  --tick: rgba(255, 255, 255, 0.34);
+
+  /* motion */
+  --ease-mech: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur-mid: 260ms;
+  --dur-slow: 520ms;
+
+  --z-canvas: 0;
+  --z-overlay: 10;
+  --z-panel: 20;
+  --z-bar: 30;
+  --z-modal: 50;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-mid: 0ms;
+    --dur-slow: 0ms;
+  }
+}
