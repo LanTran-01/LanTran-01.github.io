@@ -58,17 +58,15 @@ export const DiagramNode = memo(function DiagramNode({
     `${inCount} inputs, ${outCount} outputs.` +
     (kids ? ` ${kids} subsystems, ${expanded ? "expanded" : "collapsed"}.` : "");
 
-  const cls = [styles.node, styles[emphasis], soft && styles.soft, child && styles.child, dn.exiting && styles.exiting]
-    .filter(Boolean)
-    .join(" ");
+  const cls = [styles.nodeInner, styles[emphasis], soft && styles.soft, child && styles.child].filter(Boolean).join(" ");
 
   return (
     <g
       ref={(el) => registerRef(node.id, el)}
       data-node={node.id}
-      className={cls}
+      className={dn.exiting ? `${styles.node} ${styles.exiting}` : styles.node}
       transform={`translate(${dn.x.toFixed(2)} ${dn.y.toFixed(2)})`}
-      opacity={dn.opacity < 1 ? dn.opacity : undefined}
+      style={dn.opacity < 1 ? { opacity: dn.opacity } : undefined}
       role="button"
       tabIndex={dn.exiting ? -1 : 0}
       aria-label={label}
@@ -78,6 +76,7 @@ export const DiagramNode = memo(function DiagramNode({
       onKeyDown={onKey}
       onFocus={() => onFocusNode(node.id)}
     >
+      <g className={cls}>
       {/* generous invisible hit area (≥ 40 units tall) */}
       <rect className={styles.hit} x={-8} y={-7} width={w + 16} height={h + 14} />
       <rect className={styles.focusRing} x={-4.5} y={-4.5} width={w + 9} height={h + 9} rx={2} />
@@ -114,6 +113,7 @@ export const DiagramNode = memo(function DiagramNode({
           <path className={styles.chevronGlyph} d={expanded ? "M13.5 13.5L17 10L20.5 13.5" : "M13.5 10.5L17 14L20.5 10.5"} />
         </g>
       )}
+      </g>
     </g>
   );
 });

@@ -1,0 +1,40 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  height: 15px;
+  padding: 0 4px;
+  border: 1px solid var(--line-mid);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tag[data-basis="reference"] {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.tag[data-layer="armor"] {
+  color: var(--text-dim);
+}
+
+.tag[data-layer="frame"] {
+  border-color: var(--line-strong);
+  color: var(--text-mid);
+}
+
+.tag[data-layer="internal"] {
+  border-color: var(--accent-line);
+  color: var(--accent);
+  background: rgba(99, 199, 255, 0.06);
+}
+
+.tag[data-proto] {
+  border-color: var(--caution-line);
+  color: var(--caution);
+}

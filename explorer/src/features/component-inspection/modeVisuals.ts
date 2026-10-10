@@ -70,7 +70,7 @@ export function visualInputsKey(v: VisualInputs): string {
 
 const MUTE_OTHERS = 0.78;
 const MUTE_OVERVIEW = 0.5;
-const GLOW_SELECTED = 0.1;
+const GLOW_SELECTED = 0.045;
 const GLOW_LINKED = 0.42;
 const GLOW_HOVER = 0.12;
 const GLOW_FOCUS = 0.55;
@@ -115,7 +115,11 @@ export function computeTarget(tag: PartTag, v: VisualInputs, out: VisualTarget):
   // ---- the selected assembly
   const mode = v.mode;
   out.glow = GLOW_SELECTED;
-  if (layer === "armor") out.opacity = GHOST[mode];
+  if (layer === "armor") {
+    out.opacity = GHOST[mode];
+    // Ghosted shells read as clear glass; the accent edges carry the outline.
+    if (out.opacity < 1) out.glow = 0;
+  }
   else if (layer === "frame") out.opacity = FRAME_OPACITY[mode];
   else out.opacity = revealsInternals(mode) ? 1 : 0;
   if (mode === "exploded") out.explode = v.explode;
