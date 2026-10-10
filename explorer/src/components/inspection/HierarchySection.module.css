@@ -1,0 +1,276 @@
+.tree {
+  --row-h: 30px;
+  --indent: 18px;
+  --conn: var(--line-strong);
+}
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: var(--row-h);
+  padding: 0 var(--s-2) 0 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: var(--text);
+}
+
+.root:hover .rootName {
+  color: var(--accent);
+}
+
+.rootMark {
+  width: 7px;
+  height: 7px;
+  margin-left: 3px;
+  flex: none;
+  border: 1px solid var(--text-mid);
+}
+
+.root[data-idle] .rootMark {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.rootName {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--dur-fast);
+}
+
+.children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.children[data-level="0"] {
+  margin-left: 6px;
+}
+
+.node .children {
+  margin-left: 8px;
+}
+
+.node {
+  position: relative;
+  padding-left: var(--indent);
+}
+
+/* │ vertical connector — full height for all but the last sibling */
+.node::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--conn);
+}
+
+.node:last-child::before {
+  bottom: auto;
+  height: calc(var(--row-h) / 2);
+}
+
+/* ── horizontal connector */
+.node::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--row-h) / 2);
+  width: calc(var(--indent) - 5px);
+  height: 1px;
+  background: var(--conn);
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: var(--row-h);
+  padding: 0 var(--s-2) 0 var(--s-1);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-align: left;
+  color: var(--text-mid);
+  transition:
+    background-color var(--dur-fast) var(--ease-mech),
+    color var(--dur-fast) var(--ease-mech);
+}
+
+.row:focus-visible {
+  outline-offset: -1px;
+}
+
+.row:hover,
+.row[data-hover] {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+
+.row[data-included] {
+  color: var(--text);
+  background: rgba(99, 199, 255, 0.06);
+}
+
+.row[aria-pressed="true"] {
+  color: var(--accent-strong);
+  background: var(--accent-dim);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.row[data-absent] {
+  color: var(--text-faint);
+}
+
+.row[data-absent] .name {
+  text-decoration: line-through;
+  text-decoration-color: var(--line-strong);
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.row[aria-pressed="true"] .code,
+.row[data-included] .code {
+  color: var(--accent);
+}
+
+.name {
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.legend {
+  display: flex;
+  gap: var(--s-4);
+  margin-top: var(--s-3);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail {
+  margin-top: var(--s-4);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  border-left: 1px solid var(--accent);
+  background: rgba(99, 199, 255, 0.04);
+  animation: fade-in var(--dur-mid) var(--ease-mech) both;
+}
+
+.detailHead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.detailHead .code {
+  color: var(--accent);
+}
+
+.detailName {
+  flex: 1;
+  font-size: var(--fs-md);
+  color: var(--text);
+}
+
+.clear {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: -4px -6px -4px 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-dim);
+}
+
+.clear:hover {
+  color: var(--text);
+  border-color: var(--line-mid);
+}
+
+.detailBody {
+  margin: var(--s-2) 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--text-mid);
+}
+
+.detailRows {
+  margin: var(--s-3) 0 0;
+  display: grid;
+  gap: 4px;
+}
+
+.detailRows > div {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: var(--s-2);
+  align-items: center;
+  font-size: var(--fs-xs);
+}
+
+.detailRows dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.detailRows dd {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+}
+
+.parentLink {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  background: none;
+  font-size: var(--fs-xs);
+  color: var(--text);
+}
+
+.parentLink:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+@media (pointer: coarse) {
+  .tree {
+    --row-h: 40px;
+  }
+}

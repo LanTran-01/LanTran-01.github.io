@@ -288,6 +288,11 @@ export class Kit {
     return g;
   }
 
+  /** Several cable runs merged into one geometry. */
+  tubes(key: string, runs: readonly (readonly V3[])[], radius = 0.012, tubular = 24): BufferGeometry {
+    return this.merge(`tubes:${key}`, () => runs.map((pts) => ({ geo: this.tmp(this.tube(pts, radius, tubular, 6)) })));
+  }
+
   extrude(key: string, outlines: readonly P2[] | readonly (readonly P2[])[], depth: number, plane: Plane = "xy", bevel = 0.012) {
     return this.memo(`ext:${key}`, () => extrudeGeo(outlines, depth, plane, bevel));
   }

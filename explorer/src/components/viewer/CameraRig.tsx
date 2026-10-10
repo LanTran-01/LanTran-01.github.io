@@ -10,7 +10,6 @@ import { cameraTelemetry } from "@/features/gundam/telemetry";
 import type { ViewerModelIndex } from "@/features/gundam/annotateModel";
 import {
   OVERVIEW_AZIMUTH,
-  OVERVIEW_ELEVATION,
   applyViewOffset,
   componentFraming,
   overviewFraming,

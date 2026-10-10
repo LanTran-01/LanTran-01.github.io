@@ -86,8 +86,8 @@ export function componentFraming(bounds: Box3, hint: CameraHint, camera: Perspec
   const r = Math.max(0.25, sphere.radius);
   const { tv, th } = freeTangents(camera, vp);
   const factor = hint.distanceFactor ?? 2.6;
-  // factor 2.6 ≈ the bounding sphere fills the free area with a modest margin.
-  const d = (r / Math.min(tv, th)) * (factor / 2.6) * 1.12;
+  // factor 2.6 ≈ the bounding sphere fills ~60% of the free area, leaving context around it.
+  const d = (r / Math.min(tv, th)) * (factor / 2.6) * 1.6;
   const dir = new Vector3(...hint.direction).normalize();
   const target = sphere.center.clone();
   return { target, position: target.clone().addScaledVector(dir, Math.max(d, 1.3)) };

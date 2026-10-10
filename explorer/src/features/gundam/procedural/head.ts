@@ -264,8 +264,7 @@ export function buildHead(kit: Kit, root: Object3D) {
     pos: [0, 0.085, -0.065],
     ex: [0, -0.04, -0.14],
   });
-  const harness = kit.memo("hd.harness", () =>
-    mergeTubes(kit, [
+  const harness = kit.tubes("hd.harness", [
       [
         [0.03, 0.085, -0.02],
         [0.03, 0.03, 0.0],
@@ -283,14 +282,6 @@ export function buildHead(kit: Kit, root: Object3D) {
         [0, 0.15, 0.02],
         [0, 0.12, -0.02],
       ],
-    ]),
-  );
+  ]);
   P("sensor_harness", harness, m.cable, "internal", "hd-processor", { ex: [0, -0.06, -0.1] });
-}
-
-/** Several cable runs merged into one geometry. */
-export function mergeTubes(kit: Kit, runs: readonly (readonly (readonly [number, number, number])[])[], radius = 0.012) {
-  return kit.merge(`tubes:${JSON.stringify(runs)}:${radius}`, () =>
-    runs.map((pts) => ({ geo: kit.tmp(kit.tube(pts, radius, 24, 6)) })),
-  );
 }
