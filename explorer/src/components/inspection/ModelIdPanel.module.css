@@ -1,0 +1,79 @@
+.id {
+  padding: var(--s-5) var(--s-5) var(--s-4);
+}
+
+.designation {
+  margin: var(--s-1) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.name {
+  margin: 2px 0 0;
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.xi {
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-right: 0.04em;
+}
+
+.source {
+  margin: var(--s-1) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.rows {
+  margin: var(--s-4) 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.row dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.row dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row dd.num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.disclosure {
+  margin: var(--s-3) 0 0;
+  padding-left: var(--s-3);
+  border-left: 1px solid var(--caution-line);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--text-dim);
+}

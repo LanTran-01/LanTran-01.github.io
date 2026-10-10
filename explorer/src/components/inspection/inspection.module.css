@@ -1,0 +1,201 @@
+/* Shared typography for inspection sections. */
+
+.section {
+  padding: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+
+.section:first-child {
+  border-top: 0;
+}
+
+.designation {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.name {
+  margin: var(--s-1) 0 0;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+}
+
+.classification {
+  margin: var(--s-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.body {
+  margin: var(--s-3) 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin: var(--s-4) 0 0;
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--line);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.note {
+  margin: var(--s-2) 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.note[data-tone="caution"] {
+  color: var(--caution);
+}
+
+/* key / value rows */
+.rows {
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: var(--s-3);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.row:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.row dt {
+  padding-top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.row dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--text);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.valueWithTag {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+
+.valueWithTag > :last-child {
+  margin-top: 2px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.subtle {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  transition:
+    color var(--dur-fast),
+    border-color var(--dur-fast);
+}
+
+.link:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+.linkCode {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-dim);
+}
+
+.link:hover .linkCode {
+  color: var(--accent);
+}
+
+.notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: note;
+}
+
+.notes li {
+  position: relative;
+  padding-left: 24px;
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--text-mid);
+  counter-increment: note;
+}
+
+.notes li + li {
+  margin-top: var(--s-2);
+}
+
+.notes li::before {
+  content: counter(note, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-faint);
+}
+
+.subhead {
+  margin: var(--s-5) 0 var(--s-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-dim);
+}

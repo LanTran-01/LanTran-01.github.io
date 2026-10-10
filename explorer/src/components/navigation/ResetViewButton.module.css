@@ -1,0 +1,60 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 32px;
+  padding: 0 var(--s-2) 0 var(--s-3);
+  border: 1px solid var(--line-mid);
+  border-radius: var(--radius);
+  background: var(--panel);
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  backdrop-filter: blur(var(--panel-blur));
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-mid);
+  pointer-events: auto;
+  transition:
+    color var(--dur-fast) var(--ease-mech),
+    border-color var(--dur-fast) var(--ease-mech);
+}
+
+.button:hover {
+  color: var(--text);
+  border-color: var(--accent-line);
+}
+
+.button:hover svg {
+  color: var(--accent);
+}
+
+.button:active svg {
+  transform: rotate(-90deg);
+}
+
+.button svg {
+  transition: transform var(--dur-mid) var(--ease-mech);
+}
+
+.button[data-variant="inline"] {
+  width: 100%;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  justify-content: flex-start;
+}
+
+.button[data-variant="inline"] kbd {
+  margin-left: auto;
+}
+
+@media (pointer: coarse) {
+  .button {
+    min-height: 40px;
+  }
+
+  .button kbd {
+    display: none;
+  }
+}

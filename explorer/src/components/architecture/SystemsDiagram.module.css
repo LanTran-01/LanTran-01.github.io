@@ -1,0 +1,357 @@
+/* ==========================================================================
+   Systems diagram (SVG). Colours come from tokens.css only.
+   ========================================================================== */
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  outline: none;
+}
+
+.svg[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.gridMark {
+  stroke: rgba(255, 255, 255, 0.045);
+  stroke-width: 1;
+  fill: none;
+}
+
+.gridMajor {
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-width: 1;
+  fill: none;
+}
+
+/* ---------- column headers ---------- */
+
+.headers text {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+.colIndex {
+  font-size: 10px;
+  fill: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.colTitle {
+  font-size: 11px;
+  fill: var(--text);
+  letter-spacing: 0.18em;
+  font-weight: 500;
+}
+
+.colLanes {
+  font-size: 8.5px;
+  fill: var(--text-dim);
+  letter-spacing: 0.16em;
+}
+
+.colRule {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  fill: none;
+  shape-rendering: crispEdges;
+}
+
+.colGuide {
+  stroke: rgba(255, 255, 255, 0.035);
+  stroke-width: 1;
+  stroke-dasharray: 2 6;
+  fill: none;
+}
+
+.colFlow {
+  stroke: var(--text-faint);
+  stroke-width: 1;
+  fill: none;
+  stroke-dasharray: 2 3;
+}
+
+/* ---------- lanes & rails ---------- */
+
+.lane path {
+  fill: none;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.lane text {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  fill: var(--text-faint);
+}
+
+.rail {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+/* ---------- edges ---------- */
+
+.edge {
+  transition: opacity var(--dur-mid) var(--ease-mech);
+}
+
+.edgeLine {
+  fill: none;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  transition: stroke-width var(--dur-fast) var(--ease-mech);
+}
+
+.edgeArrow {
+  stroke: none;
+}
+
+.edge_normal {
+  opacity: 0.62;
+}
+
+.edge_dim {
+  opacity: 0.09;
+}
+
+.edge_highlight {
+  opacity: 1;
+}
+
+.edge_highlight .edgeLine {
+  stroke-width: 1.6;
+}
+
+.edgeFlow {
+  fill: none;
+  stroke: var(--accent-strong);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 3 21;
+  opacity: 0.85;
+  animation: xiFlow 1.1s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes xiFlow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edgeFlow {
+    display: none;
+  }
+}
+
+.edgeTag rect {
+  fill: var(--panel-solid);
+  stroke: var(--line-mid);
+  stroke-width: 1;
+}
+
+.edgeTag text {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  fill: var(--text-dim);
+}
+
+.edgeTag_highlight rect {
+  stroke: var(--accent-line);
+}
+
+.edgeTag_highlight text {
+  fill: var(--text);
+}
+
+.edgeTag_dim {
+  opacity: 0.12;
+}
+
+.edgeTags {
+  pointer-events: none;
+}
+
+/* ---------- nodes ---------- */
+
+.node {
+  cursor: pointer;
+  outline: none;
+}
+
+.nodeInner {
+  transition: opacity var(--dur-mid) var(--ease-mech);
+}
+
+.hit {
+  fill: transparent;
+}
+
+.body {
+  fill: var(--panel-solid);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  transition:
+    stroke var(--dur-fast) var(--ease-mech),
+    fill var(--dur-fast) var(--ease-mech);
+}
+
+.child .body {
+  fill: var(--bg-raised);
+  stroke: var(--line-mid);
+}
+
+.laneBar {
+  opacity: 0.9;
+}
+
+.focusRing {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 3 2;
+  opacity: 0;
+}
+
+.node:focus-visible .focusRing {
+  opacity: 1;
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  fill: var(--text-dim);
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--text);
+  letter-spacing: -0.005em;
+}
+
+.labelChild {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--text-mid);
+}
+
+.tag rect,
+.tagRef rect {
+  fill: none;
+  stroke: var(--line-mid);
+  stroke-width: 1;
+}
+
+.tag text,
+.tagRef text {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  fill: var(--text-faint);
+}
+
+.tagRef rect {
+  stroke: var(--accent-line);
+}
+
+.tagRef text {
+  fill: var(--accent);
+}
+
+.chevron {
+  cursor: pointer;
+}
+
+.chevronHit {
+  fill: transparent;
+}
+
+.chevronBox {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  transition: stroke var(--dur-fast) var(--ease-mech);
+}
+
+.chevronGlyph {
+  fill: none;
+  stroke: var(--text-mid);
+  stroke-width: 1.2;
+  stroke-linecap: square;
+}
+
+.kidCount {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  fill: var(--text-faint);
+}
+
+.chevron:hover .chevronBox {
+  stroke: var(--accent);
+}
+
+.chevron:hover .chevronGlyph {
+  stroke: var(--accent);
+}
+
+@media (hover: hover) {
+  .node:hover .body {
+    stroke: var(--text-dim);
+  }
+}
+
+/* emphasis */
+.dim {
+  opacity: 0.3;
+}
+
+.neighbour .body {
+  stroke: var(--text-dim);
+}
+
+.selected .body,
+.selected:hover .body {
+  stroke: var(--accent);
+  fill: #0d1820;
+}
+
+.selected .code {
+  fill: var(--accent);
+}
+
+.selected .label,
+.selected .labelChild {
+  fill: var(--text);
+}
+
+/* linked to the 3D hover / filter — softer than selection */
+.soft .body {
+  stroke: var(--accent-line);
+}
+
+.soft.dim {
+  opacity: 0.6;
+}
+
+.softMark {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+.exiting {
+  pointer-events: none;
+}
