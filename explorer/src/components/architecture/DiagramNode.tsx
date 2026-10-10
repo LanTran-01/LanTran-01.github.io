@@ -3,7 +3,8 @@ import type { DisplayNode } from "@/features/hardware-architecture/useTweenedLay
 import { LANE_TONE, basisTag, laneLabel } from "@/features/hardware-architecture/presentation";
 import styles from "./SystemsDiagram.module.css";
 
-export type NodeEmphasis = "selected" | "neighbour" | "dim" | "normal";
+/** `muted` = outside an active 3D filter: dimmed, but less than outside a selection. */
+export type NodeEmphasis = "selected" | "neighbour" | "dim" | "muted" | "normal";
 
 interface DiagramNodeProps {
   dn: DisplayNode;
@@ -87,7 +88,10 @@ export const DiagramNode = memo(function DiagramNode({
       <text className={styles.code} x={12} y={child ? 15 : 17}>
         {node.code}
       </text>
-      <g className={node.basis === "reference" ? styles.tagRef : styles.tag} transform={`translate(${w - 8 - tagW} ${child ? 6 : 8})`}>
+      <g
+        className={node.basis === "reference" ? styles.tagRef : styles.tag}
+        transform={`translate(${w - (kids ? 40 : 8) - tagW} ${child ? 6 : 8})`}
+      >
         <rect width={tagW} height={12} rx={1} />
         <text x={tagW / 2} y={8.6} textAnchor="middle">
           {tag}
@@ -101,16 +105,16 @@ export const DiagramNode = memo(function DiagramNode({
         <g
           className={styles.chevron}
           data-chevron=""
-          transform={`translate(${w - 30} ${h - 26})`}
+          transform={`translate(${w - 34} 0)`}
           onClick={onChevron}
           aria-hidden="true"
         >
-          <rect className={styles.chevronHit} x={-4} y={-2} width={34} height={28} />
-          <text className={styles.kidCount} x={7} y={15.5} textAnchor="end">
+          <rect className={styles.chevronHit} x={-2} y={0} width={36} height={28} />
+          <text className={styles.kidCount} x={9} y={17.5} textAnchor="end">
             {kids}
           </text>
-          <rect className={styles.chevronBox} x={10} y={5} width={14} height={14} rx={1} />
-          <path className={styles.chevronGlyph} d={expanded ? "M13.5 13.5L17 10L20.5 13.5" : "M13.5 10.5L17 14L20.5 10.5"} />
+          <rect className={styles.chevronBox} x={12} y={7} width={14} height={14} rx={1} />
+          <path className={styles.chevronGlyph} d={expanded ? "M15.5 15.5L19 12L22.5 15.5" : "M15.5 12.5L19 16L22.5 12.5"} />
         </g>
       )}
       </g>

@@ -20,17 +20,17 @@ export function SceneLighting() {
 
   return (
     <>
-      <hemisphereLight args={["#dfe8f2", "#0a0b0d", 0.22]} />
+      <hemisphereLight args={["#dfe8f2", "#0a0b0d", 0.1]} />
       <directionalLight
         ref={key}
-        position={[4.5, 9, 6]}
-        intensity={1.55}
+        position={[5.5, 9, 5]}
+        intensity={2.05}
         color="#fff6ec"
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0004}
         shadow-normalBias={0.025}
-        shadow-radius={4}
+        shadow-radius={2.5}
         shadow-camera-left={-4}
         shadow-camera-right={4}
         shadow-camera-top={7}
@@ -38,11 +38,11 @@ export function SceneLighting() {
         shadow-camera-near={1}
         shadow-camera-far={24}
       />
-      <directionalLight position={[-7, 3.5, 3]} intensity={0.45} color="#b9d4f0" />
+      <directionalLight position={[-7, 3.5, 3]} intensity={0.34} color="#b9d4f0" />
       <directionalLight position={[-3, 6.5, -8]} intensity={1.6} color="#e8f2ff" />
       <directionalLight position={[6, 2, -6]} intensity={0.6} color="#cfe4ff" />
 
-      <Environment resolution={256} frames={1} environmentIntensity={0.42}>
+      <Environment resolution={256} frames={1} environmentIntensity={0.36}>
         {/* overhead softbox */}
         <Lightformer form="rect" intensity={2.2} color="#ffffff" position={[0, 9, 1]} rotation-x={Math.PI / 2} scale={[10, 4, 1]} />
         {/* tall strips left / right for long highlights down the armor */}

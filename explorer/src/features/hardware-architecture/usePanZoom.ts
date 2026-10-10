@@ -60,6 +60,8 @@ export function usePanZoom(
   const view = useRef<View>({ x: 0, y: 0, k: 1 });
   const raf = useRef(0);
   const tween = useRef(0);
+  /** Destination of the running tween, so rapid zoom steps compound instead of restarting. */
+  const tweenTarget = useRef<View | null>(null);
   const dragged = useRef(false);
   const opts = useRef(options);
   useEffect(() => {
@@ -80,6 +82,7 @@ export function usePanZoom(
   const stopTween = () => {
     if (tween.current) cancelAnimationFrame(tween.current);
     tween.current = 0;
+    tweenTarget.current = null;
   };
 
   const animateTo = useCallback(
@@ -91,6 +94,7 @@ export function usePanZoom(
         return;
       }
       const from = { ...view.current };
+      tweenTarget.current = target;
       const t0 = performance.now();
       const step = (now: number) => {
         const t = Math.min(1, (now - t0) / duration);
@@ -102,6 +106,7 @@ export function usePanZoom(
         };
         apply();
         tween.current = t < 1 ? requestAnimationFrame(step) : 0;
+        if (t >= 1) tweenTarget.current = null;
       };
       tween.current = requestAnimationFrame(step);
     },
@@ -109,9 +114,9 @@ export function usePanZoom(
   );
 
   const zoomAround = useCallback(
-    (k: number, at: { x: number; y: number }, animate: boolean) => {
-      const v = view.current;
-      const nk = clampK(k);
+    (factor: number, at: { x: number; y: number }, animate: boolean) => {
+      const v = (animate && tweenTarget.current) || view.current;
+      const nk = clampK(v.k * factor);
       const wx = (at.x - v.x) / v.k;
       const wy = (at.y - v.y) / v.k;
       const next = { k: nk, x: at.x - wx * nk, y: at.y - wy * nk };
@@ -232,12 +237,12 @@ export function usePanZoom(
       const dy = e.deltaY * unit;
       // Trackpad pinch arrives as ctrl+wheel with small deltas; scale it up.
       const factor = Math.exp(-dy * (e.ctrlKey ? 0.012 : 0.0016));
-      zoomAround(view.current.k * factor, local(e), false);
+      zoomAround(factor, local(e), false);
     };
 
     const onDbl = (e: MouseEvent) => {
       if ((e.target as Element).closest(INTERACTIVE)) return;
-      zoomAround(view.current.k * 1.6, local(e), true);
+      zoomAround(1.6, local(e), true);
     };
 
     const onLeave = () => opts.current.onPointerWorld?.(null);
@@ -262,8 +267,11 @@ export function usePanZoom(
 
   useEffect(
     () => () => {
+      // Reset the handles too: StrictMode re-runs effects on the same refs.
       cancelAnimationFrame(raf.current);
       cancelAnimationFrame(tween.current);
+      raf.current = 0;
+      tween.current = 0;
     },
     [],
   );
@@ -277,7 +285,7 @@ export function usePanZoom(
       getView: () => view.current,
       zoomBy: (factor, at) => {
         const { w, h } = viewportSize();
-        zoomAround(view.current.k * factor, at ?? { x: w / 2, y: h / 2 }, true);
+        zoomAround(factor, at ?? { x: w / 2, y: h / 2 }, true);
       },
       fitTo: (box, area, o) => {
         const { w, h } = viewportSize();

@@ -132,3 +132,7 @@
     min-height: 40px;
   }
 }
+
+.description {
+  margin: 0 0 var(--s-4);
+}

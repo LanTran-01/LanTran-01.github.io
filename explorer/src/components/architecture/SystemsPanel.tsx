@@ -75,9 +75,14 @@ export function SystemsPanel() {
   const edges = useMemo(() => resolveEdges(expanded, kinds), [expanded, kinds]);
   const adjacency = useMemo(() => buildAdjacency(edges), [edges]);
   const visibleSelected = selectedId && layout.byId.has(selectedId) ? selectedId : null;
-  const highlight = useMemo(() => highlightFor(visibleSelected, adjacency), [visibleSelected, adjacency]);
-  const softComponent = systemsComponent ?? hovered;
+  const highlight = useMemo(() => highlightFor(visibleSelected, adjacency, expanded), [visibleSelected, adjacency, expanded]);
+  // Transient hover (3D or the detail panel's assembly buttons) previews over the sticky 3D filter.
+  const softComponent = hovered ?? systemsComponent;
   const softIds = useMemo(() => nodesForComponent(softComponent, visible, expanded), [softComponent, visible, expanded]);
+  const filterCount = useMemo(
+    () => nodesForComponent(systemsComponent, visible, expanded).size,
+    [systemsComponent, visible, expanded],
+  );
 
   /* ---------------- refs ---------------- */
   const panelRef = useRef<HTMLElement>(null);
@@ -441,7 +446,7 @@ export function SystemsPanel() {
           >
             <span className={styles.chipKey}>Filter</span>
             <span className={styles.chipValue}>{filterSpec.shortName}</span>
-            <span className={styles.chipCount}>{String(softIds.size).padStart(2, "0")}</span>
+            <span className={styles.chipCount}>{String(filterCount).padStart(2, "0")}</span>
             <svg width="8" height="8" viewBox="0 0 10 10" aria-hidden="true">
               <path d="M1.5 1.5L8.5 8.5M8.5 1.5L1.5 8.5" />
             </svg>

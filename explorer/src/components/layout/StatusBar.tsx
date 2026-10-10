@@ -36,7 +36,10 @@ function ModelState({ status }: { status: ModelStatus }) {
   return (
     <span className={styles.model} data-state={status.note ? "fallback" : "ready"} role="status" title={status.note}>
       <span className={styles.dot} aria-hidden="true" />
-      READY <span className={styles.sep}>·</span> {source}
+      READY
+      <span className={styles.source}>
+        <span className={styles.sep}>·</span> {source}
+      </span>
       {status.note && (
         <>
           <span className={styles.sep}>·</span> <span className={styles.msg}>{status.note}</span>
@@ -113,7 +116,10 @@ export function StatusBar() {
         </span>
         <span className={styles.item}>
           <span className={styles.k}>SEL</span>
-          <span className={styles.v}>{assemblyCode(selected)}</span>
+          <span className={styles.v}>
+            <span className={styles.full}>{assemblyCode(selected)}</span>
+            <span className={styles.short}>{selected ? getComponent(selected).prefix : "—"}</span>
+          </span>
         </span>
         <span className={`${styles.item} ${styles.hover}`}>
           <span className={styles.k}>HOV</span>

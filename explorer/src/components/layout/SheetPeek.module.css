@@ -1,0 +1,73 @@
+.peek {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: var(--s-1);
+  padding: 0 var(--s-2) 4px;
+  min-width: 0;
+}
+
+.toggle {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0 var(--s-2);
+  border: 0;
+  background: none;
+  text-align: left;
+  color: var(--text);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.title {
+  font-size: var(--fs-md);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chev {
+  flex: none;
+  color: var(--text-dim);
+  transition: transform var(--dur-mid) var(--ease-mech);
+}
+
+.chev[data-open] {
+  transform: rotate(180deg);
+}
+
+.side {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-mid);
+}
+
+.side:active {
+  background: var(--accent-dim);
+  color: var(--text);
+}

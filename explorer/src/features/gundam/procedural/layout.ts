@@ -22,8 +22,6 @@ export const LAYOUT = {
   armSplay: 0.2,
 
   /** Head pivot (base of helmet, above the neck gimbal). */
-  head: [0, 4.86, 0.04] as V3,
-
-  /** Torso extents used by chest / backpack. */
-  chestBackZ: -0.52,
+  head: [0, 4.83, 0.05] as V3,
+  headScale: 1.1,
 } as const;

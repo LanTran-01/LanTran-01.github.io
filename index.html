@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Ξ Hardware Explorer — RX-105 Inspection Prototype</title>
+    <meta name="description" content="An interactive engineering-style explorer for a procedural prototype of the RX-105 Ξ Gundam: select assemblies, cut away armor, explode subassemblies and trace a conceptual systems architecture." />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // GitHub Pages deep links arrive via 404.html as /?redirect=<path>. Restore
+      // the real URL before the router starts (see scripts/publish.mjs).
+      (function () {
+        var r = new URLSearchParams(location.search).get("redirect");
+        if (r && r.charAt(0) === "/" && r.charAt(1) !== "/") history.replaceState(null, "", r);
+      })();
+    </script>
+    <script type="module" crossorigin src="/static/index-Dw_NO3px.js"></script>
+    <link rel="modulepreload" crossorigin href="/static/three-D5yV4XXU.js">
+    <link rel="modulepreload" crossorigin href="/static/r3f-0Gaiflc1.js">
+    <link rel="stylesheet" crossorigin href="/static/index-WB7nrSIo.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>This explorer is an interactive 3D application and needs JavaScript and WebGL.</noscript>
+  </body>
+</html>

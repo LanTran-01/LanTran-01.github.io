@@ -66,7 +66,10 @@ function TreeNode({ node, inSelection, modelled, onSelect }: NodeProps) {
         }}
       >
         <span className={t.code}>{node.code}</span>
-        <span className={t.name}>{node.name}</span>
+        <span className={t.name}>
+          {node.name}
+          {absent && <span className="visually-hidden"> (not modelled in the current prototype)</span>}
+        </span>
         <LayerTag layer={node.layer} />
       </button>
       {node.children && node.children.length > 0 && (
@@ -137,6 +140,11 @@ export function HierarchySection({ spec }: { spec: ComponentSpec }) {
         <span>
           <LayerTag layer="internal" /> internal
         </span>
+        {modelled && modelled.size > 0 && (
+          <span className={t.absentKey}>
+            <span className={t.absentMark} /> not modelled
+          </span>
+        )}
       </div>
 
       {detail ? (

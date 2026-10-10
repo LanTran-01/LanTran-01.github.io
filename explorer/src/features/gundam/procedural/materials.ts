@@ -72,16 +72,16 @@ export function createXiMaterials(): XiMaterials {
     frame: std("xi.frame.graphite", "#3a3f47", 0.42, 0.6),
     frameDark: std("xi.frame.dark", "#272b31", 0.5, 0.55),
     louvre: std("xi.frame.louvre", "#202429", 0.55, 0.5, { flat: true }),
-    steel: std("xi.int.steel", "#8a929c", 0.32, 0.75),
-    gunmetal: std("xi.int.gunmetal", "#535a63", 0.4, 0.68),
-    darkSteel: std("xi.int.dark", "#2e333a", 0.45, 0.6),
-    cable: std("xi.int.cable", "#2a3038", 0.7, 0.15),
+    steel: std("xi.int.steel", "#9aa2ac", 0.32, 0.7),
+    gunmetal: std("xi.int.gunmetal", "#626a74", 0.4, 0.62),
+    darkSteel: std("xi.int.dark", "#3b424b", 0.45, 0.55),
+    cable: std("xi.int.cable", "#34404d", 0.68, 0.15),
     glass: std("xi.glass.visor", "#0a0e13", 0.12, 0.4),
     sensor: std("xi.sensor", "#63c7ff", 0.25, 0.1, { emissive: "#63c7ff", emissiveIntensity: 0.9 }),
     core: std("xi.core", "#9fdcff", 0.3, 0.1, { emissive: "#63c7ff", emissiveIntensity: 1.4 }),
     display: std("xi.display", "#0d1a22", 0.3, 0.2, { emissive: "#2d6f94", emissiveIntensity: 0.6, double: true }),
-    shell: std("xi.int.shell", "#626a74", 0.38, 0.65, { double: true }),
-    nozzle: std("xi.nozzle", "#4b5058", 0.36, 0.8),
+    shell: std("xi.int.shell", "#7b838d", 0.42, 0.5, { double: true }),
+    nozzle: std("xi.nozzle", "#6c727b", 0.38, 0.7),
   };
 }
 

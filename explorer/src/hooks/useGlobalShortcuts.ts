@@ -4,10 +4,17 @@ import { useExplorerStore } from "@/state/explorerStore";
 import { useExplorerNavigation } from "./useExplorerNavigation";
 import { INSPECTION_MODES, isModeSupported } from "./useInspectionModes";
 
-function isTypingTarget(target: EventTarget | null): boolean {
+const NON_TEXT_INPUTS = new Set(["range", "checkbox", "radio", "button", "submit", "reset"]);
+
+/** Text entry swallows every key; sliders only need the arrow/paging keys. */
+function ownsKey(target: EventTarget | null, key: string): boolean {
   if (!(target instanceof HTMLElement)) return false;
-  if (target.isContentEditable) return true;
-  return target.closest("input, textarea, select, [contenteditable='true']") !== null;
+  if (target.isContentEditable || target.closest("textarea, select, [contenteditable='true']")) return true;
+  if (target instanceof HTMLInputElement) {
+    if (!NON_TEXT_INPUTS.has(target.type)) return true;
+    return target.type === "range" && /^(Arrow|Page|Home|End)/.test(key);
+  }
+  return false;
 }
 
 function isDialogOpen(): boolean {
@@ -27,7 +34,7 @@ export function useGlobalShortcuts() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (isTypingTarget(e.target) || isDialogOpen()) return;
+      if (ownsKey(e.target, e.key) || isDialogOpen()) return;
       const s = useExplorerStore.getState();
       const onDetail = s.view === "explorer" && s.selected !== null;
 

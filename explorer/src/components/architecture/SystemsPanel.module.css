@@ -1,0 +1,418 @@
+/* ==========================================================================
+   /systems overlay panel
+   ========================================================================== */
+
+.panel {
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-3);
+  bottom: var(--s-3);
+  width: min(62vw, 980px);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  border: 1px solid var(--line-mid);
+  border-radius: var(--radius);
+  pointer-events: auto;
+  overflow: hidden;
+  animation: xiPanelIn var(--dur-slow) var(--ease-mech);
+}
+
+/* Doubled class: must beat the shell's `.overlay > * { pointer-events: none }` regardless of load order. */
+.panel.panel {
+  pointer-events: auto;
+}
+
+@keyframes xiPanelIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+}
+
+/* corner registration marks */
+.cornerTL,
+.cornerBR {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cornerTL {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+}
+
+.cornerBR {
+  right: -1px;
+  bottom: -1px;
+  border-right: 1px solid var(--text-dim);
+  border-bottom: 1px solid var(--text-dim);
+}
+
+/* ---------- header ---------- */
+
+.header {
+  padding: var(--s-4) var(--s-5) var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.titleIndex {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.counts {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.counts i {
+  font-style: normal;
+  color: var(--text-faint);
+  margin: 0 4px;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  letter-spacing: 0.01em;
+}
+
+/* ---------- toolbar ---------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px var(--s-3);
+  padding: 8px var(--s-4) 8px var(--s-3);
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+
+.toolGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex: none;
+  margin-left: auto;
+}
+
+.expandBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 10px;
+  background: none;
+  border: 1px solid var(--line-mid);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-mid);
+  white-space: nowrap;
+  transition:
+    border-color var(--dur-fast) var(--ease-mech),
+    color var(--dur-fast) var(--ease-mech);
+}
+
+.expandBtn path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.expandBtn:hover {
+  border-color: var(--text-dim);
+  color: var(--accent);
+}
+
+/* ---------- body ---------- */
+
+.body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.body > aside {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 46%);
+  z-index: 2;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14px var(--s-4) 8px;
+  background: linear-gradient(to bottom, transparent, rgba(8, 10, 13, 0.85) 55%);
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.coords {
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+
+.coords::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 9px;
+  margin-right: var(--s-3);
+  background: var(--line-strong);
+  vertical-align: -1px;
+}
+
+/* 3D filter chip */
+.chip {
+  position: absolute;
+  top: 10px;
+  left: var(--s-3);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  background: var(--panel-solid);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text);
+  animation: xiChipIn var(--dur-mid) var(--ease-mech);
+}
+
+@keyframes xiChipIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.chip path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.chip:hover {
+  background: var(--accent-dim);
+}
+
+.chipKey {
+  color: var(--accent);
+}
+
+.chipValue {
+  color: var(--text);
+}
+
+.chipCount {
+  color: var(--text-dim);
+  padding-left: 8px;
+  border-left: 1px solid var(--line-mid);
+}
+
+.sheetHint {
+  margin: 0;
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+/* ---------- mobile ---------- */
+
+.viewToggle {
+  margin-left: auto;
+  height: 32px;
+  padding: 0 12px;
+  background: none;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  align-self: center;
+}
+
+.viewToggle:hover {
+  background: var(--accent-dim);
+}
+
+@media (max-width: 820px) {
+  .panel {
+    inset: 0;
+    width: auto;
+    border: 0;
+    border-radius: 0;
+    background: rgba(7, 8, 10, 0.94);
+  }
+
+  .cornerTL,
+  .cornerBR {
+    display: none;
+  }
+
+  .header {
+    padding: var(--s-3) var(--gutter) 10px;
+  }
+
+  .titleRow {
+    align-items: center;
+  }
+
+  .counts {
+    display: none;
+  }
+
+  .subtitle {
+    margin-top: 4px;
+    font-size: 10.5px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 6px var(--gutter) 8px;
+  }
+
+  .toolbar > div:first-child {
+    overflow-x: auto;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 0 calc(var(--gutter) - 7px);
+    scrollbar-width: none;
+  }
+
+  .toolGroup {
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
+  .expandBtn {
+    height: 36px;
+  }
+
+  .body > aside {
+    top: auto;
+    left: 0;
+    width: auto;
+    max-height: 52%;
+    border-left: 0;
+    border-top: 1px solid var(--line-mid);
+    animation-name: xiSheetIn;
+  }
+
+  .footer {
+    padding-bottom: 6px;
+  }
+
+  /* collapsed: the map hides and the panel becomes a bottom sheet over the 3D view */
+  .collapsed {
+    top: auto;
+    max-height: 46%;
+    border-top: 1px solid var(--line-mid);
+    animation: xiSheetIn var(--dur-mid) var(--ease-mech);
+  }
+
+  .collapsed .toolbar,
+  .collapsed .viewport,
+  .collapsed .subtitle {
+    display: none;
+  }
+
+  .collapsed .body {
+    flex: 1 1 auto;
+    flex-direction: column;
+  }
+
+  .collapsed .body > aside {
+    position: static;
+    max-height: none;
+    flex: 1;
+    min-height: 0;
+    border-top: 1px solid var(--line);
+    animation: none;
+  }
+
+  .collapsed .chip {
+    position: static;
+    align-self: flex-start;
+    margin: 10px var(--gutter) 0;
+    flex: none;
+  }
+}
+
+@keyframes xiSheetIn {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}

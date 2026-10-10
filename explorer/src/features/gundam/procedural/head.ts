@@ -12,6 +12,7 @@ import { bilateral, clamp01, composeMatrix, extrudeGeo, group, lerp, warp, type 
 export function buildHead(kit: Kit, root: Object3D) {
   const { m } = kit;
   const g = group(root, "head", LAYOUT.head);
+  g.scale.setScalar(LAYOUT.headScale);
   const P = kit.scope(g, "head");
 
   /* ---- frame: neck gimbal ---- */
@@ -111,8 +112,8 @@ export function buildHead(kit: Kit, root: Object3D) {
         0.004,
       ),
     );
-    const L = composeMatrix([0.03, 0.27, 0.215], [-0.18, 0.5, 0.06]);
-    const Ls = composeMatrix([0.04, 0.255, 0.205], [-0.1, 0.75, -0.1]);
+    const L = composeMatrix([0.03, 0.27, 0.215], [-0.22, 0.42, -0.2]);
+    const Ls = composeMatrix([0.04, 0.255, 0.205], [-0.1, 0.7, -0.25]);
     const mirror = composeMatrix([0, 0, 0], [0, 0, 0], [-1, 1, 1]);
     return [
       { geo: blade, matrix: L },
@@ -124,7 +125,7 @@ export function buildHead(kit: Kit, root: Object3D) {
   P("vfin", vfin, m.ochre, "armor", "hd-vfin", { ex: [0, 0.38, 0.12] });
 
   /* ---- face: visor, eyes, faceplate ---- */
-  P("visor", kit.rbox(0.25, 0.066, 0.05, 0.01), m.glass, "frame", "hd-optics", {
+  P("visor", kit.rbox(0.28, 0.066, 0.05, 0.01), m.glass, "frame", "hd-optics", {
     pos: [0, 0.18, 0.175],
     ex: [0, 0, 0.2],
   });
@@ -212,7 +213,7 @@ export function buildHead(kit: Kit, root: Object3D) {
 
   /* ---- internals ---- */
   const optics = kit.merge("hd.optics", () => [
-    { geo: kit.rbox(0.22, 0.05, 0.07, 0.008), pos: [0, 0.18, 0.11] },
+    { geo: kit.rbox(0.19, 0.05, 0.07, 0.008), pos: [0, 0.18, 0.11] },
     { geo: kit.cylZ(0.022, 0.05, 14), pos: [0.065, 0.18, 0.15] },
     { geo: kit.cylZ(0.022, 0.05, 14), pos: [-0.065, 0.18, 0.15] },
     { geo: kit.rbox(0.08, 0.035, 0.04, 0.006), pos: [0, 0.18, 0.06] },
@@ -265,23 +266,23 @@ export function buildHead(kit: Kit, root: Object3D) {
     ex: [0, -0.04, -0.14],
   });
   const harness = kit.tubes("hd.harness", [
-      [
-        [0.03, 0.085, -0.02],
-        [0.03, 0.03, 0.0],
-        [0.02, -0.06, -0.01],
-        [0.02, -0.2, -0.02],
-      ],
-      [
-        [-0.03, 0.085, -0.02],
-        [-0.03, 0.03, 0.0],
-        [-0.02, -0.06, -0.01],
-        [-0.02, -0.2, -0.02],
-      ],
-      [
-        [0, 0.18, 0.07],
-        [0, 0.15, 0.02],
-        [0, 0.12, -0.02],
-      ],
+    [
+      [0.03, 0.085, -0.02],
+      [0.03, 0.03, 0.0],
+      [0.02, -0.06, -0.01],
+      [0.02, -0.2, -0.02],
+    ],
+    [
+      [-0.03, 0.085, -0.02],
+      [-0.03, 0.03, 0.0],
+      [-0.02, -0.06, -0.01],
+      [-0.02, -0.2, -0.02],
+    ],
+    [
+      [0, 0.18, 0.07],
+      [0, 0.15, 0.02],
+      [0, 0.12, -0.02],
+    ],
   ]);
   P("sensor_harness", harness, m.cable, "internal", "hd-processor", { ex: [0, -0.06, -0.1] });
 }

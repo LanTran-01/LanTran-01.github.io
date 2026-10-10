@@ -69,6 +69,25 @@ const backdropFragment = /* glsl */ `
   }
 `;
 
+const poolVertex = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+const poolFragment = /* glsl */ `
+  uniform vec3 uColor;
+  uniform float uStrength;
+  varying vec2 vUv;
+  void main() {
+    float r = length(vUv - 0.5) * 2.0;
+    float a = pow(1.0 - smoothstep(0.0, 1.0, r), 1.6) * uStrength;
+    gl_FragColor = vec4(uColor, a);
+    #include <colorspace_fragment>
+  }
+`;
+
 export function Floor() {
   const ring = useMemo(ringGeometry, []);
   const ruler = useMemo(rulerGeometry, []);
@@ -86,13 +105,29 @@ export function Floor() {
     [],
   );
 
+  // Soft "stage" pool of light under the machine, like a studio floor spot.
+  const pool = useMemo(
+    () =>
+      new ShaderMaterial({
+        vertexShader: poolVertex,
+        fragmentShader: poolFragment,
+        uniforms: { uColor: { value: new Color("#8fb4d0") }, uStrength: { value: 0.11 } },
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        toneMapped: false,
+      }),
+    [],
+  );
+
   useEffect(
     () => () => {
       ring.dispose();
       ruler.dispose();
       backdrop.dispose();
+      pool.dispose();
     },
-    [ring, ruler, backdrop],
+    [ring, ruler, backdrop, pool],
   );
 
   return (
@@ -103,7 +138,11 @@ export function Floor() {
 
       <mesh rotation-x={-Math.PI / 2} position-y={0} receiveShadow>
         <planeGeometry args={[40, 40]} />
-        <shadowMaterial transparent opacity={0.42} color="#000000" depthWrite={false} />
+        <shadowMaterial transparent opacity={0.5} color="#000000" depthWrite={false} />
+      </mesh>
+
+      <mesh material={pool} rotation-x={-Math.PI / 2} position-y={0.001} renderOrder={-1}>
+        <planeGeometry args={[11, 11]} />
       </mesh>
 
       <Grid
