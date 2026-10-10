@@ -1,0 +1,23 @@
+.shell {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-canvas);
+}
+
+/* Pages draw their panels inside this layer; it never blocks the canvas itself. */
+.overlay {
+  position: absolute;
+  inset: var(--topbar-h) 0 var(--statusbar-h) 0;
+  z-index: var(--z-panel);
+  pointer-events: none;
+}
+
+.overlay > * {
+  pointer-events: none;
+}

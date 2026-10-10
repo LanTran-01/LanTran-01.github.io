@@ -1,0 +1,4 @@
+explorer/node_modules/
+explorer/dist/
+explorer/.harness-shots/
+.DS_Store
