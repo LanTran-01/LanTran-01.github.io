@@ -2,10 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "node:url";
 
-// Built output is copied to the repository root by scripts/publish.mjs so that
-// GitHub Pages can serve it from `main` without a CI step.
+// Served at www.lantran.dev/gundam/. The build is copied into /gundam by
+// scripts/publish-site.mjs at the repository root, so GitHub Pages can serve it
+// from `main` without a CI step.
 export default defineConfig({
-  base: "/",
+  base: "/gundam/",
   plugins: [react()],
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },

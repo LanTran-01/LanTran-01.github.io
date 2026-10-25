@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Lan Tran</title>
+    <meta name="description" content="Interactive projects by Lan Tran: the Ξ Gundam hardware explorer and ARCANA, a minimalist tarot instrument." />
+    <meta name="theme-color" content="#080808" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/home.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="./" aria-label="Lan Tran, home">LAN TRAN</a>
+      <nav class="links" aria-label="Projects">
+        <a href="#gundam">Gundam</a>
+        <a href="#tarot">Tarot</a>
+      </nav>
+      <a class="nav-end" href="https://github.com/LanTran-01" rel="noopener">GitHub</a>
+    </header>
+
+    <main>
+      <h1 class="visually-hidden">Lan Tran: projects</h1>
+
+      <section class="panel" id="gundam" aria-labelledby="gundam-title">
+        <picture class="media">
+          <source media="(max-aspect-ratio: 4/5)" srcset="assets/img/gundam-portrait.jpg" />
+          <img src="assets/img/gundam.jpg" alt="The white RX-105 Ξ Gundam prototype standing on a dark grid floor" width="2400" height="1500" fetchpriority="high" />
+        </picture>
+        <div class="copy">
+          <h2 id="gundam-title">Ξ Gundam</h2>
+          <p>Interactive Hardware Explorer</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="/gundam/">Launch Explorer</a>
+          <a class="btn secondary" href="/gundam/systems">Systems Map</a>
+        </div>
+        <a class="next" href="#tarot" aria-label="Next project: Arcana">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </a>
+      </section>
+
+      <section class="panel" id="tarot" aria-labelledby="tarot-title">
+        <picture class="media">
+          <source media="(max-aspect-ratio: 4/5)" srcset="assets/img/tarot-portrait.jpg" />
+          <img src="assets/img/tarot.jpg" alt="Five monochrome tarot cards fanned out: The High Priestess, The Moon, a card face down, The Star and The Sun" width="2400" height="1400" loading="lazy" />
+        </picture>
+        <div class="copy">
+          <h2 id="tarot-title">Arcana</h2>
+          <p>Clarity through symbolism</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="/tarot/">Begin a Reading</a>
+          <a class="btn secondary" href="/tarot/#configure">Explore Spreads</a>
+        </div>
+        <footer class="foot">
+          <span>Lan Tran © 2026</span>
+          <a href="/gundam/">Gundam</a>
+          <a href="/tarot/">Tarot</a>
+          <a href="https://github.com/LanTran-01" rel="noopener">GitHub</a>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      // Fade each section's copy in as it arrives. Without JS (or with reduced motion) it is simply visible.
+      (function () {
+        var panels = document.querySelectorAll(".panel");
+        if (!("IntersectionObserver" in window)) {
+          panels.forEach(function (p) { p.classList.add("in"); });
+          return;
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) e.target.classList.add("in");
+            });
+          },
+          { threshold: 0.45 },
+        );
+        panels.forEach(function (p) { io.observe(p); });
+      })();
+    </script>
+  </body>
+</html>

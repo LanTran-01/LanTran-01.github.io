@@ -1,9 +1,11 @@
 {
-  "note": "Written by explorer/scripts/publish.mjs",
+  "note": "Written by scripts/publish-site.mjs",
   "entries": [
-    "favicon.svg",
     "index.html",
-    "static",
+    "favicon.svg",
+    "assets",
+    "gundam",
+    "tarot",
     "404.html"
   ]
 }
