@@ -1,0 +1,123 @@
+.modal,
+.sheet {
+  padding: 0;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text);
+  max-width: none;
+  max-height: none;
+}
+
+.modal::backdrop,
+.sheet::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  border-radius: var(--radius);
+  overflow: auto;
+}
+
+.modal[open] {
+  animation: modal-in 320ms var(--ease-out);
+}
+
+.sheet {
+  width: 100%;
+  height: calc(100dvh - 24px);
+  margin: auto 0 0;
+  border-width: 1px 0 0;
+  border-radius: 14px 14px 0 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.sheet[open] {
+  animation: sheet-in 420ms var(--ease-out);
+}
+
+.inner {
+  min-height: 100%;
+}
+
+/* Content blocks for simple modals. */
+.body {
+  display: grid;
+  gap: 16px;
+  padding: 32px;
+}
+
+.title {
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.text {
+  color: var(--text-2);
+}
+
+.text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: 13px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+@media (max-width: 520px) {
+  .body {
+    padding: 24px 20px;
+  }
+  .actions > * {
+    flex: 1 1 100%;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(40%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal[open],
+  .sheet[open] {
+    animation: none;
+  }
+}

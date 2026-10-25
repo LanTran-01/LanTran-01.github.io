@@ -1,0 +1,58 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-h);
+  padding: 0 var(--gutter);
+  background: rgba(8, 8, 8, 0.82);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.wordmark {
+  padding: 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  color: var(--text);
+  text-decoration: none;
+  margin-right: -0.42em;
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  margin-right: -12px;
+}
+
+.aboutList {
+  display: grid;
+  gap: 16px;
+  margin: 4px 0 0;
+}
+
+.aboutList div {
+  display: grid;
+  gap: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.aboutList dt {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.aboutList dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #d4d4d4;
+}

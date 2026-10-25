@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Card object and reveal.
+   The card fills its slot. Corners are circular on a 2:3 card: 5.5% / 3.667%.
+   ========================================================================== */
+
+.card,
+.static {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 5.5% / 3.667%;
+}
+
+.card {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  perspective: 1400px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 340ms var(--ease-out);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 6px;
+}
+
+.static {
+  overflow: hidden;
+  container: card / inline-size;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02), 0 14px 34px rgba(0, 0, 0, 0.55);
+}
+
+.shadow {
+  position: absolute;
+  inset: 5% 7% -1%;
+  border-radius: inherit;
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.75),
+    0 3px 10px rgba(0, 0, 0, 0.55);
+  opacity: 0.5;
+  transition:
+    opacity 340ms var(--ease-out),
+    transform 340ms var(--ease-out);
+}
+
+.flipper {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  container: card / inline-size;
+}
+
+.front {
+  transform: rotateY(180deg);
+}
+
+.frontInner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.frontInner[data-reversed] {
+  transform: rotate(180deg);
+}
+
+/* A slow silver sheen crosses the back on hover, inviting the reveal. */
+.back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, transparent 38%, rgba(214, 219, 226, 0.08) 50%, transparent 62%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    background-position 1100ms var(--ease-out),
+    opacity 400ms ease;
+}
+
+/* ---- states ------------------------------------------------------------- */
+
+.card[data-status="revealed"] .flipper {
+  transform: rotateY(180deg);
+}
+
+.card[data-status="revealing"] {
+  cursor: default;
+  z-index: 3;
+}
+
+.card[data-status="revealing"] .flipper {
+  animation: reveal var(--reveal-ms) var(--ease-in-out) both;
+}
+
+.card[data-status="revealing"] .shadow {
+  animation: lift var(--reveal-ms) var(--ease-in-out) both;
+}
+
+@keyframes reveal {
+  0% {
+    transform: translateY(0) scale(1) rotateY(0deg);
+  }
+  24% {
+    transform: translateY(-6%) scale(1.045) rotateY(0deg);
+  }
+  76% {
+    transform: translateY(-6%) scale(1.045) rotateY(180deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotateY(180deg);
+  }
+}
+
+@keyframes lift {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: none;
+  }
+  24%,
+  76% {
+    opacity: 1;
+    transform: translateY(7%) scale(0.95);
+  }
+}
+
+.card[data-selected]::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid var(--accent-line);
+  border-radius: 9% / 6%;
+  pointer-events: none;
+  animation: ring-in 360ms var(--ease-out);
+}
+
+@keyframes ring-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@media (hover: hover) {
+  .card[data-status="hidden"]:hover {
+    transform: translateY(-5px);
+  }
+  .card[data-status="hidden"]:hover .shadow {
+    opacity: 0.95;
+    transform: translateY(4%);
+  }
+  .card[data-status="hidden"]:hover .back::after {
+    opacity: 1;
+    background-position: 0 0;
+  }
+  .card[data-status="revealed"]:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.card[data-status="hidden"]:focus-visible .back::after {
+  opacity: 1;
+  background-position: 0 0;
+}
+
+/* Reduced motion: no lift or rotation; the face cross-fades in place. */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  .card[data-status="revealing"] .flipper {
+    animation: none;
+    transform: rotateY(180deg);
+  }
+  .card[data-status="revealing"] .front {
+    animation: fade-in var(--reveal-ms) linear both;
+  }
+  .card[data-status="revealing"] .shadow,
+  .card[data-selected]::after {
+    animation: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

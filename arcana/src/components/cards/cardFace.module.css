@@ -1,0 +1,33 @@
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.numeral,
+.title {
+  font-family: var(--font-sans);
+  text-anchor: middle;
+  fill: #e6e6e6;
+}
+
+.numeral {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 2.6px;
+  fill: #b9bec6;
+}
+
+.title {
+  font-size: 9.2px;
+  font-weight: 500;
+  letter-spacing: 2.1px;
+}
+
+/* At thumbnail sizes the in-card text would be illegible; the label beside
+   the card carries the name instead. The card face is a size container. */
+@container card (max-width: 128px) {
+  .meta {
+    display: none;
+  }
+}

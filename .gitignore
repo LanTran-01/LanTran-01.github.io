@@ -1,4 +1,7 @@
 explorer/node_modules/
 explorer/dist/
 explorer/.harness-shots/
+arcana/node_modules/
+arcana/dist/
+arcana/.shots/
 .DS_Store
