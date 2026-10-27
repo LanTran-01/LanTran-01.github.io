@@ -1,5 +1,6 @@
 import { COMPONENTS } from "@/data/components";
 import type { ComponentSpec } from "@/data/types";
+import { MACHINE } from "@/data/machine";
 import { BasisTag } from "./BasisTag";
 import { SectionHead } from "./SectionHead";
 import { pad2 } from "./labels";
@@ -9,10 +10,10 @@ export function BasisLegend() {
   return (
     <div className={s.legend} aria-label="Data basis legend">
       <span>
-        <BasisTag basis="reference" /> broadly published
+        <BasisTag basis="reference" /> {MACHINE.basis.reference.legend}
       </span>
       <span>
-        <BasisTag basis="conceptual" /> invented for this study
+        <BasisTag basis="conceptual" /> {MACHINE.basis.conceptual.legend}
       </span>
     </div>
   );

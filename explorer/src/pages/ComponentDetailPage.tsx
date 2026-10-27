@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { COMPONENTS, adjacentComponent, getComponentBySlug } from "@/data/components";
 import type { ComponentSpec } from "@/data/types";
+import { TERMS, capitalize, modeLabel } from "@/data/machine";
 import { Panel } from "@/components/layout/Panel";
 import { BottomSheet } from "@/components/layout/BottomSheet";
 import { PeekButton, SheetPeek } from "@/components/layout/SheetPeek";
@@ -23,11 +24,11 @@ function DesktopDetail({ spec }: { spec: ComponentSpec }) {
   useViewInset(rail, "left");
   return (
     <>
-      <Panel ref={rail} as="aside" side="left" className={layout.rail} aria-label="Assemblies">
+      <Panel ref={rail} as="aside" side="left" className={layout.rail} aria-label={capitalize(TERMS.parts)}>
         <ComponentIndex variant="rail" />
-        <Link to="/" className={layout.railBack} title="Back to full machine (Esc)">
+        <Link to="/" className={layout.railBack} title={`Back to full ${TERMS.whole} (Esc)`}>
           <ArrowLeftIcon size={14} />
-          <span className={layout.railBackText}>Full machine</span>
+          <span className={layout.railBackText}>Full {TERMS.whole}</span>
         </Link>
       </Panel>
       <InspectionPanel spec={spec} />
@@ -57,17 +58,17 @@ function MobileDetail({ spec }: { spec: ComponentSpec }) {
           onToggle={() => setOpen(!open)}
           kicker={
             <>
-              {String(index).padStart(2, "0")}/{COMPONENTS.length} · {spec.prefix} · {mode}
+              {String(index).padStart(2, "0")}/{COMPONENTS.length} · {spec.prefix} · {modeLabel(mode).toLowerCase()}
             </>
           }
           title={spec.name}
           before={
-            <PeekButton label={`Previous assembly: ${prev.name}`} onClick={() => navigate(`/explore/${prev.slug}`)}>
+            <PeekButton label={`Previous ${TERMS.part}: ${prev.name}`} onClick={() => navigate(`/explore/${prev.slug}`)}>
               <ChevronLeftIcon />
             </PeekButton>
           }
           after={
-            <PeekButton label={`Next assembly: ${next.name}`} onClick={() => navigate(`/explore/${next.slug}`)}>
+            <PeekButton label={`Next ${TERMS.part}: ${next.name}`} onClick={() => navigate(`/explore/${next.slug}`)}>
               <ChevronRightIcon />
             </PeekButton>
           }
@@ -75,8 +76,8 @@ function MobileDetail({ spec }: { spec: ComponentSpec }) {
       }
       tabs={[
         {
-          id: "assemblies",
-          label: "Assemblies",
+          id: TERMS.parts,
+          label: capitalize(TERMS.parts),
           content: <ComponentIndex onNavigate={() => setOpen(false)} />,
         },
         {

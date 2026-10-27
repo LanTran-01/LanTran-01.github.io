@@ -47,6 +47,10 @@
   border-top: 2px solid var(--flow-propellant);
 }
 
+.flow[data-kind="rf"] .swatch {
+  border-top: 2px dotted var(--flow-rf);
+}
+
 .arrow {
   margin-top: 6px;
   fill: none;
@@ -127,8 +131,66 @@
   color: var(--text-faint);
 }
 
+/* Collapsible engineering notes: closed by default, one line each. */
+.details {
+  border-top: 1px solid var(--line);
+}
+
+.detail {
+  border-bottom: 1px solid var(--line);
+}
+
+.detailSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  min-height: 34px;
+  padding: 0 var(--s-1);
+  font-size: var(--fs-sm);
+  color: var(--text-mid);
+  cursor: pointer;
+  list-style: none;
+  transition:
+    color var(--dur-fast),
+    background-color var(--dur-fast);
+}
+
+.detailSummary::-webkit-details-marker {
+  display: none;
+}
+
+.detailSummary:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.detailIcon {
+  flex: none;
+  color: var(--text-faint);
+  transition: transform var(--dur-mid) var(--ease-mech);
+}
+
+.detail[open] .detailIcon {
+  transform: rotate(90deg);
+  color: var(--accent);
+}
+
+.detail[open] .detailSummary {
+  color: var(--text);
+}
+
+.detailBody {
+  margin: 0;
+  padding: 0 var(--s-1) var(--s-3);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+
 @media (pointer: coarse) {
-  .relatedLink {
+  .relatedLink,
+  .detailSummary {
     min-height: 40px;
   }
 }

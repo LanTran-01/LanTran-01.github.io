@@ -1,27 +1,20 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Ξ Hardware Explorer — RX-105 Inspection Prototype</title>
-    <meta name="description" content="An interactive engineering-style explorer for a procedural prototype of the RX-105 Ξ Gundam: select assemblies, cut away armor, explode subassemblies and trace a conceptual systems architecture." />
-    <meta name="theme-color" content="#07080a" />
-    <link rel="icon" href="/gundam/favicon.svg" type="image/svg+xml" />
-    <script>
-      // GitHub Pages deep links arrive via 404.html as /gundam/?redirect=<path>. Restore
-      // the real URL before the router starts (see scripts/publish.mjs).
-      (function () {
-        var r = new URLSearchParams(location.search).get("redirect");
-        if (r && r.charAt(0) === "/" && r.charAt(1) !== "/") history.replaceState(null, "", r);
-      })();
-    </script>
-    <script type="module" crossorigin src="/gundam/static/index-3VbFJJ6R.js"></script>
-    <link rel="modulepreload" crossorigin href="/gundam/static/three-D5yV4XXU.js">
-    <link rel="modulepreload" crossorigin href="/gundam/static/r3f-0Gaiflc1.js">
-    <link rel="stylesheet" crossorigin href="/gundam/static/index-B4LdWSvM.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <noscript>This explorer is an interactive 3D application and needs JavaScript and WebGL.</noscript>
-  </body>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Moved to /tech/gundam/</title>
+<link rel="canonical" href="/tech/gundam/" />
+<meta name="robots" content="noindex" />
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#080808;color:#a6a6a6;font:14px system-ui,sans-serif}a{color:#f5f5f5}</style>
+<script>
+  (function () {
+    var r = new URLSearchParams(location.search).get("redirect");
+    if (r && /^\/gundam(\/|$)/.test(r)) location.replace("/tech/gundam/?redirect=" + encodeURIComponent("/tech" + r));
+    else location.replace("/tech/gundam/" + location.search + location.hash);
+  })();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=/tech/gundam/" /></noscript>
+</head>
+<body><p><a href="/tech/gundam/">The Ξ Hardware Explorer has moved to /tech/gundam/</a></p></body>
 </html>

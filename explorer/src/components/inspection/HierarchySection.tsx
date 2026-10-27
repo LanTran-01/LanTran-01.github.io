@@ -2,7 +2,8 @@ import { useMemo, useRef, type KeyboardEvent } from "react";
 import { countSubassemblies, findSubassembly, subassemblySubtreeIds } from "@/data/components";
 import type { ComponentSpec, Subassembly } from "@/data/types";
 import { useExplorerStore } from "@/state/explorerStore";
-import { isModeSupported, useSelectedCapabilities } from "@/hooks/useInspectionModes";
+import { isModeSupported, useModeCapabilities, useSelectedCapabilities } from "@/hooks/useInspectionModes";
+import { MACHINE, TERMS } from "@/data/machine";
 import { CloseIcon } from "@/components/layout/Icons";
 import { LayerTag } from "./BasisTag";
 import { SectionHead } from "./SectionHead";
@@ -12,7 +13,7 @@ import t from "./HierarchySection.module.css";
 
 /** Toggle a subassembly; reveal internals by switching exterior → cutaway when possible. */
 function useSelectSubassembly() {
-  const caps = useSelectedCapabilities();
+  const caps = useModeCapabilities();
   return (node: Subassembly) => {
     const st = useExplorerStore.getState();
     if (st.selectedSubassembly === node.id) {
@@ -83,6 +84,10 @@ function TreeNode({ node, inSelection, modelled, onSelect }: NodeProps) {
   );
 }
 
+const cutawayLabel = (MACHINE.modes.list.find((m) => m.id === "cutaway")?.label ?? "Cutaway").toLowerCase();
+/** "cutaway", or "internal view" for machines that call the mode "Internal". */
+const CUTAWAY_NAME = cutawayLabel === "internal" ? "internal view" : cutawayLabel;
+
 /** C — hardware hierarchy tree plus the selected subassembly's detail. */
 export function HierarchySection({ spec }: { spec: ComponentSpec }) {
   const selectedId = useExplorerStore((st) => st.selectedSubassembly);
@@ -131,15 +136,11 @@ export function HierarchySection({ spec }: { spec: ComponentSpec }) {
       </div>
 
       <div className={t.legend} aria-hidden="true">
-        <span>
-          <LayerTag layer="armor" /> armor
-        </span>
-        <span>
-          <LayerTag layer="frame" /> frame
-        </span>
-        <span>
-          <LayerTag layer="internal" /> internal
-        </span>
+        {(["armor", "frame", "internal"] as const).map((layer) => (
+          <span key={layer}>
+            <LayerTag layer={layer} /> {MACHINE.layers[layer].long.toLowerCase()}
+          </span>
+        ))}
         {modelled && modelled.size > 0 && (
           <span className={t.absentKey}>
             <span className={t.absentMark} /> not modelled
@@ -179,7 +180,7 @@ export function HierarchySection({ spec }: { spec: ComponentSpec }) {
                   </button>
                 ) : (
                   <>
-                    <span className={t.code}>{spec.prefix}-000</span> {spec.shortName} assembly
+                    <span className={t.code}>{spec.prefix}-000</span> {spec.shortName} {TERMS.part}
                   </>
                 )}
               </dd>
@@ -193,7 +194,9 @@ export function HierarchySection({ spec }: { spec: ComponentSpec }) {
           </dl>
         </div>
       ) : (
-        <p className={s.note}>Select a node to isolate it in the 3D view. Internal nodes open the cutaway.</p>
+        <p className={s.note}>
+          Select a node to isolate it in the 3D view. Internal nodes open the {CUTAWAY_NAME}.
+        </p>
       )}
     </section>
   );

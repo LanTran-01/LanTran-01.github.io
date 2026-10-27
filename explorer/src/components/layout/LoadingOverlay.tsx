@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useExplorerStore } from "@/state/explorerStore";
 import { useWebGLSupport } from "@/hooks/useWebGLSupport";
+import { MACHINE, TERMS } from "@/data/machine";
 import styles from "./LoadingOverlay.module.css";
 
 /**
@@ -24,9 +25,9 @@ export function LoadingOverlay() {
           WEBGL 2 UNAVAILABLE
         </p>
         <p className={styles.text}>
-          This browser or device cannot create a WebGL 2 context, so the 3D machine cannot be drawn. The assembly
-          index, inspection data and systems map still work. Try a current desktop browser with hardware acceleration
-          enabled.
+          This browser or device cannot create a WebGL 2 context, so the 3D {TERMS.whole} cannot be drawn. The{" "}
+          {TERMS.part} index, inspection data and systems map still work. Try a current desktop browser with hardware
+          acceleration enabled.
         </p>
       </div>
     );
@@ -52,7 +53,7 @@ export function LoadingOverlay() {
           <span className={styles.fill} style={{ transform: `scaleX(${pct / 100})` }} />
         </div>
         <div className={styles.meta} aria-hidden="true">
-          <span>{status.source === "gltf" ? "RX-105 · GLB" : "RX-105 · PROCEDURAL"}</span>
+          <span>{`${MACHINE.designation} · ${status.source === "gltf" ? "GLB" : "PROCEDURAL"}`}</span>
           <span className={styles.pct}>{String(pct).padStart(3, "0")}%</span>
         </div>
       </div>

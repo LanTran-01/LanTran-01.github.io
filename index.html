@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Lan Tran</title>
-    <meta name="description" content="Interactive projects by Lan Tran: the Ξ Gundam hardware explorer and ARCANA, a minimalist tarot instrument." />
+    <meta name="description" content="Interactive projects by Lan Tran. Tech: the Ξ Gundam hardware explorer and a CubeSat systems explorer. Tarot: ARCANA, a minimalist tarot instrument." />
     <meta name="theme-color" content="#080808" />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -18,7 +18,14 @@
     <header class="nav">
       <a class="brand" href="./" aria-label="Lan Tran, home">LAN TRAN</a>
       <nav class="links" aria-label="Projects">
-        <a href="#gundam">Gundam</a>
+        <div class="menu">
+          <a class="menu-trigger" href="#tech" aria-describedby="tech-menu-label">Tech</a>
+          <div class="menu-panel">
+            <p class="menu-label" id="tech-menu-label">Interactive technical projects</p>
+            <a href="#gundam"><span class="menu-idx">01</span>Ξ Gundam</a>
+            <a href="#cubesat"><span class="menu-idx">02</span>CubeSat</a>
+          </div>
+        </div>
         <a href="#tarot">Tarot</a>
       </nav>
       <a class="nav-end" href="https://github.com/LanTran-01" rel="noopener">GitHub</a>
@@ -27,25 +34,51 @@
     <main>
       <h1 class="visually-hidden">Lan Tran: projects</h1>
 
-      <section class="panel" id="gundam" aria-labelledby="gundam-title">
-        <picture class="media">
-          <source media="(max-aspect-ratio: 4/5)" srcset="assets/img/gundam-portrait.jpg" />
-          <img src="assets/img/gundam.jpg" alt="The white RX-105 Ξ Gundam prototype standing on a dark grid floor" width="2400" height="1500" fetchpriority="high" />
-        </picture>
-        <div class="copy">
-          <h2 id="gundam-title">Ξ Gundam</h2>
-          <p>Interactive Hardware Explorer</p>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="/gundam/">Launch Explorer</a>
-          <a class="btn secondary" href="/gundam/systems">Systems Map</a>
-        </div>
-        <a class="next" href="#tarot" aria-label="Next project: Arcana">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </a>
-      </section>
+      <div class="group" id="tech" role="region" aria-labelledby="tech-title">
+        <h2 id="tech-title" class="visually-hidden">Tech</h2>
+
+        <section class="panel" id="gundam" aria-labelledby="gundam-title">
+          <picture class="media">
+            <source media="(max-aspect-ratio: 4/5)" srcset="assets/img/gundam-portrait.jpg" />
+            <img src="assets/img/gundam.jpg" alt="The white RX-105 Ξ Gundam prototype standing on a dark grid floor" width="2400" height="1500" fetchpriority="high" />
+          </picture>
+          <div class="copy">
+            <p class="eyebrow">Tech · 01</p>
+            <h3 id="gundam-title">Ξ Gundam</h3>
+            <p>Interactive Hardware Explorer</p>
+          </div>
+          <div class="actions">
+            <a class="btn primary" href="/tech/gundam/">Launch Explorer</a>
+            <a class="btn secondary" href="/tech/gundam/systems">Systems Map</a>
+          </div>
+          <a class="next" href="#cubesat" aria-label="Next project: CubeSat">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </a>
+        </section>
+
+        <section class="panel" id="cubesat" aria-labelledby="cubesat-title">
+          <picture class="media">
+            <source media="(max-aspect-ratio: 4/5)" srcset="assets/img/cubesat-portrait.jpg" />
+            <img src="assets/img/cubesat.jpg" alt="An illustrative 3U CubeSat with two deployed solar wings and tape antennas, floating above a dark grid floor" width="2400" height="1500" loading="lazy" />
+          </picture>
+          <div class="copy">
+            <p class="eyebrow">Tech · 02</p>
+            <h3 id="cubesat-title">CubeSat</h3>
+            <p>Satellite Systems Explorer</p>
+          </div>
+          <div class="actions">
+            <a class="btn primary" href="/tech/cubesat/">Launch Explorer</a>
+            <a class="btn secondary" href="/tech/cubesat/systems">Systems Map</a>
+          </div>
+          <a class="next" href="#tarot" aria-label="Next project: Arcana">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </a>
+        </section>
+      </div>
 
       <section class="panel" id="tarot" aria-labelledby="tarot-title">
         <picture class="media">
@@ -62,7 +95,8 @@
         </div>
         <footer class="foot">
           <span>Lan Tran © 2026</span>
-          <a href="/gundam/">Gundam</a>
+          <a href="/tech/gundam/">Gundam</a>
+          <a href="/tech/cubesat/">CubeSat</a>
           <a href="/tarot/">Tarot</a>
           <a href="https://github.com/LanTran-01" rel="noopener">GitHub</a>
         </footer>

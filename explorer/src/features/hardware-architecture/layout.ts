@@ -1,4 +1,5 @@
-import type { SystemLane, SystemNode } from "@/data/types";
+import { COLUMNS } from "@/data/subsystems";
+import type { SystemColumn, SystemNode } from "@/data/types";
 import type { VisibleNode } from "./graph";
 
 /**
@@ -22,18 +23,9 @@ export const METRICS = {
   headerH: 70,
 } as const;
 
-export interface ColumnDef {
-  index: number;
-  title: string;
-  lanes: SystemLane[];
-}
-
-export const COLUMNS: ColumnDef[] = [
-  { index: 0, title: "Power", lanes: ["power"] },
-  { index: 1, title: "Inputs", lanes: ["sensing", "cockpit"] },
-  { index: 2, title: "Computing", lanes: ["computing"] },
-  { index: 3, title: "Outputs", lanes: ["actuation", "propulsion", "weapons"] },
-];
+/** Columns come from the machine's systems data. */
+export type ColumnDef = SystemColumn;
+export { COLUMNS };
 
 export const MAX_COL = COLUMNS.length - 1;
 

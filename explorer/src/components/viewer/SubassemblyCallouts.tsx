@@ -5,8 +5,8 @@ import { subassemblySubtreeIds } from "@/data/components";
 import { calloutItems } from "./calloutItems";
 import type { ComponentId, Subassembly } from "@/data/types";
 import { useExplorerStore, type ViewInsets } from "@/state/explorerStore";
-import type { ViewerModelIndex } from "@/features/gundam/annotateModel";
-import { MaterialController } from "@/features/gundam/materialController";
+import type { ViewerModelIndex } from "@/features/model/annotateModel";
+import { MaterialController } from "@/features/model/materialController";
 import { viewerRuntime } from "./viewerRuntime";
 import styles from "./Viewer.module.css";
 

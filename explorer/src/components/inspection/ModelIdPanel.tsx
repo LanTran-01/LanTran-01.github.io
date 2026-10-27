@@ -1,5 +1,6 @@
 import { COMPONENTS, TOTAL_SUBASSEMBLIES } from "@/data/components";
 import { modelConfig } from "@/data/modelConfig";
+import { MACHINE, TERMS, capitalize } from "@/data/machine";
 import { useExplorerStore } from "@/state/explorerStore";
 import { BasisTag, ProtoTag } from "./BasisTag";
 import { SectionHead } from "./SectionHead";
@@ -11,27 +12,30 @@ export function ModelIdPanel() {
   const fellBack = status.state === "ready" && status.source === "procedural" && modelConfig.source === "gltf";
   const modelLabel = fellBack ? "Procedural prototype (GLB fallback)" : modelConfig.label;
   const prototype = modelConfig.isPrototype || fellBack;
+  const { identity } = MACHINE;
 
   return (
     <section className={styles.id} aria-labelledby="model-id-title">
-      <SectionHead title="Machine identification" aside="ID-00" />
-      <p className={styles.designation}>RX-105</p>
+      <SectionHead title={`${capitalize(TERMS.whole)} identification`} aside="ID-00" />
+      <p className={styles.designation}>{identity.designation}</p>
       <h1 id="model-id-title" className={styles.name}>
-        <span className={styles.xi}>Ξ</span> GUNDAM
+        {identity.glyph && (
+          <>
+            <span className={styles.xi}>{identity.glyph}</span>{" "}
+          </>
+        )}
+        {identity.name}
       </h1>
-      <p className={styles.source}>Mobile Suit Gundam: Hathaway</p>
+      <p className={styles.source}>{identity.source}</p>
 
       <dl className={styles.rows}>
-        <div className={styles.row}>
-          <dt>Flight system</dt>
-          <dd>Minovsky flight system</dd>
-          <BasisTag basis="reference" />
-        </div>
-        <div className={styles.row}>
-          <dt>Pilot</dt>
-          <dd>Single</dd>
-          <BasisTag basis="reference" />
-        </div>
+        {identity.rows.map((row) => (
+          <div key={row.label} className={styles.row}>
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+            <BasisTag basis={row.basis} />
+          </div>
+        ))}
         <div className={styles.row}>
           <dt>Model</dt>
           <dd>{modelLabel}</dd>
@@ -41,7 +45,7 @@ export function ModelIdPanel() {
 
       <dl className={styles.stats}>
         <div>
-          <dt>Assemblies</dt>
+          <dt>{capitalize(TERMS.parts)}</dt>
           <dd>{String(COMPONENTS.length).padStart(2, "0")}</dd>
         </div>
         <div>
@@ -51,16 +55,13 @@ export function ModelIdPanel() {
         <div>
           <dt>Internals</dt>
           <dd className={styles.statWord}>
-            Conceptual <span className="visually-hidden">(not canon)</span>
+            {identity.internals} <span className="visually-hidden">{identity.internalsNote}</span>
           </dd>
         </div>
       </dl>
 
       {prototype && (
-        <p className={styles.disclosure}>
-          Silhouette study built from primitives — not an accurate or licensed model. Internal hardware is a conceptual
-          visualization, not canon.
-        </p>
+        <p className={styles.disclosure}>{identity.disclosure}</p>
       )}
     </section>
   );

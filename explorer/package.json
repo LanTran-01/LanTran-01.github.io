@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:cubesat": "MACHINE=cubesat vite",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && MACHINE=cubesat vite build",
+    "build:gundam": "vite build",
+    "build:cubesat": "MACHINE=cubesat vite build",
     "preview": "vite preview",
+    "preview:cubesat": "MACHINE=cubesat vite preview",
     "publish:site": "node ../scripts/publish-site.mjs",
     "shot": "node scripts/shot.mjs"
   },

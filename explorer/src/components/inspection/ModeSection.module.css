@@ -4,6 +4,10 @@
   border: 1px solid var(--line-mid);
 }
 
+.segmented[data-count="3"] {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .seg {
   position: relative;
   display: flex;

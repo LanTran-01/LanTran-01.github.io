@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 import { useMediaQuery, MOBILE_QUERY } from "@/hooks/useMediaQuery";
 import { useViewInset } from "@/hooks/useViewInset";
 import { formatDegrees, useCameraTelemetry } from "@/hooks/useCameraTelemetry";
+import { MACHINE } from "@/data/machine";
 import { AboutDialog } from "./AboutDialog";
 import styles from "./TopBar.module.css";
 
@@ -59,14 +60,14 @@ export function TopBar() {
 
   return (
     <header ref={ref} className={styles.bar}>
-      <Link to="/" className={styles.brand} aria-label="Ξ Hardware Explorer — full machine overview">
+      <Link to="/" className={styles.brand} aria-label={MACHINE.brand.label}>
         <span className={styles.glyph} aria-hidden="true">
-          Ξ
+          {MACHINE.brand.glyph}
         </span>
-        <span className={styles.wordmark}>{mobile ? "XI EXPLORER" : "XI HARDWARE EXPLORER"}</span>
+        <span className={styles.wordmark}>{mobile ? MACHINE.brand.wordmarkShort : MACHINE.brand.wordmark}</span>
       </Link>
-      <span className={styles.badge} title="Procedural prototype silhouette — not an accurate or licensed model">
-        {mobile ? "PROTO" : "PROTOTYPE MODEL"}
+      <span className={styles.badge} title={MACHINE.badge.title}>
+        {mobile ? MACHINE.badge.short : MACHINE.badge.text}
       </span>
 
       <nav className={styles.nav} aria-label="Primary">
@@ -97,7 +98,7 @@ export function TopBar() {
       {!mobile && (
         <div className={styles.right}>
           <CameraBearing />
-          <span className={styles.designation}>RX-105</span>
+          <span className={styles.designation}>{MACHINE.designation}</span>
         </div>
       )}
 

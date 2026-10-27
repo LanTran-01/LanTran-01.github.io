@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { getComponent } from "@/data/components";
+import { MACHINE, MACHINE_SCOPE, modeLabel as labelOf } from "@/data/machine";
 import type { ComponentId } from "@/data/types";
 import { useExplorerStore, type ModelStatus } from "@/state/explorerStore";
 import { useViewInset } from "@/hooks/useViewInset";
@@ -11,7 +12,7 @@ function assemblyCode(id: ComponentId | null): string {
 }
 
 function ModelState({ status }: { status: ModelStatus }) {
-  const source = status.source === "gltf" ? "GLB MODEL" : "PROCEDURAL PROTOTYPE";
+  const source = status.source === "gltf" ? "GLB MODEL" : MACHINE.proceduralLabel;
   if (status.state === "loading") {
     const pct = Math.round(Math.min(1, Math.max(0, status.progress)) * 100);
     return (
@@ -103,14 +104,16 @@ export function StatusBar() {
   const mode = useExplorerStore((s) => s.mode);
   const status = useExplorerStore((s) => s.modelStatus);
 
-  const modeLabel = view === "systems" ? "SYSTEMS" : selected ? mode.toUpperCase() : "OVERVIEW";
+  // Machine-scope modes are visible on the overview too.
+  const showMode = selected || (MACHINE_SCOPE && mode !== "exterior");
+  const modeLabel = view === "systems" ? "SYSTEMS" : showMode ? labelOf(mode).toUpperCase() : "OVERVIEW";
 
   return (
     <footer ref={ref} className={styles.bar} aria-label="Status">
       <div className={styles.left}>
         <span className={styles.item}>
           <span className={styles.k}>MODE</span>
-          <span className={styles.v} data-accent={selected && view === "explorer" ? true : undefined}>
+          <span className={styles.v} data-accent={showMode && view === "explorer" ? true : undefined}>
             {modeLabel}
           </span>
         </span>
@@ -131,7 +134,7 @@ export function StatusBar() {
       </div>
       <div className={styles.right}>
         <CameraReadout />
-        <span className={styles.tag}>CONCEPTUAL VISUALIZATION</span>
+        <span className={styles.tag}>{MACHINE.statusTag}</span>
       </div>
     </footer>
   );

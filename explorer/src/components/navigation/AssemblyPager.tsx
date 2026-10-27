@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { COMPONENTS, adjacentComponent } from "@/data/components";
 import type { ComponentId } from "@/data/types";
+import { TERMS } from "@/data/machine";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/layout/Icons";
 import styles from "./AssemblyPager.module.css";
 
@@ -17,7 +18,7 @@ export function AssemblyPager({ current }: { current: ComponentId }) {
         type="button"
         className={styles.step}
         onClick={() => navigate(`/explore/${prev.slug}`)}
-        aria-label={`Previous assembly: ${prev.name}`}
+        aria-label={`Previous ${TERMS.part}: ${prev.name}`}
         aria-keyshortcuts="ArrowLeft"
       >
         <ChevronLeftIcon className={styles.icon} />
@@ -36,7 +37,7 @@ export function AssemblyPager({ current }: { current: ComponentId }) {
         className={styles.step}
         data-dir="next"
         onClick={() => navigate(`/explore/${next.slug}`)}
-        aria-label={`Next assembly: ${next.name}`}
+        aria-label={`Next ${TERMS.part}: ${next.name}`}
         aria-keyshortcuts="ArrowRight"
       >
         <span className={styles.stepText}>

@@ -2,6 +2,7 @@ import { useMemo, type Ref } from "react";
 import { FLOW_KINDS, LANES, getSystemNode, getSystemParent } from "@/data/subsystems";
 import { getComponent } from "@/data/components";
 import type { ComponentId } from "@/data/types";
+import { MACHINE, TERMS } from "@/data/machine";
 import { nodeFlows, type NodeFlow } from "@/features/hardware-architecture/graph";
 import { LANE_TONE } from "@/features/hardware-architecture/presentation";
 import { FlowSample } from "./Legend";
@@ -31,7 +32,7 @@ export function NodeDetail({ nodeId, onSelect, onClose, onPreviewAssembly, onOpe
         <div className={styles.headTop}>
           <span className={styles.code}>{node.code}</span>
           <span className={node.basis === "reference" ? styles.basisRef : styles.basis}>
-            {node.basis === "reference" ? "REF" : "CONCEPT"}
+            {MACHINE.basis[node.basis].short}
           </span>
           <button type="button" className={styles.close} onClick={onClose} aria-label="Close details (Esc)">
             <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
@@ -53,7 +54,7 @@ export function NodeDetail({ nodeId, onSelect, onClose, onPreviewAssembly, onOpe
           </div>
           <div>
             <dt>Basis</dt>
-            <dd>{node.basis === "reference" ? "Reference descriptor" : "Conceptual"}</dd>
+            <dd>{MACHINE.basis[node.basis].label}</dd>
           </div>
           {parent && (
             <div>
@@ -93,8 +94,9 @@ export function NodeDetail({ nodeId, onSelect, onClose, onPreviewAssembly, onOpe
 
         <section className={styles.section}>
           <h3 className={styles.sectionTitle}>
-            Linked 3D assemblies <span>{String(node.componentIds.length).padStart(2, "0")}</span>
+            Linked 3D {TERMS.parts} <span>{String(node.componentIds.length).padStart(2, "0")}</span>
           </h3>
+          {node.componentIds.length === 0 && <p className={styles.empty}>Outside the {TERMS.whole}; not modelled in 3D.</p>}
           <div className={styles.assemblies}>
             {node.componentIds.map((cid) => {
               const spec = getComponent(cid);
@@ -119,7 +121,7 @@ export function NodeDetail({ nodeId, onSelect, onClose, onPreviewAssembly, onOpe
           </div>
         </section>
 
-        <p className={styles.note}>Conceptual illustration — not official design data.</p>
+        <p className={styles.note}>{MACHINE.systems.note}</p>
       </div>
     </aside>
   );

@@ -9,8 +9,11 @@
   (function () {
     var path = location.pathname;
     var rest = location.search + location.hash;
-    if (/^\/(explore|systems)(\/|$)/.test(path)) path = "/gundam" + path;
-    if (path.indexOf("/gundam/") === 0) location.replace("/gundam/?redirect=" + encodeURIComponent(path + rest));
+    if (/^\/(explore|systems)(\/|$)/.test(path)) path = "/tech/gundam" + path;
+    else if (/^\/(gundam|cubesat)(\/|$)/.test(path)) path = "/tech" + path;
+    var app = path.match(/^\/tech\/(gundam|cubesat)(\/|$)/);
+    if (app) location.replace("/tech/" + app[1] + "/?redirect=" + encodeURIComponent(path + rest));
+    else if (/^\/tech\/?$/.test(path)) location.replace("/#tech");
     else if (path.indexOf("/tarot/") === 0) location.replace("/tarot/" + location.hash);
     else location.replace("/");
   })();

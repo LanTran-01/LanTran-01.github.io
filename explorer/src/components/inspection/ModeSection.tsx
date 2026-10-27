@@ -2,11 +2,12 @@ import type { CSSProperties } from "react";
 import { useId } from "react";
 import type { ComponentSpec } from "@/data/types";
 import { useExplorerStore } from "@/state/explorerStore";
+import { MACHINE_SCOPE, TERMS } from "@/data/machine";
 import {
   INSPECTION_MODES,
   isModeSupported,
   unsupportedReason,
-  useSelectedCapabilities,
+  useModeCapabilities,
 } from "@/hooks/useInspectionModes";
 import { ResetViewButton } from "@/components/navigation/ResetViewButton";
 import { SectionHead } from "./SectionHead";
@@ -19,7 +20,7 @@ export function ModeSection({ spec }: { spec: ComponentSpec }) {
   const explode = useExplorerStore((st) => st.explode);
   const setMode = useExplorerStore((st) => st.setMode);
   const setExplode = useExplorerStore((st) => st.setExplode);
-  const caps = useSelectedCapabilities();
+  const caps = useModeCapabilities();
   const sliderId = useId();
 
   const unsupported = INSPECTION_MODES.filter((md) => !isModeSupported(md.id, caps));
@@ -34,8 +35,13 @@ export function ModeSection({ spec }: { spec: ComponentSpec }) {
 
   return (
     <section className={s.section} aria-labelledby="insp-b">
-      <SectionHead index="B" title="Inspection mode" id="insp-b" />
-      <div className={m.segmented} role="group" aria-label={`Inspection mode for ${spec.shortName}`}>
+      <SectionHead index="B" title="Inspection mode" id="insp-b" aside={MACHINE_SCOPE ? `WHOLE ${TERMS.whole.toUpperCase()}` : undefined} />
+      <div
+        className={m.segmented}
+        role="group"
+        aria-label={MACHINE_SCOPE ? `View mode for the ${TERMS.whole}` : `Inspection mode for ${spec.shortName}`}
+        data-count={INSPECTION_MODES.length}
+      >
         {INSPECTION_MODES.map((md) => {
           const supported = isModeSupported(md.id, caps);
           const active = mode === md.id;

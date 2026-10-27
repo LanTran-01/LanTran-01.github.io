@@ -1,6 +1,7 @@
 import { Box3, MathUtils, Sphere, Vector3, type PerspectiveCamera } from "three";
 import type { ViewInsets } from "@/state/explorerStore";
 import type { CameraHint } from "@/data/types";
+import { MACHINE } from "@/data/machine";
 
 /**
  * Camera framing maths. The rig shifts the projection centre into the free
@@ -20,8 +21,8 @@ export interface Viewport {
 }
 
 /** Overview direction: three-quarter front-left of the machine, slightly above. */
-export const OVERVIEW_AZIMUTH = MathUtils.degToRad(32);
-export const OVERVIEW_ELEVATION = MathUtils.degToRad(7);
+export const OVERVIEW_AZIMUTH = MathUtils.degToRad(MACHINE.stage.azimuth);
+export const OVERVIEW_ELEVATION = MathUtils.degToRad(MACHINE.stage.elevation);
 
 const MIN_FREE = 120;
 

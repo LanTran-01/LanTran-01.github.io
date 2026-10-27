@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useExplorerStore } from "@/state/explorerStore";
+import { MACHINE, TERMS } from "@/data/machine";
 import styles from "./InteractionHint.module.css";
 
-const STORAGE_KEY = "xi.hint.dismissed";
+const STORAGE_KEY = `${MACHINE.storagePrefix}.hint.dismissed`;
+const PART = `${/^[aeiou]/i.test(TERMS.part) ? "AN" : "A"} ${TERMS.part.toUpperCase()}`;
 const TIMEOUT_MS = 8000;
 
 let dismissed = (() => {
@@ -65,9 +67,9 @@ export function InteractionHint({ touch = false }: { touch?: boolean }) {
     >
       <span className={styles.tick} aria-hidden="true" />
       {touch ? (
-        <span>DRAG TO ROTATE · PINCH TO ZOOM · TAP AN ASSEMBLY</span>
+        <span>DRAG TO ROTATE · PINCH TO ZOOM · TAP {PART}</span>
       ) : (
-        <span>DRAG TO ROTATE · SCROLL TO ZOOM · CLICK AN ASSEMBLY</span>
+        <span>DRAG TO ROTATE · SCROLL TO ZOOM · CLICK {PART}</span>
       )}
       <span className={styles.tick} aria-hidden="true" />
     </div>

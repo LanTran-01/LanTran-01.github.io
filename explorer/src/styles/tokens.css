@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Design tokens — Ξ Hardware Explorer
+   Design tokens — shared by every machine explorer (Ξ Gundam, CubeSat)
    Near-black graphite, white/grey type, a single cool-cyan accent.
    Square corners (≤ 2px), hairline rules, small uppercase technical labels.
    ========================================================================== */
@@ -36,6 +36,7 @@
   --flow-data: #c9d3dd;
   --flow-control: #8fa6ba;
   --flow-propellant: #5d7385;
+  --flow-rf: #7fb9d9;
 
   /* status */
   --caution: #e6b45c;

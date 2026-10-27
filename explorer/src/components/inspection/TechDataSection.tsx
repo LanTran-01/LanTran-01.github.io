@@ -2,7 +2,8 @@ import { Link } from "react-router";
 import { countSubassemblies, getComponent } from "@/data/components";
 import { FLOW_KINDS, LANES, systemNodesForComponent } from "@/data/subsystems";
 import type { ComponentFlow, ComponentSpec } from "@/data/types";
-import { ArrowUpRightIcon } from "@/components/layout/Icons";
+import { MACHINE, TERMS, capitalize } from "@/data/machine";
+import { ArrowUpRightIcon, ChevronRightIcon } from "@/components/layout/Icons";
 import { BasisTag } from "./BasisTag";
 import { BasisLegend } from "./IdentificationSection";
 import { SectionHead } from "./SectionHead";
@@ -11,8 +12,8 @@ import s from "./inspection.module.css";
 import d from "./TechDataSection.module.css";
 
 const DIRECTION_TEXT: Record<ComponentFlow["direction"], string> = {
-  in: "into this assembly from",
-  out: "out of this assembly to",
+  in: `into this ${TERMS.part} from`,
+  out: `out of this ${TERMS.part} to`,
   both: "exchanged with",
 };
 
@@ -43,7 +44,7 @@ export function TechDataSection({ spec, withDescription = false }: { spec: Compo
       )}
       <dl className={s.rows}>
         <div className={s.row}>
-          <dt>Assembly ID</dt>
+          <dt>{capitalize(TERMS.part)} ID</dt>
           <dd className={s.mono}>{spec.designation}</dd>
         </div>
         <div className={s.row}>
@@ -59,6 +60,17 @@ export function TechDataSection({ spec, withDescription = false }: { spec: Compo
             </span>
           </dd>
         </div>
+        {spec.role && (
+          <div className={s.row}>
+            <dt>Role</dt>
+            <dd>
+              <span className={s.valueWithTag}>
+                <span>{spec.role}</span>
+                <BasisTag basis="conceptual" />
+              </span>
+            </dd>
+          </div>
+        )}
         <div className={s.row}>
           <dt>Interfaces</dt>
           <dd className={s.stack}>
@@ -107,8 +119,25 @@ export function TechDataSection({ spec, withDescription = false }: { spec: Compo
         ))}
       </ul>
       <p className={d.flowKey} aria-hidden="true">
-        Arrows read from this assembly · all flows conceptual
+        Arrows read from this {TERMS.part} · {MACHINE.flowsNote}
       </p>
+
+      {spec.details && spec.details.length > 0 && (
+        <>
+          <h3 className={s.subhead}>Engineering notes</h3>
+          <div className={d.details}>
+            {spec.details.map((note) => (
+              <details key={note.title} className={d.detail}>
+                <summary className={d.detailSummary}>
+                  <span>{note.title}</span>
+                  <ChevronRightIcon size={12} className={d.detailIcon} />
+                </summary>
+                <p className={d.detailBody}>{note.body}</p>
+              </details>
+            ))}
+          </div>
+        </>
+      )}
 
       <h3 className={s.subhead}>Inspection notes</h3>
       <ol className={s.notes}>

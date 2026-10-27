@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { adjacentComponent } from "@/data/components";
+import { MACHINE_SCOPE } from "@/data/machine";
 import { useExplorerStore } from "@/state/explorerStore";
 import { useExplorerNavigation } from "./useExplorerNavigation";
-import { INSPECTION_MODES, isModeSupported } from "./useInspectionModes";
+import { INSPECTION_MODES, isModeSupported, modeCapabilities } from "./useInspectionModes";
 
 const NON_TEXT_INPUTS = new Set(["range", "checkbox", "radio", "button", "submit", "reset"]);
 
@@ -24,8 +25,10 @@ function isDialogOpen(): boolean {
 /**
  * App-wide keys:
  *   Esc  clear sub-selection, else back to the full machine
+ *        (machine-scope modes: then back to the assembled exterior view)
  *   R    reset camera
- *   1–4  inspection modes (assembly selected, mode supported)
+ *   1–4  inspection modes (assembly selected, mode supported; anywhere in
+ *        the explorer when modes apply to the whole machine)
  *   ←/→  previous / next assembly on a detail page
  */
 export function useGlobalShortcuts() {
@@ -45,6 +48,9 @@ export function useGlobalShortcuts() {
         } else if (onDetail) {
           goHome();
           e.preventDefault();
+        } else if (MACHINE_SCOPE && s.view === "explorer" && s.mode !== "exterior") {
+          s.setMode("exterior");
+          e.preventDefault();
         }
         return;
       }
@@ -53,14 +59,14 @@ export function useGlobalShortcuts() {
         e.preventDefault();
         return;
       }
-      if (!onDetail || !s.selected) return;
-
-      const mode = INSPECTION_MODES.find((m) => m.key === e.key);
+      const modesActive = MACHINE_SCOPE ? s.view === "explorer" : onDetail;
+      const mode = modesActive ? INSPECTION_MODES.find((m) => m.key === e.key) : undefined;
       if (mode) {
-        if (isModeSupported(mode.id, s.capabilities[s.selected])) s.setMode(mode.id);
+        if (isModeSupported(mode.id, modeCapabilities(s.capabilities, s.selected))) s.setMode(mode.id);
         e.preventDefault();
         return;
       }
+      if (!onDetail || !s.selected) return;
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
         selectComponent(adjacentComponent(s.selected, e.key === "ArrowLeft" ? -1 : 1).id);
         e.preventDefault();
