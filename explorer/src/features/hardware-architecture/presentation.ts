@@ -1,36 +1,24 @@
-import { LANES } from "@/data/subsystems";
+import { FLOW_KINDS, LANES } from "@/data/subsystems";
 import type { FlowKind, SystemLane, SystemNode } from "@/data/types";
 import type { EdgeGeometry } from "./edgeGeometry";
 
 /**
- * Visual coding for lanes and flow kinds. Lanes use the accent family and
- * greys only; flow kinds vary by tone and dash pattern (tokens.css).
+ * Visual coding for lanes and flow kinds, defined per machine in its systems
+ * data. Lanes use the accent family and greys only; flow kinds vary by tone
+ * and dash pattern (tokens.css).
  */
 
-export const LANE_TONE: Record<SystemLane, string> = {
-  power: "var(--accent)",
-  sensing: "var(--flow-data)",
-  cockpit: "var(--text-dim)",
-  computing: "var(--accent-strong)",
-  actuation: "var(--flow-data)",
-  propulsion: "var(--flow-control)",
-  weapons: "var(--text-dim)",
-};
+const entries = <K extends string, V>(r: Record<K, V>) => Object.entries(r) as [K, V][];
 
-export const FLOW_STROKE: Record<FlowKind, string> = {
-  power: "var(--flow-power)",
-  data: "var(--flow-data)",
-  control: "var(--flow-control)",
-  propellant: "var(--flow-propellant)",
-};
+export const LANE_TONE = Object.fromEntries(entries(LANES).map(([k, v]) => [k, v.tone])) as Record<SystemLane, string>;
+
+export const FLOW_STROKE = Object.fromEntries(entries(FLOW_KINDS).map(([k, v]) => [k, v.stroke])) as Record<FlowKind, string>;
 
 /** SVG dash pattern per kind (undefined = solid). */
-export const FLOW_DASH: Record<FlowKind, string | undefined> = {
-  power: undefined,
-  data: undefined,
-  control: "5 3.5",
-  propellant: "0.1 3.6",
-};
+export const FLOW_DASH = Object.fromEntries(entries(FLOW_KINDS).map(([k, v]) => [k, v.dash])) as Record<
+  FlowKind,
+  string | undefined
+>;
 
 export function basisTag(n: SystemNode): string {
   return n.basis === "reference" ? "REF" : "CONCEPT";

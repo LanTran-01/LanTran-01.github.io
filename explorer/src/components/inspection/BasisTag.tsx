@@ -1,11 +1,9 @@
 import type { Basis, PartLayer } from "@/data/types";
+import { MACHINE } from "@/data/machine";
 import { LAYER_TEXT } from "./labels";
 import styles from "./tags.module.css";
 
-const BASIS_TEXT: Record<Basis, { short: string; title: string }> = {
-  reference: { short: "REF", title: "Reference — broad, non-numeric published descriptor" },
-  conceptual: { short: "CONCEPT", title: "Conceptual — invented for this visualization, not canon" },
-};
+const BASIS_TEXT: Record<Basis, { short: string; title: string }> = MACHINE.basis;
 
 export function BasisTag({ basis }: { basis: Basis }) {
   const t = BASIS_TEXT[basis];

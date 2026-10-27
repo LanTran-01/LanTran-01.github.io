@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { getComponent } from "@/data/components";
+import { MACHINE } from "@/data/machine";
 import { getSystemNode, getSystemParent } from "@/data/subsystems";
 import type { ComponentId, FlowKind } from "@/data/types";
 import {
@@ -371,9 +372,7 @@ export function SystemsPanel() {
             </button>
           )}
         </div>
-        <p className={styles.subtitle}>
-          Conceptual illustration of how the RX-105&rsquo;s subsystems could be organised &mdash; not official design data.
-        </p>
+        <p className={styles.subtitle}>{MACHINE.systems.subtitle}</p>
       </header>
 
       <div className={styles.toolbar}>

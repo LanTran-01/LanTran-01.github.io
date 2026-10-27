@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { COMPONENTS, countSubassemblies } from "@/data/components";
 import type { ComponentId } from "@/data/types";
+import { TERMS, capitalize } from "@/data/machine";
 import { useExplorerStore } from "@/state/explorerStore";
 import { SectionHead } from "@/components/inspection/SectionHead";
 import { ChevronRightIcon } from "@/components/layout/Icons";
@@ -24,7 +25,7 @@ const ROWS = COMPONENTS.map((c, i) => ({
 }));
 
 /**
- * The ten assemblies as a numbered list. Hovering or focusing a row highlights
+ * The machine's assemblies as a numbered list. Hovering or focusing a row highlights
  * the assembly in 3D (store.hovered); 3D hover is reflected back on the row.
  */
 export function ComponentIndex({ variant = "full", onNavigate }: ComponentIndexProps) {
@@ -54,9 +55,12 @@ export function ComponentIndex({ variant = "full", onNavigate }: ComponentIndexP
   const rail = variant === "rail";
 
   return (
-    <nav className={styles.index} data-variant={variant} aria-label="Assembly index">
+    <nav className={styles.index} data-variant={variant} aria-label={`${capitalize(TERMS.part)} index`}>
       <div className={styles.head}>
-        <SectionHead title={rail ? "Assemblies" : "Component index"} aside={rail ? undefined : "10 ASM"} />
+        <SectionHead
+          title={rail ? capitalize(TERMS.parts) : "Component index"}
+          aside={rail ? undefined : `${String(ROWS.length).padStart(2, "0")} ${TERMS.partsShort}`}
+        />
       </div>
       <ol className={styles.list}>
         {ROWS.map(({ spec, index, count }) => {

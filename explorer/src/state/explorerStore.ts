@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import type { ComponentId, InspectionMode } from "@/data/types";
-import type { ComponentCapabilities } from "@/features/gundam/modelTypes";
+import type { ComponentCapabilities } from "@/features/model/modelTypes";
 import type { ModelSource } from "@/data/modelConfig";
+import { MACHINE, MACHINE_SCOPE } from "@/data/machine";
 
 /**
  * Global explorer state.
@@ -11,6 +12,10 @@ import type { ModelSource } from "@/data/modelConfig";
  *    systems map is open (`/systems`). `RouteSync` mirrors it into `selected` /
  *    `view`. To select something, navigate (see hooks/useExplorerNavigation).
  *  - Everything else (hover, mode, explode amount, sub-selection) lives here.
+ *
+ * With machine-scope modes (MACHINE.modes.scope) the mode belongs to the whole
+ * model: it survives selection changes, and the exterior view switches to the
+ * internal one when the part being focused has nothing to show from outside.
  */
 
 export type ExplorerView = "explorer" | "systems";
@@ -68,6 +73,17 @@ export interface ExplorerState {
   setReducedMotion: (value: boolean) => void;
 }
 
+const HAS_INTERNAL_VIEW = MACHINE.modes.list.some((m) => m.id === "cutaway");
+
+/** Machine scope: leave the exterior view when every part to focus would be hidden in it. */
+function revealPatch(
+  s: Pick<ExplorerState, "mode" | "capabilities">,
+  ids: readonly ComponentId[],
+): Partial<ExplorerState> | null {
+  if (!MACHINE_SCOPE || !HAS_INTERNAL_VIEW || s.mode !== "exterior" || ids.length === 0) return null;
+  return ids.every((id) => s.capabilities[id]?.exterior === false) ? { mode: "cutaway" } : null;
+}
+
 const prefersReducedMotion =
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
@@ -92,12 +108,13 @@ export const useExplorerStore = create<ExplorerState>()((set, get) => ({
     const prev = get();
     if (prev.view === view && prev.selected === selected) return;
     const selectionChanged = prev.selected !== selected;
+    const reset = MACHINE_SCOPE
+      ? { selectedSubassembly: null, hoveredSubassembly: null, ...revealPatch(prev, selected ? [selected] : []) }
+      : { mode: "exterior" as InspectionMode, explode: 0, selectedSubassembly: null, hoveredSubassembly: null };
     set({
       view,
       selected,
-      ...(selectionChanged
-        ? { mode: "exterior" as InspectionMode, explode: 0, selectedSubassembly: null, hoveredSubassembly: null }
-        : null),
+      ...(selectionChanged ? reset : null),
       ...(view !== "systems" ? { systemsNode: null, linkedComponents: [], systemsComponent: null } : null),
     });
   },
@@ -116,9 +133,15 @@ export const useExplorerStore = create<ExplorerState>()((set, get) => ({
   setHoveredSubassembly: (id) => {
     if (get().hoveredSubassembly !== id) set({ hoveredSubassembly: id });
   },
-  setSystemsNode: (id, linked) => set({ systemsNode: id, linkedComponents: id ? linked : [] }),
+  setSystemsNode: (id, linked) =>
+    set({ systemsNode: id, linkedComponents: id ? linked : [], ...(id ? revealPatch(get(), linked) : null) }),
   setSystemsComponent: (systemsComponent) => set({ systemsComponent }),
-  setCapabilities: (capabilities) => set({ capabilities }),
+  setCapabilities: (capabilities) => {
+    // A deep link may select a part before the model has reported what it contains.
+    const s = get();
+    const focus = s.view === "systems" ? s.linkedComponents : s.selected ? [s.selected] : [];
+    set({ capabilities, ...revealPatch({ mode: s.mode, capabilities }, focus) });
+  },
   setModelStatus: (modelStatus) => set({ modelStatus }),
   setViewInsets: (insets) => {
     const v = get().viewInsets;

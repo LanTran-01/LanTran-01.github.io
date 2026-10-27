@@ -1,4 +1,4 @@
-import { SYSTEM_EDGES, SYSTEM_NODES, getSystemNode, getSystemParent } from "@/data/subsystems";
+import { FLOW_ORDER, SYSTEM_EDGES, SYSTEM_NODES, getSystemNode, getSystemParent } from "@/data/subsystems";
 import type { ComponentId, FlowKind, SystemEdge, SystemNode } from "@/data/types";
 
 /**
@@ -7,7 +7,7 @@ import type { ComponentId, FlowKind, SystemEdge, SystemNode } from "@/data/types
  * highlight set for a selection. No React, no DOM.
  */
 
-export const FLOW_ORDER: FlowKind[] = ["power", "data", "control", "propellant"];
+export { FLOW_ORDER };
 
 /** Ids of every top-level node that has children. */
 export const EXPANDABLE_IDS: string[] = SYSTEM_NODES.filter((n) => n.children?.length).map((n) => n.id);
@@ -191,7 +191,7 @@ export const FLOW_COUNTS: Record<FlowKind, number> = SYSTEM_EDGES.reduce(
     acc[e.kind] += 1;
     return acc;
   },
-  { power: 0, data: 0, control: 0, propellant: 0 } as Record<FlowKind, number>,
+  Object.fromEntries(FLOW_ORDER.map((k) => [k, 0])) as Record<FlowKind, number>,
 );
 
 /* ------------------------------------------------------------------ */

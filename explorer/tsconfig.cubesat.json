@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.cubesat.tsbuildinfo",
+    "paths": { "@/*": ["src/*"], "@machine/*": ["src/machines/cubesat/*"] }
+  },
+  "include": ["src", "harness"],
+  "exclude": ["src/machines/gundam"]
+}

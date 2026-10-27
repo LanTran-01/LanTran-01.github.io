@@ -5,8 +5,8 @@ import { findSubassembly, getComponent } from "@/data/components";
 import type { ComponentId } from "@/data/types";
 import { useExplorerStore } from "@/state/explorerStore";
 import { useExplorerNavigation } from "@/hooks/useExplorerNavigation";
-import { getPartTag, type PartTag } from "@/features/gundam/modelTypes";
-import type { MaterialController } from "@/features/gundam/materialController";
+import { getPartTag, type PartTag } from "@/features/model/modelTypes";
+import type { MaterialController } from "@/features/model/materialController";
 import { viewerRuntime } from "./viewerRuntime";
 
 /**

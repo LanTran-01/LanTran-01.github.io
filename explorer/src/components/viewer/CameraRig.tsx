@@ -4,12 +4,13 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { CameraControls } from "@react-three/drei";
 import type CameraControlsImpl from "camera-controls";
 import { getComponent } from "@/data/components";
-import { MODEL_HEIGHT } from "@/data/modelConfig";
+import { MACHINE, MACHINE_SCOPE } from "@/data/machine";
 import { useExplorerStore } from "@/state/explorerStore";
-import { cameraTelemetry } from "@/features/gundam/telemetry";
-import type { ViewerModelIndex } from "@/features/gundam/annotateModel";
+import { cameraTelemetry } from "@/features/model/telemetry";
+import type { ViewerModelIndex } from "@/features/model/annotateModel";
 import {
   OVERVIEW_AZIMUTH,
+  OVERVIEW_ELEVATION,
   applyViewOffset,
   componentFraming,
   overviewFraming,
@@ -21,6 +22,8 @@ import { viewerRuntime } from "./viewerRuntime";
 /**
  * Orbit camera (camera-controls) with damping, limits and a target boundary,
  * plus the programmatic moves: intro, overview, per-assembly framing, reset.
+ * With machine-scope modes, entering or leaving the exploded view refits the
+ * camera to the separated model from the current viewing angle.
  * Publishes low-rate camera telemetry for the HUD.
  */
 
@@ -28,9 +31,10 @@ const SMOOTH = 0.25;
 const INTRO_SMOOTH = 0.42;
 const TELEMETRY_INTERVAL = 0.1;
 
+const { stage } = MACHINE;
 /** Fallback bounds until the model is indexed. */
-const DEFAULT_BOUNDS = new Box3(new Vector3(-1.4, 0, -0.9), new Vector3(1.4, MODEL_HEIGHT, 0.9));
-const TARGET_BOUNDARY = new Box3(new Vector3(-3.5, 0.15, -3.5), new Vector3(3.5, MODEL_HEIGHT + 0.6, 3.5));
+const DEFAULT_BOUNDS = new Box3(new Vector3(...stage.defaultBounds[0]), new Vector3(...stage.defaultBounds[1]));
+const TARGET_BOUNDARY = new Box3(new Vector3(...stage.targetBoundary[0]), new Vector3(...stage.targetBoundary[1]));
 
 export function CameraRig({ model }: { model: ViewerModelIndex | null }) {
   const controls = useRef<CameraControlsImpl>(null);
@@ -43,6 +47,7 @@ export function CameraRig({ model }: { model: ViewerModelIndex | null }) {
   const insets = useExplorerStore((s) => s.viewInsets);
   const resetNonce = useExplorerStore((s) => s.cameraResetNonce);
   const reducedMotion = useExplorerStore((s) => s.reducedMotion);
+  const exploded = useExplorerStore((s) => MACHINE_SCOPE && s.mode === "exploded");
 
   const introDone = useRef(false);
   /** True once the user orbits/zooms after the last programmatic framing. */
@@ -52,20 +57,29 @@ export function CameraRig({ model }: { model: ViewerModelIndex | null }) {
 
   const computeFraming = useCallback((): Framing => {
     const vp = vpRef.current;
-    const bounds = model && !model.overall.isEmpty() ? model.overall : DEFAULT_BOUNDS;
     const s = useExplorerStore.getState();
+    // Machine scope: the exploded view is framed fully separated, so the slider never pushes parts out of view.
+    const sep = MACHINE_SCOPE && s.mode === "exploded";
+    const overall = model ? (sep ? model.overallExploded : model.overall) : null;
+    const bounds = overall && !overall.isEmpty() ? overall : DEFAULT_BOUNDS;
     if (s.view !== "systems" && s.selected && model) {
-      const b = model.bounds.get(s.selected);
+      const b = (sep ? model.explodedBounds : model.bounds).get(s.selected);
       if (b && !b.isEmpty()) return componentFraming(b, getComponent(s.selected).camera, camera, vp);
     }
-    return overviewFraming(bounds, camera, vp);
+    return overviewFraming(bounds, camera, vp, OVERVIEW_AZIMUTH, OVERVIEW_ELEVATION);
   }, [model, camera]);
 
   const frame = useCallback(
-    (animate: boolean) => {
+    (animate: boolean, keepAngle = false) => {
       const c = controls.current;
       if (!c) return;
       const { position: p, target: t } = computeFraming();
+      if (keepAngle) {
+        // Same distance and target, seen from where the camera is now.
+        const dir = c.getPosition(new Vector3()).sub(c.getTarget(new Vector3()));
+        const distance = p.distanceTo(t);
+        if (dir.lengthSq() > 1e-6) p.copy(t).addScaledVector(dir.normalize(), distance);
+      }
       const smooth = animate && !useExplorerStore.getState().reducedMotion;
       viewerRuntime.rigTransitioning = smooth;
       userMoved.current = false;
@@ -114,7 +128,7 @@ export function CameraRig({ model }: { model: ViewerModelIndex | null }) {
       camera,
       vpRef.current,
       OVERVIEW_AZIMUTH + MathUtils.degToRad(16),
-      MathUtils.degToRad(2.5),
+      OVERVIEW_ELEVATION - MathUtils.degToRad(4.5),
       1.4,
     );
     void c.setLookAt(f.position.x, f.position.y, f.position.z, f.target.x, f.target.y - 0.35, f.target.z, false);
@@ -135,6 +149,14 @@ export function CameraRig({ model }: { model: ViewerModelIndex | null }) {
     frame(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [model, framingKey, resetNonce]);
+
+  // Machine scope: separating or reassembling the model refits it without turning the camera.
+  const lastExploded = useRef(exploded);
+  useEffect(() => {
+    if (lastExploded.current === exploded) return;
+    lastExploded.current = exploded;
+    if (introDone.current) frame(true, true);
+  }, [exploded, frame]);
 
   // Panels opening / closing or a resize: re-fit unless the user has taken over.
   const layoutKey = `${size.width}x${size.height}|${insets.left},${insets.right},${insets.top},${insets.bottom}`;

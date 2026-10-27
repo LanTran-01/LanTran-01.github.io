@@ -1,16 +1,16 @@
 import { useEffect, useMemo } from "react";
 import { BackSide, BufferGeometry, Color, Float32BufferAttribute, ShaderMaterial } from "three";
 import { Grid } from "@react-three/drei";
-import { MODEL_HEIGHT } from "@/data/modelConfig";
+import { MACHINE } from "@/data/machine";
 
 /**
  * Technical floor: an infinite fine grid that fades with distance, a shadow
  * catcher, a measurement ring with angular ticks around the base, a height
- * ruler beside the machine, and a large backdrop with a faint horizon band.
+ * ruler beside the machine (when the machine has one), and a large backdrop with a faint horizon band.
  * Measurement marks are unlabelled scale cues, not dimensions.
  */
 
-const RING_R = 1.85;
+const RING_R = MACHINE.stage.ringRadius;
 
 function ringGeometry(): BufferGeometry {
   const pts: number[] = [];
@@ -35,11 +35,11 @@ function ringGeometry(): BufferGeometry {
   return g;
 }
 
-function rulerGeometry(): BufferGeometry {
-  const pts: number[] = [0, 0, 0, 0, MODEL_HEIGHT, 0];
-  const steps = MODEL_HEIGHT * 4;
+function rulerGeometry(height: number): BufferGeometry {
+  const pts: number[] = [0, 0, 0, 0, height, 0];
+  const steps = height * 4;
   for (let i = 0; i <= steps; i++) {
-    const y = (i / steps) * MODEL_HEIGHT;
+    const y = (i / steps) * height;
     const len = i % 4 === 0 ? 0.16 : i % 2 === 0 ? 0.09 : 0.045;
     pts.push(0, y, 0, len, y, 0);
   }
@@ -90,7 +90,7 @@ const poolFragment = /* glsl */ `
 
 export function Floor() {
   const ring = useMemo(ringGeometry, []);
-  const ruler = useMemo(rulerGeometry, []);
+  const ruler = useMemo(() => (MACHINE.stage.ruler ? rulerGeometry(MACHINE.stage.ruler) : null), []);
   const backdrop = useMemo(
     () =>
       new ShaderMaterial({
@@ -123,7 +123,7 @@ export function Floor() {
   useEffect(
     () => () => {
       ring.dispose();
-      ruler.dispose();
+      ruler?.dispose();
       backdrop.dispose();
       pool.dispose();
     },
@@ -164,9 +164,11 @@ export function Floor() {
         <lineBasicMaterial color="#63c7ff" transparent opacity={0.22} depthWrite={false} toneMapped={false} />
       </lineSegments>
 
-      <lineSegments geometry={ruler} position={[-2.35, 0.004, -1.1]} rotation-y={Math.PI * 0.12} renderOrder={1}>
-        <lineBasicMaterial color="#9aa4b0" transparent opacity={0.28} depthWrite={false} toneMapped={false} />
-      </lineSegments>
+      {ruler && (
+        <lineSegments geometry={ruler} position={[-2.35, 0.004, -1.1]} rotation-y={Math.PI * 0.12} renderOrder={1}>
+          <lineBasicMaterial color="#9aa4b0" transparent opacity={0.28} depthWrite={false} toneMapped={false} />
+        </lineSegments>
+      )}
     </group>
   );
 }

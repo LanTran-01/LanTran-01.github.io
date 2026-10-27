@@ -1,7 +1,8 @@
 import type { ComponentId, InspectionMode, PartLayer } from "@/data/types";
 import { subassemblySubtreeIds } from "@/data/components";
+import { MACHINE_SCOPE } from "@/data/machine";
 import type { ExplorerState } from "@/state/explorerStore";
-import type { PartTag } from "@/features/gundam/modelTypes";
+import type { PartTag } from "@/features/model/modelTypes";
 
 /**
  * Pure mapping from explorer state → per-mesh visual targets.
@@ -83,6 +84,7 @@ function revealsInternals(mode: InspectionMode): boolean {
 }
 
 export function computeTarget(tag: PartTag, v: VisualInputs, out: VisualTarget): VisualTarget {
+  if (MACHINE_SCOPE) return computeMachineTarget(tag, v, out);
   const c = tag.componentId;
   const layer: PartLayer = tag.layer;
   out.opacity = layer === "internal" ? 0 : 1;
@@ -138,6 +140,72 @@ export function computeTarget(tag: PartTag, v: VisualInputs, out: VisualTarget):
       out.glow = 0;
       out.mute = v.focusIsHover ? 0.35 : 0.5;
       if (layer === "armor" && out.opacity < 1) out.opacity *= 0.6;
+    }
+  }
+  return out;
+}
+
+/* ---- machine scope ----------------------------------------------- */
+
+/** Others recede less than in assembly scope: they are the context the selection sits in. */
+const MUTE_OTHERS_MACHINE = 0.66;
+/** Other internals in the internal view: see-through, but still just pickable (≥ 0.3). */
+const GHOST_OTHER_INTERNALS = 0.3;
+
+/**
+ * Machine-scope modes: the mode shapes the whole model (ghosted panels,
+ * revealed internals, separation) whether or not anything is selected, and the
+ * selection is picked out within it by muting everything else.
+ */
+function computeMachineTarget(tag: PartTag, v: VisualInputs, out: VisualTarget): VisualTarget {
+  const c = tag.componentId;
+  const layer: PartLayer = tag.layer;
+  const mode = v.mode;
+  out.opacity = layer === "armor" ? GHOST[mode] : layer === "frame" ? FRAME_OPACITY[mode] : revealsInternals(mode) ? 1 : 0;
+  out.mute = 0;
+  out.glow = 0;
+  out.explode = mode === "exploded" ? v.explode : 0;
+  const ghosted = layer === "armor" && out.opacity < 1;
+
+  if (!v.selected) {
+    if (v.highlighted.size > 0) {
+      if (v.highlighted.has(c)) out.glow = GLOW_LINKED;
+      else out.mute = MUTE_OVERVIEW;
+    } else if (v.hovered && v.hovered !== c) {
+      out.mute = MUTE_HOVER_OTHERS;
+    }
+    if (v.hovered === c) {
+      out.glow += GLOW_HOVER;
+      out.mute *= 0.4;
+    }
+    // Ghosted panels read as clear glass; the accent edges carry the outline.
+    if (ghosted) out.glow = 0;
+    return out;
+  }
+
+  if (v.selected !== c) {
+    out.mute = MUTE_OTHERS_MACHINE;
+    // In the internal view the rest of the stack turns to glass so the selection isn't buried in it.
+    const glass = layer === "internal" && mode === "cutaway";
+    if (glass) out.opacity = GHOST_OTHER_INTERNALS;
+    if (v.hovered === c) {
+      out.mute = 0.36;
+      if (glass) out.opacity = 0.6;
+      if (!ghosted) out.glow = GLOW_HOVER * 0.7;
+    }
+    return out;
+  }
+
+  out.glow = ghosted ? 0 : GLOW_SELECTED;
+  if (v.focusSubtree.size > 0) {
+    const inFocus = !!tag.subassemblyId && v.focusSubtree.has(tag.subassemblyId);
+    if (inFocus) {
+      out.glow = v.focusIsHover ? GLOW_FOCUS * 0.7 : GLOW_FOCUS;
+      if (out.opacity < 0.5 && (layer !== "internal" || revealsInternals(mode))) out.opacity = 0.5;
+    } else {
+      out.glow = 0;
+      out.mute = v.focusIsHover ? 0.35 : 0.5;
+      if (ghosted) out.opacity *= 0.6;
     }
   }
   return out;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useExplorerStore } from "@/state/explorerStore";
-import { MaterialController } from "@/features/gundam/materialController";
+import { MaterialController } from "@/features/model/materialController";
 import { deriveVisualInputs, visualInputsKey } from "@/features/component-inspection/modeVisuals";
-import type { ViewerModelIndex } from "@/features/gundam/annotateModel";
+import type { ViewerModelIndex } from "@/features/model/annotateModel";
 import { useModelInteraction } from "./useModelInteraction";
 import { SubassemblyCalloutTracker } from "./SubassemblyCallouts";
 

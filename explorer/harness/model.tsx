@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components -- standalone harness entry, not an HMR module */
 /**
- * Standalone harness for the procedural Ξ model.
+ * Standalone harness for the procedural model of the machine being built
+ * (`MACHINE=<id>`, see vite.config.ts).
  *
  *   /harness/model.html?view=front|side|side-r|back|three-quarter|three-quarter-r|rear-three-quarter|top
  *                      &explode=0..1      apply explode offsets
@@ -21,9 +22,9 @@ import { createRoot } from "react-dom/client";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, OrbitControls } from "@react-three/drei";
 import { Box3, Color, Sphere, Vector3, type Mesh, type MeshStandardMaterial, type Object3D } from "three";
-import { buildProceduralXi, disposeProceduralXi } from "@/features/gundam/procedural/buildProceduralXi";
-import { measureModel } from "@/features/gundam/procedural/stats";
-import { getPartTag } from "@/features/gundam/modelTypes";
+import { proceduralModel } from "@/data/modelConfig";
+import { measureModel } from "@/features/model/stats";
+import { getPartTag } from "@/features/model/modelTypes";
 import { COMPONENTS } from "@/data/components";
 import type { ComponentId, Subassembly } from "@/data/types";
 
@@ -135,7 +136,7 @@ function framing(root: Object3D): { centre: Vector3; radius: number } {
 
 function Model() {
   const root = useMemo(() => {
-    const r = buildProceduralXi();
+    const r = proceduralModel.build();
     const stats = measureModel(r);
     window.__xiStats = stats;
     window.__xiCoverage = coverage(r);
@@ -151,14 +152,14 @@ function Model() {
     }
     return r;
   }, []);
-  useEffect(() => () => disposeProceduralXi(root), [root]);
+  useEffect(() => () => proceduralModel.dispose(root), [root]);
   return <primitive object={root} />;
 }
 
 function CameraRig() {
   const { camera, scene, controls } = useThree();
   useEffect(() => {
-    const root = scene.getObjectByName("xi-procedural");
+    const root = scene.getObjectByName(proceduralModel.rootName);
     if (!root) return;
     const { centre, radius } = framing(root);
     const dir = new Vector3(...(VIEWS[view] ?? VIEWS["three-quarter"])).normalize();

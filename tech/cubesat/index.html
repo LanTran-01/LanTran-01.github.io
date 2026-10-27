@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>CubeSat Systems Explorer — Illustrative 3U Spacecraft</title>
+    <meta name="description" content="An interactive explorer for an illustrative 3U CubeSat: open the structure, separate the electronics stack and trace how power, data, commands and radio links connect its subsystems." />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" href="/tech/cubesat/favicon.svg" type="image/svg+xml" />
+    <script>
+      // GitHub Pages deep links arrive via 404.html as <base>?redirect=<path>. Restore
+      // the real URL before the router starts (see scripts/publish-site.mjs).
+      (function () {
+        var r = new URLSearchParams(location.search).get("redirect");
+        if (r && r.charAt(0) === "/" && r.charAt(1) !== "/") history.replaceState(null, "", r);
+      })();
+    </script>
+    <script type="module" crossorigin src="/tech/cubesat/static/index-BL5zKhyk.js"></script>
+    <link rel="modulepreload" crossorigin href="/tech/cubesat/static/three-DQRlb6GR.js">
+    <link rel="modulepreload" crossorigin href="/tech/cubesat/static/r3f-CoKkkjAm.js">
+    <link rel="stylesheet" crossorigin href="/tech/cubesat/static/index-ClM-sXmS.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>This explorer is an interactive 3D application and needs JavaScript and WebGL.</noscript>
+  </body>
+</html>

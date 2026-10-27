@@ -1,21 +1,13 @@
-import type { InspectionMode } from "@/data/types";
-import type { ComponentCapabilities } from "@/features/gundam/modelTypes";
-import { useExplorerStore } from "@/state/explorerStore";
+import { useMemo } from "react";
+import { MACHINE, MACHINE_SCOPE, TERMS } from "@/data/machine";
+import type { ComponentId, InspectionMode, ModeDescriptor } from "@/data/types";
+import type { ComponentCapabilities } from "@/features/model/modelTypes";
+import { useExplorerStore, type ExplorerState } from "@/state/explorerStore";
 
-export interface ModeDescriptor {
-  id: InspectionMode;
-  label: string;
-  /** Keyboard shortcut digit. */
-  key: string;
-  hint: string;
-}
+export type { ModeDescriptor };
 
-export const INSPECTION_MODES: ModeDescriptor[] = [
-  { id: "exterior", label: "Exterior", key: "1", hint: "Armor on, assembly isolated" },
-  { id: "cutaway", label: "Cutaway", key: "2", hint: "Armor ghosted to reveal frame and internals" },
-  { id: "exploded", label: "Exploded", key: "3", hint: "Subassemblies separated along their axes" },
-  { id: "architecture", label: "Architecture", key: "4", hint: "Subassemblies called out individually" },
-];
+/** The machine's inspection modes, in shortcut order. */
+export const INSPECTION_MODES: ModeDescriptor[] = MACHINE.modes.list;
 
 /**
  * Whether a mode can show anything for an assembly. Unknown capabilities
@@ -29,12 +21,38 @@ export function isModeSupported(mode: InspectionMode, caps: ComponentCapabilitie
 }
 
 export function unsupportedReason(mode: InspectionMode): string {
-  if (mode === "cutaway") return "No internal-layer geometry in the current model for this assembly.";
-  if (mode === "exploded") return "No separable subassemblies in the current model for this assembly.";
+  const scope = MACHINE_SCOPE ? `the ${TERMS.whole}` : `this ${TERMS.part}`;
+  if (mode === "cutaway") return `No internal-layer geometry in the current model for ${scope}.`;
+  if (mode === "exploded") return `No separable subassemblies in the current model for ${scope}.`;
   return "";
 }
 
 /** Capabilities of the selected assembly, if the viewer has reported them. */
 export function useSelectedCapabilities(): ComponentCapabilities | undefined {
   return useExplorerStore((s) => (s.selected ? s.capabilities[s.selected] : undefined));
+}
+
+/**
+ * Capabilities the mode controls depend on: the selected assembly's, or the
+ * whole model's when modes apply to the whole machine.
+ */
+export function modeCapabilities(
+  capabilities: ExplorerState["capabilities"],
+  selected: ComponentId | null,
+): ComponentCapabilities | undefined {
+  if (!MACHINE_SCOPE) return selected ? capabilities[selected] : undefined;
+  const all = Object.values(capabilities) as ComponentCapabilities[];
+  if (all.length === 0) return undefined;
+  return {
+    cutaway: all.some((c) => c.cutaway),
+    exploded: all.some((c) => c.exploded),
+    exterior: all.some((c) => c.exterior),
+    subassemblies: all.flatMap((c) => c.subassemblies),
+  };
+}
+
+export function useModeCapabilities(): ComponentCapabilities | undefined {
+  const capabilities = useExplorerStore((s) => s.capabilities);
+  const selected = useExplorerStore((s) => s.selected);
+  return useMemo(() => modeCapabilities(capabilities, selected), [capabilities, selected]);
 }

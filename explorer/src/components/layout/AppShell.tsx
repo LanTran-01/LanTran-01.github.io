@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { GundamViewer } from "@/components/viewer/GundamViewer";
+import { ModelViewer } from "@/components/viewer/ModelViewer";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
 import { TopBar } from "./TopBar";
 import { StatusBar } from "./StatusBar";
@@ -13,7 +13,7 @@ export function AppShell() {
     <div className={styles.shell}>
       <RouteSync />
       <div className={styles.canvas}>
-        <GundamViewer />
+        <ModelViewer />
       </div>
       <LoadingOverlay />
       <TopBar />

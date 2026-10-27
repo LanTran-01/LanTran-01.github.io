@@ -1,7 +1,7 @@
 import type { Mesh } from "three";
 import { getComponent, subassemblySubtreeIds } from "@/data/components";
 import type { ComponentId, Subassembly } from "@/data/types";
-import type { ViewerModelIndex } from "@/features/gundam/annotateModel";
+import type { ViewerModelIndex } from "@/features/model/annotateModel";
 
 export interface CalloutItem {
   sub: Subassembly;

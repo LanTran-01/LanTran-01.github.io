@@ -1,14 +1,15 @@
+import type { Object3D } from "three";
 import type { ComponentId, PartLayer } from "./types";
 
 /**
  * Model source configuration.
  *
- * The explorer ships with a procedural prototype. To substitute a real model:
- *   1. Put a GLB in `explorer/public/models/` (e.g. `xi-gundam.glb`).
- *   2. Set `source: "gltf"` below, or open the site with `?model=gltf`,
- *      or build with `VITE_MODEL_URL=/models/your-file.glb`.
+ * Each machine ships with a procedural model. To substitute a real model:
+ *   1. Put a GLB in `explorer/public/<machine>/models/` (e.g. `xi-gundam.glb`).
+ *   2. Set `source: "gltf"` in `src/machines/<machine>/model.ts`, or open the site
+ *      with `?model=gltf`, or build with `VITE_MODEL_URL=/tech/<machine>/models/your-file.glb`.
  *   3. Adjust `meshRules` so mesh / node names map onto assemblies.
- * If loading fails the viewer falls back to the procedural prototype and says so.
+ * If loading fails the viewer falls back to the procedural model and says so.
  */
 
 export type ModelSource = "procedural" | "gltf";
@@ -34,30 +35,12 @@ export interface ModelConfig {
   isPrototype: boolean;
 }
 
-const envUrl = import.meta.env.VITE_MODEL_URL as string | undefined;
-const query = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-const querySource = query?.get("model");
+/** Builds and releases the machine's procedural model. */
+export interface ProceduralModel {
+  /** Name of the root group `build()` returns. */
+  rootName: string;
+  build: () => Object3D;
+  dispose: (root: Object3D) => void;
+}
 
-/** Scene units. The procedural prototype is built to this height; feet rest on y = 0. */
-export const MODEL_HEIGHT = 6;
-
-export const modelConfig: ModelConfig = {
-  source: querySource === "gltf" || envUrl ? "gltf" : "procedural",
-  gltfUrl: envUrl ?? `${import.meta.env.BASE_URL}models/xi-gundam.glb`,
-  targetHeight: MODEL_HEIGHT,
-  fallbackToProcedural: true,
-  meshRules: [
-    { match: /v_?fin|antenna|head|face|visor/i, componentId: "head" },
-    { match: /cockpit|chest|torso|hatch/i, componentId: "chest" },
-    { match: /shoulder|pauldron/i, componentId: "shoulders" },
-    { match: /rifle|weapon|saber|gun/i, componentId: "weapons" },
-    { match: /arm|elbow|hand|finger|wrist/i, componentId: "arms" },
-    { match: /waist|skirt|hip|crotch|pelvis/i, componentId: "waist" },
-    { match: /foot|feet|toe|heel/i, componentId: "feet" },
-    { match: /leg|thigh|knee|shin|calf|ankle/i, componentId: "legs" },
-    { match: /nozzle|thruster|vernier/i, componentId: "thrusters" },
-    { match: /backpack|binder|wing|fin/i, componentId: "backpack" },
-  ],
-  label: "Procedural prototype",
-  isPrototype: true,
-};
+export { MODEL_HEIGHT, modelConfig, proceduralModel } from "@machine/model";

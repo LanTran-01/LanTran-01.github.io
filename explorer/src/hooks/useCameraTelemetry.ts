@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { cameraTelemetry, type CameraTelemetry } from "@/features/gundam/telemetry";
+import { cameraTelemetry, type CameraTelemetry } from "@/features/model/telemetry";
 
 /**
  * Samples camera telemetry at a fixed rate (default 10 Hz) and hands it to a
