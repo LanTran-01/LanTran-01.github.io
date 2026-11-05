@@ -1,7 +1,7 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "node:url";
-import { MACHINES, resolveMachine } from "./machines.config";
+import { MACHINES, resolveMachine, type MachineId } from "./machines.config";
 
 // One explorer engine, one build per machine. `MACHINE=cubesat vite build`
 // aliases `@machine` to src/machines/cubesat and writes dist/cubesat, served at
@@ -9,6 +9,8 @@ import { MACHINES, resolveMachine } from "./machines.config";
 // the repository root so GitHub Pages can serve it from `main` without a CI step.
 const machine = resolveMachine(process.env.MACHINE);
 const target = MACHINES[machine];
+/** Dev server port per machine (preview uses the same port minus 1000), so all of them can run side by side. */
+const PORTS: Record<MachineId, number> = { gundam: 5173, cubesat: 5174, v2: 5175 };
 
 /** Fills the machine's title and description into index.html. */
 function machineHtml(): Plugin {
@@ -50,6 +52,6 @@ export default defineConfig({
       },
     },
   },
-  server: { port: machine === "gundam" ? 5173 : 5174, strictPort: false },
-  preview: { port: machine === "gundam" ? 4173 : 4174 },
+  server: { port: PORTS[machine], strictPort: false },
+  preview: { port: PORTS[machine] - 1000 },
 });

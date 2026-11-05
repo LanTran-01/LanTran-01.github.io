@@ -83,6 +83,19 @@
   pointer-events: auto;
 }
 
+/* Overview with a right-hand exhibit panel: keep the floating controls in the free canvas area. */
+.controls[data-beside-panel],
+.controlsTop[data-beside-panel] {
+  right: calc(var(--panel-w-right) + 2 * var(--gutter));
+}
+
+@media (max-width: 1099px) {
+  .controls[data-beside-panel],
+  .controlsTop[data-beside-panel] {
+    right: calc(340px + 2 * var(--gutter));
+  }
+}
+
 @media (min-width: 821px) and (max-width: 1099px) {
   .rail {
     width: auto;

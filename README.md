@@ -8,9 +8,10 @@ all served by GitHub Pages from the root of `main`:
 | [lantran.dev](https://www.lantran.dev/) | Home page: one full-screen section per project, Tesla-style; a **Tech** menu groups the technical projects | `home/` (plain HTML/CSS) |
 | **Tech · 01** [lantran.dev/tech/gundam/](https://www.lantran.dev/tech/gundam/) | Ξ Hardware Explorer, an engineering-style 3D explorer of the RX-105 Ξ Gundam | `explorer/` with `MACHINE=gundam` |
 | **Tech · 02** [lantran.dev/tech/cubesat/](https://www.lantran.dev/tech/cubesat/) | CubeSat Systems Explorer, an illustrative 3U satellite and its embedded electronics | `explorer/` with `MACHINE=cubesat` |
+| **Tech · 03** [lantran.dev/tech/v2/](https://www.lantran.dev/tech/v2/) | V-2 Aerospace Exhibit, a museum-style study of the V-2 (A-4) as the Bumper-WAC two-stage rocket, outside and in | `explorer/` with `MACHINE=v2` |
 | [lantran.dev/tarot/](https://www.lantran.dev/tarot/) | ARCANA, a minimalist tarot reading app | `arcana/` (React), see [arcana/README.md](arcana/README.md) |
 
-Both Tech projects are built from **one explorer engine** (`explorer/`) with a
+All three Tech projects are built from **one explorer engine** (`explorer/`) with a
 machine module per subject; see [Machines](#machines-one-engine-several-subjects).
 
 ## Repository layout
@@ -21,12 +22,13 @@ machine module per subject; see [Machines](#machines-one-engine-several-subjects
   assets/            ← copied from home/ (styles, font, product shots)
   tech/gundam/       ← explorer/dist/gundam   (base /tech/gundam/)
   tech/cubesat/      ← explorer/dist/cubesat  (base /tech/cubesat/)
+  tech/v2/           ← explorer/dist/v2       (base /tech/v2/)
   tarot/             ← arcana/dist
   gundam/index.html  ← generated: forwards the old /gundam/ home to /tech/gundam/
   404.html           ← generated: routes deep links back into the right app
   CNAME              custom domain (never touched by the publish script)
 home/                source of the home page
-explorer/            source of the shared explorer engine and its machines (Ξ Gundam, CubeSat)
+explorer/            source of the shared explorer engine and its machines (Ξ Gundam, CubeSat, V-2)
 arcana/              source of ARCANA
 scripts/             publish-site.mjs
 ```
@@ -37,7 +39,7 @@ GitHub Pages serves the repository root of `main` with no CI step, so the built
 site is committed:
 
 ```bash
-node scripts/publish-site.mjs   # builds both explorer machines and arcana, then assembles the site at the root
+node scripts/publish-site.mjs   # builds every explorer machine and arcana, then assembles the site at the root
 git add -A && git commit -m "Publish site" && git push
 ```
 
@@ -86,9 +88,10 @@ cd explorer
 npm install
 npm run dev            # Ξ Gundam  · http://localhost:5173/tech/gundam/
 npm run dev:cubesat    # CubeSat   · http://localhost:5174/tech/cubesat/
-npm run typecheck      # tsc, strict — checks the engine against both machines
+npm run dev:v2         # V-2       · http://localhost:5175/tech/v2/
+npm run typecheck      # tsc, strict — checks the engine against every machine
 npm run lint           # eslint
-npm run build          # production builds into explorer/dist/gundam and explorer/dist/cubesat
+npm run build          # production builds into explorer/dist/<machine> for gundam, cubesat and v2
 ```
 
 ## Using the explorer
@@ -118,6 +121,7 @@ explorer/
   src/
     machines/gundam/           everything specific to the RX-105 (see "Machines" below)
     machines/cubesat/          everything specific to the CubeSat
+    machines/v2/               everything specific to the V-2 exhibit
     data/                      shared types and lookups over the active machine (@machine)
       types.ts                 domain types + MachineConfig contract
       components.ts, subsystems.ts, modelConfig.ts, machine.ts
@@ -149,7 +153,7 @@ The engine never imports a machine directly. `@machine` is a build-time alias
 | `systems.ts` | systems map: lanes (with tones), flow kinds (with stroke and dash), columns, nodes, edges |
 | `model.ts` | `modelConfig` (GLB path, mesh rules) and the procedural `build`/`dispose` |
 | `procedural/` | geometry and material palette, built with the shared `Kit` |
-| `machine.tsx` | presentation: wordmark, identification panel, terms ("assembly" / "component"), inspection modes and their scope, layer and basis labels, About dialog, stage and overview camera |
+| `machine.tsx` | presentation: wordmark, identification panel, terms ("assembly" / "component"), inspection modes and their scope, layer and basis labels, About dialog, stage and overview camera; optionally an `exhibit` (long-form notes and sources shown beside the model on the overview) and an `indexTitle` |
 
 `modes.scope` is the one behavioural switch. Ξ Gundam uses `"assembly"`: modes
 isolate the selected assembly and reset when the selection changes. CubeSat uses
@@ -157,10 +161,17 @@ isolate the selected assembly and reset when the selection changes. CubeSat uses
 across selections, and the exterior view switches to the internal one when the
 part you select or link from the systems map has nothing visible from outside.
 
+Whichever mode reveals internal-layer parts is derived from the mode list
+(`REVEAL_MODE` in `src/data/machine.ts`): the cutaway / Internal view when a
+machine has one, otherwise the exploded view for whole-machine modes. Catalogue
+rows can set `functionBasis: "reference"` when a part's function is historical
+fact rather than invention (the V-2 does).
+
 `npm run typecheck` checks the engine once per machine (`tsconfig.gundam.json`,
-`tsconfig.cubesat.json`). To add a machine, copy one of the folders, register it in
-`machines.config.ts`, add a tsconfig and a build step, and give it a target in
-`scripts/publish-site.mjs`.
+`tsconfig.cubesat.json`, `tsconfig.v2.json`). To add a machine, copy one of the folders, register it in
+`machines.config.ts` (and its dev port in `vite.config.ts`), add a tsconfig (and exclude the new folder
+from the other machines' tsconfigs) and a build step, give it a target in
+`scripts/publish-site.mjs` and add it to the app pattern in the generated `404.html`.
 
 ### Replacing the prototype with a real model
 
@@ -246,3 +257,103 @@ the antenna deployer and GNSS patch on top. Explode offsets live in
 - There is no 3D callout ("Architecture") mode for the CubeSat; its modes are the
   three whole-satellite views.
 
+---
+
+# V-2 Aerospace Exhibit (`/tech/v2/`)
+
+A museum-style exhibit of the **V-2 (A-4)**, the first long-range guided
+ballistic missile and the first human-made object to reach space (MW 18014,
+20 June 1944), shown in its **Bumper-WAC** configuration (1948–1950): the V-2 as
+the booster of a two-stage rocket, carrying a WAC Corporal upper stage whose
+four fins sit recessed in rails in the V-2's modified nose. It stands on its
+firing table in a black-and-white roll pattern of the kind painted on
+Peenemünde test rockets. Select any of its nine sections, look inside, separate
+the stages and sections, and read the history and engineering behind each
+part. It runs on the same engine as the other two explorers.
+
+> **What is and isn't real.** Rows marked `DOC` repeat facts published by museums,
+> archives and reference works (see References below). Rows marked `MODEL` are
+> choices made for this visualization. The V-2's length (14.036 m), body
+> diameter (1.651 m), fin span (3.564 m) and four section lengths, and the WAC
+> Corporal's diameter (0.305 m), four fins and fin span (1.22 m) are the
+> published figures, but the upper stage is **drawn enlarged** — about 2× wider
+> and 1.25× longer (`WAC_SHOW` in `layout.ts`) — so it reads clearly beside the
+> V-2; the panel says so. The real Bumper stack was 17.25 m (sources range up to
+> 62 ft); as drawn it is about 18 m. The nose ogive, tail taper, fin planforms, how deep the upper stage
+> sits in the nose, hatches, doors, rudders, vanes, engine silhouette and firing
+> table are approximated from photographs. The exact roll-pattern layout varied
+> from rocket to rocket, so the one shown is representative. The **interior**
+> shows equipment that is documented — gyroscopes, analog computer, batteries,
+> radio sets, tanks and insulation, turbopump, steam generator, peroxide tanks,
+> compressed-air bottles, the WAC Corporal's tanks — in a representative
+> arrangement. Content stays at museum-placard level: history, form, materials
+> and general principles.
+
+## Using it
+
+| Action | Input |
+|---|---|
+| Rotate / zoom / pan | drag · wheel or pinch · right-drag or two-finger drag |
+| Select a section | click it on the model or in "External architecture" |
+| Views (whole rocket) | **Exterior** · **Internal** (skin cleared, tanks opened like a museum cutaway) · **Sections** (keys `1`–`3`), with a separation slider |
+| Subassemblies | hardware tree, or click the selected section in the Internal or Sections view |
+| Back / reset | `Esc` clears the subassembly, then returns to the full missile, then reassembles it · `R` resets the camera |
+| Systems map | `/tech/v2/systems`: a functional overview — propellants, guidance, control and load paths — linked to the sections |
+
+Sections (`/tech/v2/explore/:slug`): `wac-corporal`, `nose`, `instrument-compartment`,
+`centre-section`, `tail-section`, `fins`, `control-vanes`, `engine`, `firing-table`.
+Selecting the engine, or an internal node in the hardware tree, opens the Internal view.
+
+The overview shows an **Exhibit** panel (a sheet tab on phones): Overview
+(historical background, wartime use, forced-labour production, significance,
+post-war legacy, Bumper-WAC, classification), Engineering context (stability,
+guidance and control, propulsion, materials and manufacture, design
+considerations, staging, paint schemes) and the sources.
+
+## Model
+
+`src/machines/v2/procedural/` (123 meshes, ≈ 109k triangles). Geometry is authored
+in metres under a group scaled to scene units (`SCALE = 0.345`), so `layout.ts`
+reads against the published figures and explode offsets are in metres. Skin,
+fins and bulkheads are on the armor layer (cleared in the Internal view); joint
+rings, the thrust ring and fittings on the frame layer; equipment on the
+internal layer.
+
+| File | Builds |
+|---|---|
+| `layout.ts` | published dimensions, the body-of-revolution `profile(h)`, the upper stage and nose cut, the cutaway sector, fin angles, roll pattern, explode offsets |
+| `shell.ts` | partial surfaces of revolution on the profile: skin quadrants, joint bands, bolt rings, panel outlines and fasteners |
+| `airframe.ts` | Bumper nose with its opening, collar and fin slots; instrument compartment with four hatches; centre section with its two half-shell seams; tail with doors, thrust ring and base plate; bulkheads |
+| `upperStage.ts` | WAC Corporal: body and nose cone, four fins, spin rockets, nozzle; inside, motor, tanks, air bottle, instruments |
+| `interior.ts` | instrument bays (frame, gyroscopes, analog computer, batteries, converter, radio, integrator, harness), cutaway tanks with insulation, lines and mounts, tail equipment (thrust frame, turbopump, steam generator, peroxide tanks, air bottles, lines), vane servos, nose rails and seat |
+| `fins.ts` | four fins with root fairings and bearing shoes, air rudders and hinges, graphite jet vanes and their mounts |
+| `engine.ts` | combustion chamber, eighteen burner cups, nozzle (internal layer) |
+| `firingTable.ts` | support ring, fin supports, legs and jacks, blast deflector |
+
+## References and asset licences
+
+No third-party 3D asset is used. No permissively licensed V-2 model from an
+authoritative source (NASA, Smithsonian open access) turned up; marketplace
+models carry editorial or royalty-free licences that don't suit an open
+repository. The model is procedural, like the other two explorers, and every
+image on the site is rendered from it. Sources consulted:
+
+- Smithsonian NASM, [Restoring the Museum's V-2](https://airandspace.si.edu/stories/editorial/restoring-museums-v-2-missile): provenance, the 1976 black-and-white display scheme and the later greenish-grey repaint, the dark-yellow launch stand.
+- Smithsonian NASM, [V-2 (A-4) collection record](https://www.si.edu/object/missile-surface-surface-v-2-4:nasm_A19600342000): ogival nose, cylindrical centre section, instrument section in four quadrants.
+- Smithsonian NASM, [V-2 combustion chamber](https://www.si.edu/object/rocket-engine-combustion-chamber-v-2:nasm_A19601992000): eighteen injectors on the chamber head.
+- White Sands Missile Range Museum, [The V-2 program](https://wsmrmuseum.com/2020/10/06/the-v-2-program-operation-backfire-to-the-hermes-project/3/): dimensions, fin behaviour, launch on the fins' bearing surfaces, NRL instrument warheads.
+- V2Rocket.com, [Markings, colours and camouflage](https://www.v2rocket.com/start/makeup/markings.html): roll patterns and camouflage schemes.
+- [German explosive ordnance — rockets, part 6](https://ww2data.blogspot.com/2019/12/german-explosive-ordnance-rockets-part-6.html): section lengths (2,010 / 1,410 / 6,215 / 4,401 mm), transcribed from a German handbook; consistent with the 14.036 m overall length.
+- Wikipedia: [V-2 rocket](https://en.wikipedia.org/wiki/V-2_rocket) (chronology, propellants, materials, guidance, production and casualties), [V-2 sounding rocket](https://en.wikipedia.org/wiki/V-2_sounding_rocket) (US flights from 16 April 1946), [RTV-G-4 Bumper](https://en.wikipedia.org/wiki/RTV-G-4_Bumper) (program, organisations, height, Bumper 5, 7 and 8), [WAC Corporal](https://en.wikipedia.org/wiki/WAC_Corporal) (developer, first flight, propellants, compressed-air feed, Bumper's four fins and spin rockets).
+- Designation-Systems.net, [RTV-G-4 Bumper](https://designation-systems.net/dusrm/app1/rtv-g-4.html): nose modification, fins recessed in rails, 1.22 m fin span, 0.305 m diameter, staging sequence, 17.25 m length.
+- V2 Rocket History, [graphite jet vane](https://v2rockethistory.com/?p=476): jet-vane material and operating conditions.
+
+## Known limitations
+
+- Shapes beyond the published overall figures are approximations, not measured; the model is a study, not a replica.
+- The roll pattern is one representative layout; test rockets varied, and operational rockets were camouflaged.
+- The interior arrangement is representative: the equipment existed, but its exact shapes, sizes and positions are not taken from drawings.
+- The tanks are opened on the side facing the default camera; from behind they look closed.
+- The upper stage is not to scale: it is drawn about twice its true width (one constant, `WAC_SHOW`, sets this; `{ radial: 1, length: 1 }` restores true size).
+- The camera cannot go below the floor, so the nozzle exit and jet vanes are seen from low angles only.
+- The fully separated Sections view is about 40 % taller than the assembled stack, so the overview zooms out to fit it.

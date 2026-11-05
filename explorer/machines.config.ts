@@ -22,6 +22,12 @@ export const MACHINES = {
     description:
       "An interactive explorer for an illustrative 3U CubeSat: open the structure, separate the electronics stack and trace how power, data, commands and radio links connect its subsystems.",
   },
+  v2: {
+    base: "/tech/v2/",
+    title: "V-2 Aerospace Exhibit — A-4 Rocket, 1942–1945",
+    description:
+      "An interactive museum exhibit of the V-2 (A-4), the first long-range guided ballistic missile and the first human-made object to reach space: explore its external sections, separate the airframe and read the history and engineering behind each part.",
+  },
 } satisfies Record<string, MachineTarget>;
 
 export type MachineId = keyof typeof MACHINES;

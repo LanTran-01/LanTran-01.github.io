@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { ComponentId, InspectionMode } from "@/data/types";
 import type { ComponentCapabilities } from "@/features/model/modelTypes";
 import type { ModelSource } from "@/data/modelConfig";
-import { MACHINE, MACHINE_SCOPE } from "@/data/machine";
+import { MACHINE_SCOPE, REVEAL_MODE } from "@/data/machine";
 
 /**
  * Global explorer state.
@@ -73,15 +73,22 @@ export interface ExplorerState {
   setReducedMotion: (value: boolean) => void;
 }
 
-const HAS_INTERNAL_VIEW = MACHINE.modes.list.some((m) => m.id === "cutaway");
+/** Separation used when the exploded view opens without one (also the reveal default). */
+const DEFAULT_EXPLODE = 0.65;
+
+/** Mode change, with a visible separation when it opens the exploded view. */
+function modePatch(mode: InspectionMode, explode: number): Partial<ExplorerState> {
+  if (mode !== "exploded") return { mode, explode: 0 };
+  return { mode, explode: explode === 0 ? DEFAULT_EXPLODE : explode };
+}
 
 /** Machine scope: leave the exterior view when every part to focus would be hidden in it. */
 function revealPatch(
-  s: Pick<ExplorerState, "mode" | "capabilities">,
+  s: Pick<ExplorerState, "mode" | "capabilities" | "explode">,
   ids: readonly ComponentId[],
 ): Partial<ExplorerState> | null {
-  if (!MACHINE_SCOPE || !HAS_INTERNAL_VIEW || s.mode !== "exterior" || ids.length === 0) return null;
-  return ids.every((id) => s.capabilities[id]?.exterior === false) ? { mode: "cutaway" } : null;
+  if (!MACHINE_SCOPE || !REVEAL_MODE || s.mode !== "exterior" || ids.length === 0) return null;
+  return ids.every((id) => s.capabilities[id]?.exterior === false) ? modePatch(REVEAL_MODE, s.explode) : null;
 }
 
 const prefersReducedMotion =
@@ -121,13 +128,8 @@ export const useExplorerStore = create<ExplorerState>()((set, get) => ({
   setHovered: (id) => {
     if (get().hovered !== id) set({ hovered: id });
   },
-  setMode: (mode) => {
-    const patch: Partial<ExplorerState> = { mode };
-    // Entering the exploded view with nothing separated would look like a no-op.
-    if (mode === "exploded" && get().explode === 0) patch.explode = 0.65;
-    if (mode !== "exploded") patch.explode = 0;
-    set(patch);
-  },
+  // Entering the exploded view with nothing separated would look like a no-op.
+  setMode: (mode) => set(modePatch(mode, get().explode)),
   setExplode: (value) => set({ explode: Math.min(1, Math.max(0, value)) }),
   setSelectedSubassembly: (id) => set({ selectedSubassembly: id }),
   setHoveredSubassembly: (id) => {
@@ -140,7 +142,7 @@ export const useExplorerStore = create<ExplorerState>()((set, get) => ({
     // A deep link may select a part before the model has reported what it contains.
     const s = get();
     const focus = s.view === "systems" ? s.linkedComponents : s.selected ? [s.selected] : [];
-    set({ capabilities, ...revealPatch({ mode: s.mode, capabilities }, focus) });
+    set({ capabilities, ...revealPatch({ mode: s.mode, capabilities, explode: s.explode }, focus) });
   },
   setModelStatus: (modelStatus) => set({ modelStatus }),
   setViewInsets: (insets) => {

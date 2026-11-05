@@ -6,6 +6,7 @@ import { BottomSheet } from "@/components/layout/BottomSheet";
 import { PeekButton, SheetPeek } from "@/components/layout/SheetPeek";
 import { ResetIcon } from "@/components/layout/Icons";
 import { ModelIdPanel } from "@/components/inspection/ModelIdPanel";
+import { ExhibitNotes, ExhibitPanel } from "@/components/inspection/ExhibitNotes";
 import { ComponentIndex } from "@/components/navigation/ComponentIndex";
 import { InteractionHint } from "@/components/navigation/InteractionHint";
 import { ResetViewButton } from "@/components/navigation/ResetViewButton";
@@ -15,22 +16,27 @@ import { useViewInset } from "@/hooks/useViewInset";
 import { useExplorerStore } from "@/state/explorerStore";
 import layout from "@/components/layout/PageLayout.module.css";
 
+const { exhibit } = MACHINE;
+
 function DesktopOverview() {
   const ref = useRef<HTMLElement>(null);
   useViewInset(ref, "left");
+  // With an exhibit panel on the right, the floating controls sit at the edge of the free canvas area.
+  const beside = exhibit ? "" : undefined;
   return (
     <>
       <Panel ref={ref} as="aside" side="left" className={layout.left} aria-label={`${capitalize(TERMS.whole)} overview`}>
         <ModelIdPanel />
         <ComponentIndex />
       </Panel>
+      {exhibit && <ExhibitPanel exhibit={exhibit} />}
       <InteractionHint />
       {MACHINE_SCOPE && (
-        <div className={layout.controlsTop}>
+        <div className={layout.controlsTop} data-beside-panel={beside}>
           <ViewModeBar />
         </div>
       )}
-      <div className={layout.controls}>
+      <div className={layout.controls} data-beside-panel={beside}>
         <ResetViewButton />
       </div>
     </>
@@ -75,6 +81,9 @@ function MobileOverview() {
             content: <ComponentIndex onNavigate={() => setOpen(false)} />,
           },
           { id: "model", label: "Model", content: <ModelIdPanel /> },
+          ...(exhibit
+            ? [{ id: "exhibit", label: exhibit.title, content: <ExhibitNotes exhibit={exhibit} /> }]
+            : []),
         ]}
       />
     </>

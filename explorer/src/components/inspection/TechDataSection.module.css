@@ -51,6 +51,10 @@
   border-top: 2px dotted var(--flow-rf);
 }
 
+.flow[data-kind="load"] .swatch {
+  border-top: 1px dashed var(--flow-load);
+}
+
 .arrow {
   margin-top: 6px;
   fill: none;

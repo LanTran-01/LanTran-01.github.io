@@ -88,6 +88,11 @@ export interface ComponentSpec {
   camera: CameraHint;
   /** What this part does in this particular machine (shown under Function). */
   role?: string;
+  /**
+   * Basis of the Function and Role rows. Defaults to "conceptual" (invented for
+   * a fictional or illustrative machine); a historical machine marks them "reference".
+   */
+  functionBasis?: Basis;
   /** Collapsible engineering notes below the technical data. */
   details?: DetailNote[];
 }
@@ -95,6 +100,29 @@ export interface ComponentSpec {
 export interface DetailNote {
   title: string;
   body: string;
+}
+
+/** A published source cited by a machine's exhibit panel. */
+export interface SourceRef {
+  label: string;
+  href: string;
+  /** What the source supports, e.g. "dimensions, propellants". */
+  note?: string;
+}
+
+/**
+ * Long-form context shown beside the model on the overview (desktop: a right
+ * panel; mobile: a sheet tab). Optional: machines without it keep the
+ * overview to the identification panel and the index.
+ */
+export interface ExhibitConfig {
+  /** Panel heading, e.g. "Exhibit". */
+  title: string;
+  /** Two or three sentences introducing the subject. */
+  lede: string;
+  /** Lettered groups of collapsible notes, e.g. Overview, Engineering context. */
+  groups: { title: string; notes: DetailNote[] }[];
+  sources?: SourceRef[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -220,7 +248,13 @@ export interface MachineConfig {
     internals: string;
     internalsNote: string;
     disclosure: string;
+    /** Tag beside the Model row while the model is a stand-in. Default "PROTO". */
+    modelTag?: string;
   };
+  /** Heading of the overview's part list. Default "Component index". */
+  indexTitle?: string;
+  /** Long-form context for the overview. */
+  exhibit?: ExhibitConfig;
   /** Mobile overview peek. */
   overview: { kicker: string; title: string };
   modes: { scope: ModeScope; list: ModeDescriptor[] };
