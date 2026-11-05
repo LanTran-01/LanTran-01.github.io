@@ -1,4 +1,5 @@
 import { FLOW_KINDS, LANES } from "@/data/subsystems";
+import { MACHINE } from "@/data/machine";
 import type { FlowKind, SystemLane, SystemNode } from "@/data/types";
 import type { EdgeGeometry } from "./edgeGeometry";
 
@@ -20,8 +21,9 @@ export const FLOW_DASH = Object.fromEntries(entries(FLOW_KINDS).map(([k, v]) => 
   string | undefined
 >;
 
+/** The machine's short basis label, e.g. "REF" / "CONCEPT", or "DOC" / "MODEL" for a historical machine. */
 export function basisTag(n: SystemNode): string {
-  return n.basis === "reference" ? "REF" : "CONCEPT";
+  return MACHINE.basis[n.basis].short;
 }
 
 export function laneLabel(n: SystemNode): string {

@@ -8,7 +8,7 @@ export function layerLabel(layer: PartLayer): string {
 }
 
 /** Order of an assembly's relationships in the inspection panel. Kinds a machine doesn't use are skipped. */
-export const FLOW_ORDER: readonly string[] = ["power", "control", "data", "rf", "propellant"];
+export const FLOW_ORDER: readonly string[] = ["power", "control", "data", "rf", "propellant", "load"];
 
 /** "01" … "10" */
 export const pad2 = (n: number) => String(n).padStart(2, "0");

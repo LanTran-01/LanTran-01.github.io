@@ -6,10 +6,11 @@
  *   home/       →  /               hand-written landing page (index.html, assets/, favicon.svg)
  *   explorer/   →  /tech/gundam/   Ξ Hardware Explorer   (explorer/dist/gundam)
  *               →  /tech/cubesat/  CubeSat Systems Explorer (explorer/dist/cubesat)
+ *               →  /tech/v2/       V-2 Aerospace Exhibit    (explorer/dist/v2)
  *                                  one engine, one build per machine (see explorer/machines.config.ts)
  *   arcana/     →  /tarot/         ARCANA, built with a relocatable base
  *   gundam/index.html              forwards the explorer's previous home, /gundam/, to /tech/gundam/
- *   404.html                       routes deep links (/tech/cubesat/explore/imu) back into the right app
+ *   404.html                       routes deep links (/tech/v2/explore/engine) back into the right app
  *
  *   node scripts/publish-site.mjs              build every app, then publish
  *   node scripts/publish-site.mjs --skip-build publish the existing dist/ folders
@@ -35,6 +36,7 @@ const projects = ["explorer", "arcana"];
 const apps = [
   { name: "explorer (gundam)", dist: join(root, "explorer", "dist", "gundam"), target: "tech/gundam" },
   { name: "explorer (cubesat)", dist: join(root, "explorer", "dist", "cubesat"), target: "tech/cubesat" },
+  { name: "explorer (v2)", dist: join(root, "explorer", "dist", "v2"), target: "tech/v2" },
   { name: "arcana", dist: join(root, "arcana", "dist"), target: "tarot" },
 ];
 
@@ -126,7 +128,7 @@ writeFileSync(
     var rest = location.search + location.hash;
     if (/^\\/(explore|systems)(\\/|$)/.test(path)) path = "/tech/gundam" + path;
     else if (/^\\/(gundam|cubesat)(\\/|$)/.test(path)) path = "/tech" + path;
-    var app = path.match(/^\\/tech\\/(gundam|cubesat)(\\/|$)/);
+    var app = path.match(/^\\/tech\\/(gundam|cubesat|v2)(\\/|$)/);
     if (app) location.replace("/tech/" + app[1] + "/?redirect=" + encodeURIComponent(path + rest));
     else if (/^\\/tech\\/?$/.test(path)) location.replace("/#tech");
     else if (path.indexOf("/tarot/") === 0) location.replace("/tarot/" + location.hash);

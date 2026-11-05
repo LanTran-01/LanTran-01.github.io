@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "vite",
     "dev:cubesat": "MACHINE=cubesat vite",
+    "dev:v2": "MACHINE=v2 vite",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
-    "build": "tsc -b && vite build && MACHINE=cubesat vite build",
+    "build": "tsc -b && vite build && MACHINE=cubesat vite build && MACHINE=v2 vite build",
     "build:gundam": "vite build",
     "build:cubesat": "MACHINE=cubesat vite build",
+    "build:v2": "MACHINE=v2 vite build",
     "preview": "vite preview",
     "preview:cubesat": "MACHINE=cubesat vite preview",
+    "preview:v2": "MACHINE=v2 vite preview",
     "publish:site": "node ../scripts/publish-site.mjs",
     "shot": "node scripts/shot.mjs"
   },

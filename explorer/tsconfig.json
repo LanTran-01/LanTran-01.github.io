@@ -3,6 +3,7 @@
   "references": [
     { "path": "./tsconfig.gundam.json" },
     { "path": "./tsconfig.cubesat.json" },
+    { "path": "./tsconfig.v2.json" },
     { "path": "./tsconfig.node.json" }
   ]
 }

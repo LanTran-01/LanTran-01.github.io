@@ -39,7 +39,7 @@ export function ModelIdPanel() {
         <div className={styles.row}>
           <dt>Model</dt>
           <dd>{modelLabel}</dd>
-          {prototype ? <ProtoTag /> : <span />}
+          {prototype ? <ProtoTag>{identity.modelTag}</ProtoTag> : <span />}
         </div>
       </dl>
 

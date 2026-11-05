@@ -3,7 +3,7 @@ import { countSubassemblies, findSubassembly, subassemblySubtreeIds } from "@/da
 import type { ComponentSpec, Subassembly } from "@/data/types";
 import { useExplorerStore } from "@/state/explorerStore";
 import { isModeSupported, useModeCapabilities, useSelectedCapabilities } from "@/hooks/useInspectionModes";
-import { MACHINE, TERMS } from "@/data/machine";
+import { MACHINE, REVEAL_MODE, TERMS, modeLabel } from "@/data/machine";
 import { CloseIcon } from "@/components/layout/Icons";
 import { LayerTag } from "./BasisTag";
 import { SectionHead } from "./SectionHead";
@@ -11,17 +11,21 @@ import { layerLabel } from "./labels";
 import s from "./inspection.module.css";
 import t from "./HierarchySection.module.css";
 
-/** Toggle a subassembly; reveal internals by switching exterior → cutaway when possible. */
+/**
+ * Toggle a subassembly; reveal internals by leaving the exterior view when the
+ * machine has a mode for it. Nodes without geometry (`absent`) have nothing to reveal.
+ */
 function useSelectSubassembly() {
   const caps = useModeCapabilities();
-  return (node: Subassembly) => {
+  return (node: Subassembly, absent = false) => {
     const st = useExplorerStore.getState();
     if (st.selectedSubassembly === node.id) {
       st.setSelectedSubassembly(null);
       return;
     }
     st.setSelectedSubassembly(node.id);
-    if (node.layer === "internal" && st.mode === "exterior" && isModeSupported("cutaway", caps)) st.setMode("cutaway");
+    if (absent || node.layer !== "internal" || st.mode !== "exterior" || !REVEAL_MODE) return;
+    if (caps?.cutaway !== false && isModeSupported(REVEAL_MODE, caps)) st.setMode(REVEAL_MODE);
   };
 }
 
@@ -29,7 +33,7 @@ interface NodeProps {
   node: Subassembly;
   inSelection: Set<string>;
   modelled: Set<string> | null;
-  onSelect: (node: Subassembly) => void;
+  onSelect: (node: Subassembly, absent?: boolean) => void;
 }
 
 function subtreeModelled(node: Subassembly, modelled: Set<string>): boolean {
@@ -56,7 +60,7 @@ function TreeNode({ node, inSelection, modelled, onSelect }: NodeProps) {
         data-hover={hoveredId === node.id || undefined}
         data-absent={absent || undefined}
         title={absent ? `${node.name} — not modelled in the current prototype` : node.description}
-        onClick={() => onSelect(node)}
+        onClick={() => onSelect(node, absent)}
         onMouseEnter={() => setHovered(node.id)}
         onMouseLeave={() => {
           if (useExplorerStore.getState().hoveredSubassembly === node.id) setHovered(null);
@@ -84,9 +88,9 @@ function TreeNode({ node, inSelection, modelled, onSelect }: NodeProps) {
   );
 }
 
-const cutawayLabel = (MACHINE.modes.list.find((m) => m.id === "cutaway")?.label ?? "Cutaway").toLowerCase();
-/** "cutaway", or "internal view" for machines that call the mode "Internal". */
-const CUTAWAY_NAME = cutawayLabel === "internal" ? "internal view" : cutawayLabel;
+const revealLabel = REVEAL_MODE ? modeLabel(REVEAL_MODE).toLowerCase() : null;
+/** "cutaway", or e.g. "internal view" / "sections view" for machines that name the revealing mode differently. */
+const REVEAL_NAME = revealLabel === null ? null : revealLabel === "cutaway" ? "cutaway" : `${revealLabel} view`;
 
 /** C — hardware hierarchy tree plus the selected subassembly's detail. */
 export function HierarchySection({ spec }: { spec: ComponentSpec }) {
@@ -195,7 +199,7 @@ export function HierarchySection({ spec }: { spec: ComponentSpec }) {
         </div>
       ) : (
         <p className={s.note}>
-          Select a node to isolate it in the 3D view. Internal nodes open the {CUTAWAY_NAME}.
+          Select a node to isolate it in the 3D view.{REVEAL_NAME && <> Internal nodes open the {REVEAL_NAME}.</>}
         </p>
       )}
     </section>

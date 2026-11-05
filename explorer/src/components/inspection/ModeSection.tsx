@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { useId } from "react";
 import type { ComponentSpec } from "@/data/types";
 import { useExplorerStore } from "@/state/explorerStore";
-import { MACHINE_SCOPE, TERMS } from "@/data/machine";
+import { MACHINE_SCOPE, TERMS, modeLabel } from "@/data/machine";
 import {
   INSPECTION_MODES,
   isModeSupported,
@@ -13,6 +13,9 @@ import { ResetViewButton } from "@/components/navigation/ResetViewButton";
 import { SectionHead } from "./SectionHead";
 import s from "./inspection.module.css";
 import m from "./ModeSection.module.css";
+
+/** "exploded", or the machine's own name for the mode (e.g. "sections"). */
+const EXPLODED_NAME = modeLabel("exploded").toLowerCase();
 
 /** B — inspection mode, explode distance, camera reset. */
 export function ModeSection({ spec }: { spec: ComponentSpec }) {
@@ -106,7 +109,7 @@ export function ModeSection({ spec }: { spec: ComponentSpec }) {
           <span>50</span>
           <span>100</span>
         </div>
-        {mode !== "exploded" && explodeSupported && <p className={m.sliderHint}>Drag to switch to the exploded view.</p>}
+        {mode !== "exploded" && explodeSupported && <p className={m.sliderHint}>Drag to switch to the {EXPLODED_NAME} view.</p>}
       </div>
 
       <div className={m.reset}>

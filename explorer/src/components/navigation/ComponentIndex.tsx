@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { COMPONENTS, countSubassemblies } from "@/data/components";
 import type { ComponentId } from "@/data/types";
-import { TERMS, capitalize } from "@/data/machine";
+import { MACHINE, TERMS, capitalize } from "@/data/machine";
 import { useExplorerStore } from "@/state/explorerStore";
 import { SectionHead } from "@/components/inspection/SectionHead";
 import { ChevronRightIcon } from "@/components/layout/Icons";
@@ -58,7 +58,7 @@ export function ComponentIndex({ variant = "full", onNavigate }: ComponentIndexP
     <nav className={styles.index} data-variant={variant} aria-label={`${capitalize(TERMS.part)} index`}>
       <div className={styles.head}>
         <SectionHead
-          title={rail ? capitalize(TERMS.parts) : "Component index"}
+          title={rail ? capitalize(TERMS.parts) : (MACHINE.indexTitle ?? "Component index")}
           aside={rail ? undefined : `${String(ROWS.length).padStart(2, "0")} ${TERMS.partsShort}`}
         />
       </div>

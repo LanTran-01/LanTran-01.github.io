@@ -32,6 +32,7 @@ function FlowArrow({ direction }: { direction: ComponentFlow["direction"] }) {
 export function TechDataSection({ spec, withDescription = false }: { spec: ComponentSpec; withDescription?: boolean }) {
   const flows = [...spec.flows].sort((a, b) => FLOW_ORDER.indexOf(a.kind) - FLOW_ORDER.indexOf(b.kind));
   const related = systemNodesForComponent(spec.id);
+  const functionBasis = spec.functionBasis ?? "conceptual";
 
   return (
     <section className={s.section} aria-labelledby="insp-d">
@@ -56,7 +57,7 @@ export function TechDataSection({ spec, withDescription = false }: { spec: Compo
           <dd>
             <span className={s.valueWithTag}>
               <span>{spec.mechanicalFunction}</span>
-              <BasisTag basis="conceptual" />
+              <BasisTag basis={functionBasis} />
             </span>
           </dd>
         </div>
@@ -66,7 +67,7 @@ export function TechDataSection({ spec, withDescription = false }: { spec: Compo
             <dd>
               <span className={s.valueWithTag}>
                 <span>{spec.role}</span>
-                <BasisTag basis="conceptual" />
+                <BasisTag basis={functionBasis} />
               </span>
             </dd>
           </div>

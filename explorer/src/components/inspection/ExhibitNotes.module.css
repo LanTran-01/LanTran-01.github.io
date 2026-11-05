@@ -1,0 +1,59 @@
+/* Exhibit panel: lede and source list. Notes reuse the technical-data detail styles. */
+
+.lede {
+  margin: var(--s-3) 0 0;
+  font-size: var(--fs-md);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+
+.sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.sources > li {
+  display: grid;
+  gap: 2px;
+  padding: 7px var(--s-1);
+  border-bottom: 1px solid var(--line);
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  color: var(--text-mid);
+  transition: color var(--dur-fast);
+}
+
+.source:hover {
+  color: var(--text);
+}
+
+.sourceLabel {
+  min-width: 0;
+}
+
+.sourceIcon {
+  flex: none;
+  color: var(--text-faint);
+  transition: color var(--dur-fast);
+}
+
+.source:hover .sourceIcon {
+  color: var(--accent);
+}
+
+.sourceNote {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
