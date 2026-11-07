@@ -10,7 +10,7 @@ import { MACHINES, resolveMachine, type MachineId } from "./machines.config";
 const machine = resolveMachine(process.env.MACHINE);
 const target = MACHINES[machine];
 /** Dev server port per machine (preview uses the same port minus 1000), so all of them can run side by side. */
-const PORTS: Record<MachineId, number> = { gundam: 5173, cubesat: 5174, v2: 5175 };
+const PORTS: Record<MachineId, number> = { gundam: 5173, cubesat: 5174, v2: 5175, derby: 5176 };
 
 /** Fills the machine's title and description into index.html. */
 function machineHtml(): Plugin {

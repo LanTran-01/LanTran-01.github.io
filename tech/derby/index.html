@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Derby Aerospace Exhibit — Rafael BVR Air-to-Air Missile</title>
+    <meta name="description" content="An interactive exhibit of the Rafael Derby, a beyond-visual-range air-to-air missile with an active radar seeker: explore its external sections, separate the airframe and read the aerodynamics, avionics and history behind it." />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" href="/tech/derby/favicon.svg" type="image/svg+xml" />
+    <script>
+      // GitHub Pages deep links arrive via 404.html as <base>?redirect=<path>. Restore
+      // the real URL before the router starts (see scripts/publish-site.mjs).
+      (function () {
+        var r = new URLSearchParams(location.search).get("redirect");
+        if (r && r.charAt(0) === "/" && r.charAt(1) !== "/") history.replaceState(null, "", r);
+      })();
+    </script>
+    <script type="module" crossorigin src="/tech/derby/static/index-CPDBhIFu.js"></script>
+    <link rel="modulepreload" crossorigin href="/tech/derby/static/three-DNbv3i9s.js">
+    <link rel="modulepreload" crossorigin href="/tech/derby/static/r3f-oIkXnHij.js">
+    <link rel="stylesheet" crossorigin href="/tech/derby/static/index-B5qaw7q7.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>This explorer is an interactive 3D application and needs JavaScript and WebGL.</noscript>
+  </body>
+</html>

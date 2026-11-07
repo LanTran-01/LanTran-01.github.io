@@ -9,9 +9,10 @@ all served by GitHub Pages from the root of `main`:
 | **Tech · 01** [lantran.dev/tech/gundam/](https://www.lantran.dev/tech/gundam/) | Ξ Hardware Explorer, an engineering-style 3D explorer of the RX-105 Ξ Gundam | `explorer/` with `MACHINE=gundam` |
 | **Tech · 02** [lantran.dev/tech/cubesat/](https://www.lantran.dev/tech/cubesat/) | CubeSat Systems Explorer, an illustrative 3U satellite and its embedded electronics | `explorer/` with `MACHINE=cubesat` |
 | **Tech · 03** [lantran.dev/tech/v2/](https://www.lantran.dev/tech/v2/) | V-2 Aerospace Exhibit, a museum-style study of the V-2 (A-4) as the Bumper-WAC two-stage rocket, outside and in | `explorer/` with `MACHINE=v2` |
+| **Tech · 04** [lantran.dev/tech/derby/](https://www.lantran.dev/tech/derby/) | Derby Aerospace Exhibit, an exterior study of Rafael's Derby beyond-visual-range air-to-air missile | `explorer/` with `MACHINE=derby` |
 | [lantran.dev/tarot/](https://www.lantran.dev/tarot/) | ARCANA, a minimalist tarot reading app | `arcana/` (React), see [arcana/README.md](arcana/README.md) |
 
-All three Tech projects are built from **one explorer engine** (`explorer/`) with a
+All four Tech projects are built from **one explorer engine** (`explorer/`) with a
 machine module per subject; see [Machines](#machines-one-engine-several-subjects).
 
 ## Repository layout
@@ -23,12 +24,13 @@ machine module per subject; see [Machines](#machines-one-engine-several-subjects
   tech/gundam/       ← explorer/dist/gundam   (base /tech/gundam/)
   tech/cubesat/      ← explorer/dist/cubesat  (base /tech/cubesat/)
   tech/v2/           ← explorer/dist/v2       (base /tech/v2/)
+  tech/derby/        ← explorer/dist/derby    (base /tech/derby/)
   tarot/             ← arcana/dist
   gundam/index.html  ← generated: forwards the old /gundam/ home to /tech/gundam/
   404.html           ← generated: routes deep links back into the right app
   CNAME              custom domain (never touched by the publish script)
 home/                source of the home page
-explorer/            source of the shared explorer engine and its machines (Ξ Gundam, CubeSat, V-2)
+explorer/            source of the shared explorer engine and its machines (Ξ Gundam, CubeSat, V-2, Derby)
 arcana/              source of ARCANA
 scripts/             publish-site.mjs
 ```
@@ -89,9 +91,10 @@ npm install
 npm run dev            # Ξ Gundam  · http://localhost:5173/tech/gundam/
 npm run dev:cubesat    # CubeSat   · http://localhost:5174/tech/cubesat/
 npm run dev:v2         # V-2       · http://localhost:5175/tech/v2/
+npm run dev:derby      # Derby     · http://localhost:5176/tech/derby/
 npm run typecheck      # tsc, strict — checks the engine against every machine
 npm run lint           # eslint
-npm run build          # production builds into explorer/dist/<machine> for gundam, cubesat and v2
+npm run build          # production builds into explorer/dist/<machine> for gundam, cubesat, v2 and derby
 ```
 
 ## Using the explorer
@@ -122,6 +125,7 @@ explorer/
     machines/gundam/           everything specific to the RX-105 (see "Machines" below)
     machines/cubesat/          everything specific to the CubeSat
     machines/v2/               everything specific to the V-2 exhibit
+    machines/derby/            everything specific to the Derby exhibit
     data/                      shared types and lookups over the active machine (@machine)
       types.ts                 domain types + MachineConfig contract
       components.ts, subsystems.ts, modelConfig.ts, machine.ts
@@ -129,6 +133,7 @@ explorer/
     features/model/
       modelTypes.ts            mesh tagging contract (userData.xi = PartTag)
       procedural/primitives.ts shared geometry kit (Kit<Palette>, extrude, merge, bilateral…)
+      procedural/revolve.ts    surfaces of revolution on a body profile (skins, joint bands) for rockets and missiles
       loadModel.ts, annotateModel.ts, useMachineModel.ts   procedural or GLB → indexed model
       materialController.ts    per-mesh material state
     features/component-inspection/modeVisuals.ts   mode tuning (assembly scope and machine scope)
@@ -168,7 +173,7 @@ rows can set `functionBasis: "reference"` when a part's function is historical
 fact rather than invention (the V-2 does).
 
 `npm run typecheck` checks the engine once per machine (`tsconfig.gundam.json`,
-`tsconfig.cubesat.json`, `tsconfig.v2.json`). To add a machine, copy one of the folders, register it in
+`tsconfig.cubesat.json`, `tsconfig.v2.json`, `tsconfig.derby.json`). To add a machine, copy one of the folders, register it in
 `machines.config.ts` (and its dev port in `vite.config.ts`), add a tsconfig (and exclude the new folder
 from the other machines' tsconfigs) and a build step, give it a target in
 `scripts/publish-site.mjs` and add it to the app pattern in the generated `404.html`.
@@ -357,3 +362,86 @@ image on the site is rendered from it. Sources consulted:
 - The upper stage is not to scale: it is drawn about twice its true width (one constant, `WAC_SHOW`, sets this; `{ radial: 1, length: 1 }` restores true size).
 - The camera cannot go below the floor, so the nozzle exit and jet vanes are seen from low angles only.
 - The fully separated Sections view is about 40 % taller than the assembled stack, so the overview zooms out to fit it.
+
+---
+
+# Derby Aerospace Exhibit (`/tech/derby/`)
+
+An exterior study of the **Derby**, the beyond-visual-range air-to-air missile
+from Rafael Advanced Defense Systems (Israel): in service since 1998, with an
+active radar seeker on an airframe described as an enlarged Python-4. It stands
+upright on its tail, in a pale grey finish with a ceramic-white radome and one
+blue display band, so it reads as a modern exhibit next to the historical V-2.
+Select any of its six sections, separate the airframe at its joints, and read
+the aerodynamics, avionics and history behind it. It runs on the same engine as the other explorers and has its own geometry,
+metadata and camera framing.
+
+> **What is and isn't real.** Rows marked `DOC` repeat facts published by the
+> manufacturer, reference works or the aviation press (see References below):
+> length 3.62 m, diameter 0.16 m, span 0.64 m, weight 118 kg, active radar
+> seeker, service entry 1998, the Python-family dual canards, the I-Derby ER's
+> dual-pulse motor. Rows marked `MODEL` are approximations or representative
+> details — radome shape, section joints, canard and wing planforms, hangers,
+> umbilical, panels, nozzle and the display band — or general aerospace
+> practice rather than Derby-specific data. Sources disagree on the exact
+> surface layout; the model follows the Python-family arrangement seen in public
+> photographs. **Scope:** external form and encyclopedia-level facts only — no
+> internal layout, warhead, fuzing, guidance methods or operational detail, and
+> no manufacturer markings or logos.
+
+## Using it
+
+| Action | Input |
+|---|---|
+| Rotate / zoom / pan | drag · wheel or pinch · right-drag or two-finger drag |
+| Select a section | click it on the model or in "External architecture" |
+| Views (whole missile) | **Exterior** · **Sections** (keys `1`–`2`): the sections lift apart at the joints above the aft body, canards and wings stand off |
+| Back / reset | `Esc` · `R` resets the camera |
+| Systems map | `/tech/derby/systems`: a textbook-level functional overview (sensing, avionics, control, propulsion, structure), linked to the sections |
+
+Sections (`/tech/derby/explore/:slug`): `radome`, `forward-body`, `canards`,
+`centre-body`, `aft-body`, `wings`. The overview's Exhibit
+panel (a sheet tab on phones) holds Overview notes (development, classification,
+family and derivatives, operators and platforms, significance) and Technology &
+context notes (canard aerodynamics, slender bodies, avionics, the evolution of
+air-to-air missiles, materials and manufacture), with sources.
+
+## Model
+
+`src/machines/derby/procedural/` (40 meshes, ≈ 18k triangles). The missile stands
+upright, authored in metres along Y (tail at 0, nose at 3.62 m) and scaled by
+`SCALE = 1.77` to about the V-2's exhibit height, so explode offsets are in
+metres along the missile. The camera, floor ring and ruler are set for its
+slender proportions.
+
+| File | Builds |
+|---|---|
+| `layout.ts` | published dimensions, section stations, the body `profile(h)` with tangent-ogive radome, fin angles (×), explode offsets |
+| `airframe.ts` | aft body with boattail, aft ring and nozzle; centre body with hangers, umbilical and access panels; forward body with canard collars and display band; radome with attachment ring and tip; joints and end closures |
+| `surfaces.ts` | two rows of four canards with hinge fairings, four long-chord rear wings with root fairings |
+
+It reuses the shared revolve helpers (`features/model/procedural/revolve.ts`),
+which the V-2's `shell.ts` now also wraps; the V-2's output is unchanged
+(identical stats and render before and after).
+
+## References
+
+No third-party 3D asset is used; the model is procedural, and every image on the
+site is rendered from it.
+
+- [Wikipedia — Derby (missile)](https://en.wikipedia.org/wiki/Derby_(missile)): dimensions, weight, speed, range, Python-4 lineage, I-Derby ER, operators, SPYDER.
+- [Airforce Technology — Derby](https://www.airforce-technology.com/?p=4915): development from the early 1980s, introduction mid-1990s, service entry 1998, "four main wings and four conventional planar fins", aircraft.
+- [Airforce Technology — I-Derby ER](https://www.airforce-technology.com/projects/i-derby-er-air-to-air-missile/) and [EDR Magazine](https://www.edrmagazine.eu/rafael-marks-another-milestone-in-the-development-of-the-i-derby-er-air-to-air-missile): dual-pulse motor, same shape and size, seeker description, light weight.
+- [Flight Global — Python-5](https://www.flightglobal.com/rafael-launches-fifth-generation-python-missile/48862.article): the Python family's dual canards and rear fins.
+- [Army Technology — SPYDER](https://www.army-technology.com/projects/spyder/): surface-launched Python-5 and Derby.
+
+Derby, I-Derby, Python and SPYDER are names of Rafael Advanced Defense Systems
+Ltd. This is an independent, non-commercial educational study, not affiliated
+with or endorsed by Rafael.
+
+## Known limitations
+
+- Shapes beyond the published length, diameter and span are approximations from photographs; the model is a study, not a replica.
+- Sources describe the surface layout differently; the model follows the Python-family arrangement, and which canard row moves is representative.
+- Only the exterior is modelled, by design; there is no internal view.
+- Standing on its tail is a display choice; a 23:1 body makes a slender silhouette, so zoom in for detail.

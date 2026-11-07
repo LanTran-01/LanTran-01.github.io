@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.derby.tsbuildinfo",
+    "paths": { "@/*": ["src/*"], "@machine/*": ["src/machines/derby/*"] }
+  },
+  "include": ["src", "harness"],
+  "exclude": ["src/machines/gundam", "src/machines/cubesat", "src/machines/v2"]
+}

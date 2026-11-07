@@ -28,6 +28,12 @@ export const MACHINES = {
     description:
       "An interactive museum exhibit of the V-2 (A-4), the first long-range guided ballistic missile and the first human-made object to reach space: explore its external sections, separate the airframe and read the history and engineering behind each part.",
   },
+  derby: {
+    base: "/tech/derby/",
+    title: "Derby Aerospace Exhibit — Rafael BVR Air-to-Air Missile",
+    description:
+      "An interactive exhibit of the Rafael Derby, a beyond-visual-range air-to-air missile with an active radar seeker: explore its external sections, separate the airframe and read the aerodynamics, avionics and history behind it.",
+  },
 } satisfies Record<string, MachineTarget>;
 
 export type MachineId = keyof typeof MACHINES;
