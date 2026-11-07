@@ -14,6 +14,7 @@
  *                      &probe=1           paint internals magenta (find poke-through)
  *                      &zoom=1            distance multiplier
  *                      &ty=3.2            camera target height (scene units), e.g. to frame product shots
+ *                      &dir=1,0.3,0.5     custom camera direction (overrides view)
  *
  * Exposes `window.__xiStats` (mesh / triangle budget, bounds) and
  * `window.__xiCoverage` (subassembly id coverage vs data/components.ts).
@@ -40,6 +41,7 @@ const probe = q.get("probe") === "1";
 const zoom = Number(q.get("zoom") ?? 1);
 const view = q.get("view") ?? "three-quarter";
 const targetY = q.get("ty") === null ? null : Number(q.get("ty"));
+const customDir = (q.get("dir") ?? "").split(",").map(Number);
 
 const VIEWS: Record<string, [number, number, number]> = {
   front: [0, 0.08, 1],
@@ -165,7 +167,8 @@ function CameraRig() {
     if (!root) return;
     const { centre, radius } = framing(root);
     if (targetY !== null && Number.isFinite(targetY)) centre.y = targetY;
-    const dir = new Vector3(...(VIEWS[view] ?? VIEWS["three-quarter"])).normalize();
+    const preset = VIEWS[view] ?? VIEWS["three-quarter"];
+    const dir = new Vector3(...(customDir.length === 3 && customDir.every(Number.isFinite) ? (customDir as [number, number, number]) : preset)).normalize();
     const fov = (30 * Math.PI) / 180;
     const dist = (radius / Math.sin(fov / 2)) * 0.9 * zoom;
     camera.position.copy(centre).addScaledVector(dir, dist);

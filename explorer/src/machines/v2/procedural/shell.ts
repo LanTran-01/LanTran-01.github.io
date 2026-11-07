@@ -1,4 +1,5 @@
-import { LatheGeometry, Vector2, type BufferGeometry } from "three";
+import type { BufferGeometry } from "three";
+import { arcSegments, revolveBand, revolveSheet } from "@/features/model/procedural/revolve";
 import { profile } from "./layout";
 import type { Kit, Piece } from "./primitives";
 
@@ -6,10 +7,13 @@ import type { Kit, Piece } from "./primitives";
  * Geometry that follows the body of revolution: skin quadrants, raised joint
  * bands, panel outlines and fastener rings. Angles (phi) are measured from +Z
  * towards +X, like LatheGeometry. Profiles run bottom → top so faces point
- * outward.
+ * outward. The lathe work is shared (`revolve.ts`); this file binds it to the
+ * V-2 profile.
  */
 
 const TAU = Math.PI * 2;
+
+export { arcSegments };
 
 /** Partial surface of revolution on the body profile between h0 and h1, pushed out by `offset` (metres). */
 export function profileSheet(
@@ -21,34 +25,12 @@ export function profileSheet(
   hSeg = 24,
   phiSeg = 24,
 ): BufferGeometry {
-  const pts: Vector2[] = [];
-  for (let i = 0; i <= hSeg; i++) {
-    const h = h0 + ((h1 - h0) * i) / hSeg;
-    pts.push(new Vector2(profile(h) + offset, h));
-  }
-  const g = new LatheGeometry(pts, Math.max(1, phiSeg), phi0, phi1 - phi0);
-  g.deleteAttribute("uv");
-  return g;
+  return revolveSheet(profile, h0, h1, phi0, phi1, offset, hSeg, phiSeg);
 }
 
-/** Segments for an arc so facets stay ≈ 3.75° wide. */
-export const arcSegments = (phi0: number, phi1: number) => Math.max(2, Math.round(((phi1 - phi0) / TAU) * 96));
-
-/**
- * A raised band around the body between h0 and h1, with chamfered lips so it
- * reads as a separate ring from any angle. `full` closes the circle.
- */
+/** A raised band around the body between h0 and h1, with chamfered lips so it reads as a separate ring from any angle. */
 export function bandGeometry(h0: number, h1: number, lift: number, phi0 = 0, phi1 = TAU, steps = 4): BufferGeometry {
-  const lip = Math.min(0.004, (h1 - h0) / 4);
-  const pts: Vector2[] = [new Vector2(profile(h0), h0)];
-  for (let i = 0; i <= steps; i++) {
-    const h = h0 + lip + ((h1 - h0 - 2 * lip) * i) / steps;
-    pts.push(new Vector2(profile(h) + lift, h));
-  }
-  pts.push(new Vector2(profile(h1), h1));
-  const g = new LatheGeometry(pts, arcSegments(phi0, phi1), phi0, phi1 - phi0);
-  g.deleteAttribute("uv");
-  return g;
+  return revolveBand(profile, h0, h1, lift, phi0, phi1, steps);
 }
 
 /** Ring of radial bolt heads around the body at height h, centred `lift` off the skin. */

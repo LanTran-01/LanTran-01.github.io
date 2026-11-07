@@ -5,5 +5,5 @@
     "paths": { "@/*": ["src/*"], "@machine/*": ["src/machines/v2/*"] }
   },
   "include": ["src", "harness"],
-  "exclude": ["src/machines/gundam", "src/machines/cubesat"]
+  "exclude": ["src/machines/gundam", "src/machines/cubesat", "src/machines/derby"]
 }
